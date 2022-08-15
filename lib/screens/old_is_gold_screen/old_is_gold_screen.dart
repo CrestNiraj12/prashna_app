@@ -137,66 +137,6 @@ class _OldIsGoldScreenState extends State<OldIsGoldScreen>
                       )));
             }),
       );
-
-      // return ListView.builder(
-      //     physics: const AlwaysScrollableScrollPhysics(),
-      //     shrinkWrap: true,
-      //     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-      //     itemCount: datas.length,
-      //     itemBuilder: (BuildContext context, int index) {
-      //       return Container(
-      //         margin: const EdgeInsets.only(top: 15),
-      //         child: Column(
-      //           crossAxisAlignment: CrossAxisAlignment.end,
-      //           children: [
-      //             Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //               crossAxisAlignment: CrossAxisAlignment.start,
-      //               children: [
-      //                 datas[index].richText
-      //                     ? Expanded(
-      //                         child: TeXView(
-      //                             renderingEngine:
-      //                                 const TeXViewRenderingEngine.mathjax(),
-      //                             child:
-      //                                 _teXViewWidget("""<style>table, th, td {
-      //                                     border: 1px solid black;
-      //                                     border-collapse: collapse;
-      //                                     margin-top:10px;
-      //                                      padding: 5px;
-      //                                   }</style>
-      //                                   <div style='display: flex; align-items:baseline'>
-      //                                   ${(datas[index].index + 1).toString()}. <div style='margin-left: 2px;flex: 1;'>
-      //                                   ${datas[index].question}</div></div>"""),
-      //                             loadingWidgetBuilder: (BuildContext context) {
-      //                               return const Center(
-      //                                   child: SizedBox(
-      //                                       height: 12,
-      //                                       width: 12,
-      //                                       child: CircularProgressIndicator(
-      //                                         strokeWidth: 2,
-      //                                       )));
-      //                             }),
-      //                       )
-      //                     : Text(
-      //                         "${datas[index].index + 1}. ",
-      //                         style: quesStyle,
-      //                       ),
-      //                 !datas[index].richText
-      //                     ? Expanded(
-      //                         flex: 1,
-      //                         child: Text(
-      //                           datas[index].question,
-      //                           style: quesStyle,
-      //                         ),
-      //                       )
-      //                     : Container(),
-      //               ],
-      //             ),
-      //           ],
-      //         ),
-      //       );
-      //     });
     }
 
     Widget getPage(int index, String tab) {
