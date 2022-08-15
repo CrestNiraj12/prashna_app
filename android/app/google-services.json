@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "701641981730",
+    "project_id": "prashna-app",
+    "storage_bucket": "prashna-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701641981730:android:0b18ef0dcadcb43d8f6f7b",
+        "android_client_info": {
+          "package_name": "com.bijay.prashna_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "701641981730-nsh1l878ce3hot6ufkkqqk6qiuv7gakg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bijay.prashna_app",
+            "certificate_hash": "cbb290c60811d6e3ca6b25791f54ddbe174548b6"
+          }
+        },
+        {
+          "client_id": "701641981730-m24phqkrbeosb0ojmggire05e70fllmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_P1M6bBhxGScIjj52thADpaQa2iLHits"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "701641981730-m24phqkrbeosb0ojmggire05e70fllmv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
