@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "701641981730-sr6gbbm3dl3li1ni6l23ia9p23q4g5g6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bijay.prashna_app",
+            "certificate_hash": "86acf7bd19ab0badf9c79b6b5c51aeffc1e1bab3"
+          }
+        },
+        {
           "client_id": "701641981730-m24phqkrbeosb0ojmggire05e70fllmv.apps.googleusercontent.com",
           "client_type": 3
         }

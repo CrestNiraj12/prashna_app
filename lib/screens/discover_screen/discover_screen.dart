@@ -94,7 +94,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Discover feed", style: style.copyWith(fontSize: 16)),
+          title: Text("Prashna (Old is Gold)",
+              style: style.copyWith(fontSize: 16)),
           backgroundColor: PRIMARY_BLUE,
           elevation: 0,
           actions: [
@@ -129,7 +130,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             width: MediaQuery.of(context).size.width,
             child: _loading
                 ? SizedBox(
-                    height: MediaQuery.of(context).size.height,
+                    height: MediaQuery.of(context).size.height - 100,
                     child: const Center(
                         child: CircularProgressIndicator(
                       color: PRIMARY_BLUE,

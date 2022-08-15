@@ -495,8 +495,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     void _shareApp() {
       final box = context.findRenderObject() as RenderBox?;
       Share.share(
-          "Download Study Pill now from: https://play.google.com/store/apps/details?id=com.bijay.studypill",
-          subject: "Download Study Pill App",
+          "Download Prashna (Old is Gold) now from: https://play.google.com/store/apps/details?id=com.bijay.prashna_app",
+          subject: "Download Prashna (Old is Gold) App",
           sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
     }
 
@@ -637,30 +637,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               trailing: const Icon(Icons.arrow_forward_ios,
                                   color: PRIMARY_BLUE),
                               onTap: _editProfileDialog,
-                            ),
-                            ListTile(
-                              title: const Text("Enroll Course",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              subtitle:
-                                  const Text("Enroll course using course code"),
-                              leading: const Icon(
-                                Icons.library_books,
-                                color: PRIMARY_BLUE,
-                              ),
-                              onTap: _courseDialog,
-                            ),
-                            ListTile(
-                              title: const Text("Enroll Subject",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              subtitle: const Text(
-                                  "Enroll subject using subject code"),
-                              leading: const Icon(
-                                Icons.book_online,
-                                color: PRIMARY_BLUE,
-                              ),
-                              onTap: _subjectDialog,
                             ),
                             ListTile(
                               title: const Text(
