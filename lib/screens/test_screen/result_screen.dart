@@ -112,7 +112,6 @@
 //           "accuracy": (_correct + _incorrect) == 0
 //               ? "0"
 //               : ((widget.correctAnswers / (_correct + _incorrect)) * 100),
-//           "time_taken": widget.quiz.timeInSeconds - widget.secondsRemaining,
 //           "questions": questions
 //         },
 //         options: Options(headers: {'Authorization': 'Bearer $token'}));
@@ -393,19 +392,6 @@
 //                                             (_correct + _incorrect)) *
 //                                         100)),
 //                                 100),
-//                             generateScoreGauge(
-//                                 prettyDuration(
-//                                     Duration(
-//                                         seconds: widget.quiz.timeInSeconds -
-//                                             widget.secondsRemaining),
-//                                     spacer: "",
-//                                     delimiter: " ",
-//                                     abbreviated: true),
-//                                 "Time Taken",
-//                                 (widget.quiz.timeInSeconds -
-//                                         widget.secondsRemaining)
-//                                     .toDouble(),
-//                                 widget.quiz.timeInSeconds.toDouble())
 //                           ],
 //                         ),
 //                       ),

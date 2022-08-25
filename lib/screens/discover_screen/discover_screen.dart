@@ -27,7 +27,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   }
 
   void loadCourses() async {
-    Response response = await dio().get("/courses");
+    Response response = await dio().get("/prashna-courses");
     List<Course> courses =
         response.data.map<Course>((course) => Course.fromJson(course)).toList();
 

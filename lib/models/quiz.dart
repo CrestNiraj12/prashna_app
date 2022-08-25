@@ -4,7 +4,6 @@ import 'package:timeago/timeago.dart' as timeago;
 class Quiz {
   final int id;
   final String title;
-  final int timeInSeconds;
   final String description;
   final double totalMarks, passMarks, negativeMarking;
   final User publisher;
@@ -14,7 +13,6 @@ class Quiz {
   Quiz(
       {required this.id,
       required this.title,
-      required this.timeInSeconds,
       required this.description,
       required this.totalMarks,
       required this.passMarks,
@@ -26,7 +24,6 @@ class Quiz {
   Quiz.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         title = json['title'],
-        timeInSeconds = json['timeInSeconds'],
         description = json['description'],
         totalMarks = json['totalMarks'].toDouble(),
         passMarks = json['passMarks'].toDouble(),

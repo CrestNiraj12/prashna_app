@@ -142,21 +142,21 @@ class _SetScreenState extends State<SetScreen> {
                                   )
                                 : Container(),
                             type == "QUIZ"
-                                ? Container(
+                                ? SizedBox(
                                     width: 120,
                                     child: RichText(
                                       text: TextSpan(
                                         children: [
                                           const WidgetSpan(
                                             child: Icon(
-                                              Icons.timelapse,
+                                              Icons.numbers,
                                               size: 14,
                                               color: PRIMARY_BLUE,
                                             ),
                                           ),
                                           TextSpan(
                                               text:
-                                                  " ${prettyDuration(Duration(seconds: datas[index]['timeInSeconds']), abbreviated: true, delimiter: " ")}",
+                                                  " ${datas[index]['totalMarks']}",
                                               style: style.copyWith(
                                                   color: currTheme.darkTheme
                                                       ? Colors.white

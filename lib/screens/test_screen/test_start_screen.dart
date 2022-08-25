@@ -244,20 +244,6 @@
 //                                                   MainAxisAlignment
 //                                                       .spaceBetween,
 //                                               children: [
-//                                                 Text("Time: ",
-//                                                     style: headingStyle),
-//                                                 Text(
-//                                                     prettyDuration(Duration(
-//                                                         seconds: _quiz
-//                                                             .timeInSeconds)),
-//                                                     style: titleStyle)
-//                                               ],
-//                                             ),
-//                                             Row(
-//                                               mainAxisAlignment:
-//                                                   MainAxisAlignment
-//                                                       .spaceBetween,
-//                                               children: [
 //                                                 Text("Full Marks: ",
 //                                                     style: headingStyle),
 //                                                 Text(
@@ -363,12 +349,7 @@
 //                                               ]),
 //                                           SizedBox(height: 10),
 //                                           Text(
-//                                             "4. Test will auto submit when the time is up",
-//                                             style: smallTextStyle,
-//                                           ),
-//                                           SizedBox(height: 10),
-//                                           Text(
-//                                             "5. You can access hints and detailed summary after submitting the test.",
+//                                             "4. You can access hints and detailed summary after submitting the test.",
 //                                             style: smallTextStyle,
 //                                           ),
 //                                         ],
@@ -430,9 +411,7 @@
 //                                               score: _prevScore!["score"]
 //                                                   .toDouble(),
 //                                               accuracy: _prevScore!["accuracy"]
-//                                                   .toDouble(),
-//                                               timeInSeconds:
-//                                                   _prevScore!["time_taken"],
+//                                                   .toDouble(),,
 //                                               questions: _prevScore![
 //                                                   "user_took_quiz_questions"],
 //                                             ),

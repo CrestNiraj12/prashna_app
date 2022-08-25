@@ -1,5 +1,4 @@
 // import 'package:flutter/material.dart';
-// import 'package:nibble_app/components/countdownTimer.dart';
 // import 'package:nibble_app/constants.dart';
 // import 'package:nibble_app/models/quiz.dart';
 // import 'package:nibble_app/models/quizQuestion.dart';
@@ -39,7 +38,6 @@
 //   List<Map<String, dynamic>> _selectedByPage = [];
 //   bool _loading = true;
 //   bool _absorbing = true;
-//   int _timeRemainingInSeconds = 0;
 
 //   List getList(List source, String filter) => source
 //       .map((option) =>
@@ -110,10 +108,6 @@
 //     setState(() {
 //       _correctAnswers++;
 //     });
-//   }
-
-//   void setDurationInSeconds(int seconds) {
-//     _timeRemainingInSeconds = seconds;
 //   }
 
 //   @override
@@ -222,8 +216,7 @@
 //                               selected: _selectedByPage,
 //                               correctAnswers: _correctAnswers,
 //                               quiz: widget.quiz,
-//                               questions: _questions,
-//                               secondsRemaining: _timeRemainingInSeconds),
+//                               questions: _questions),
 //                           type: PageTransitionType.fade));
 //                 },
 //               ),
@@ -302,27 +295,6 @@
 //                                         style: style.copyWith(
 //                                             fontSize: 12,
 //                                             color: Colors.red[800]))),
-//                                 CountDownTimer(
-//                                     setDurationInSeconds: setDurationInSeconds,
-//                                     secondsRemaining: widget.quiz.timeInSeconds,
-//                                     countDownTimerStyle: style.copyWith(
-//                                         fontWeight: FontWeight.bold,
-//                                         fontSize: 20),
-//                                     whenTimeExpires: () {
-//                                       Navigator.push(
-//                                           context,
-//                                           PageTransition(
-//                                               child: ResultScreen(
-//                                                   setId: widget.setId,
-//                                                   correctAnswers:
-//                                                       _correctAnswers,
-//                                                   selected: _selectedByPage,
-//                                                   quiz: widget.quiz,
-//                                                   questions: _questions,
-//                                                   secondsRemaining:
-//                                                       _timeRemainingInSeconds),
-//                                               type: PageTransitionType.fade));
-//                                     }),
 //                                 ElevatedButton(
 //                                     onPressed: _showSubmitDialog,
 //                                     style: ElevatedButton.styleFrom(

@@ -20,7 +20,6 @@
 //   final Quiz quiz;
 //   final double score, accuracy;
 //   final List questions;
-//   final int timeInSeconds;
 
 //   ResultWithScoreScreen(
 //       {Key? key,
@@ -28,8 +27,7 @@
 //       required this.quiz,
 //       required this.score,
 //       required this.accuracy,
-//       required this.questions,
-//       required this.timeInSeconds})
+//       required this.questions})
 //       : super(key: key);
 
 //   @override
@@ -319,15 +317,6 @@
 //                               "Accuracy",
 //                               widget.accuracy,
 //                               100),
-//                           generateScoreGauge(
-//                               prettyDuration(
-//                                   Duration(seconds: widget.timeInSeconds),
-//                                   abbreviated: true,
-//                                   delimiter: " ",
-//                                   spacer: ""),
-//                               "Time Taken",
-//                               widget.timeInSeconds.toDouble(),
-//                               widget.quiz.timeInSeconds.toDouble())
 //                         ],
 //                       ),
 //                     ),
