@@ -3,7 +3,7 @@ import '../../constants.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class PrivacyPolicyScreen extends StatefulWidget {
-  PrivacyPolicyScreen({
+  const PrivacyPolicyScreen({
     Key? key,
   }) : super(key: key);
 

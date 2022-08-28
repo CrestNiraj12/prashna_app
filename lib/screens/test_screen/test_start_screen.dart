@@ -11,15 +11,13 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StartScreen extends StatefulWidget {
-  // final int setId;
   final int quizId;
   final int setId;
 
-  StartScreen({
+  const StartScreen({
     Key? key,
     required this.setId,
     required this.quizId,
-    // required this.setId,
   }) : super(key: key);
 
   @override

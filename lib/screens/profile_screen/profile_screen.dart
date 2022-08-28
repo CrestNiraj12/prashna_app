@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../../constants.dart';
 import '../../screens/policy_screen/privacy_policy.dart';
 import '../../utilities/api.dart';
@@ -15,7 +14,7 @@ import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -191,216 +190,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         print(error);
                       }
                     });
-                  });
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Future<void> _subjectDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor:
-                currTheme.darkTheme ? SECONDARY_DARK : Colors.white,
-            title: Text(
-              'Enter subject code',
-              style: style.copyWith(color: PRIMARY_BLUE),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    controller: textController,
-                    maxLines: null,
-                    style:
-                        const TextStyle(fontFamily: 'Montserrat', fontSize: 14),
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(6),
-                    ],
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black))),
-                  )
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              OutlinedButton(
-                child: Text('Cancel', style: style.copyWith(fontSize: 12)),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Colors.blue[700]),
-                child: Text(
-                  'Enroll',
-                  style: style.copyWith(color: Colors.white, fontSize: 12),
-                ),
-                onPressed: () {
-                  dio()
-                      .post("/user/categories/enroll",
-                          data: {"code": textController.text},
-                          options: Options(
-                              headers: {'Authorization': 'Bearer $token'}))
-                      .then((value) {
-                    Navigator.pop(context);
-                    if (value.data == true) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            titlePadding: const EdgeInsets.all(10),
-                            title: Text(
-                              "Successfully enrolled the subject!",
-                              style: style.copyWith(
-                                  color: Colors.white, fontSize: 16),
-                            ),
-                            backgroundColor: Colors.green,
-                          );
-                        },
-                      ).then((value) {
-                        currTheme.refreshUser();
-                        textController.clear();
-                      }).catchError((error) {
-                        if (kDebugMode) {
-                          print(error);
-                        }
-                      });
-                    } else {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            titlePadding: const EdgeInsets.all(10),
-                            title: Text(
-                              "Sorry! Couldnt find the subject!",
-                              style: style.copyWith(
-                                  color: Colors.white, fontSize: 16),
-                            ),
-                            backgroundColor: Colors.red,
-                          );
-                        },
-                      ).then((value) {
-                        textController.clear();
-                      }).catchError((error) {
-                        if (kDebugMode) {
-                          print(error);
-                        }
-                      });
-                    }
-                  });
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Future<void> _courseDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor:
-                currTheme.darkTheme ? SECONDARY_DARK : Colors.white,
-            title: Text(
-              'Enter course code',
-              style: style.copyWith(color: PRIMARY_BLUE),
-            ),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    controller: textController,
-                    maxLines: null,
-                    style:
-                        const TextStyle(fontFamily: 'Montserrat', fontSize: 14),
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(5),
-                    ],
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black))),
-                  )
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              OutlinedButton(
-                child: Text('Cancel', style: style.copyWith(fontSize: 12)),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Colors.blue[700]),
-                child: Text(
-                  'Enroll',
-                  style: style.copyWith(color: Colors.white, fontSize: 12),
-                ),
-                onPressed: () {
-                  dio()
-                      .post("/user/courses/enroll",
-                          data: {"code": textController.text},
-                          options: Options(
-                              headers: {'Authorization': 'Bearer $token'}))
-                      .then((value) {
-                    Navigator.pop(context);
-                    if (value.data == true) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            titlePadding: const EdgeInsets.all(10),
-                            title: Text(
-                              "Successfully enrolled the course!",
-                              style: style.copyWith(
-                                  color: Colors.white, fontSize: 16),
-                            ),
-                            backgroundColor: Colors.green,
-                          );
-                        },
-                      ).then((value) {
-                        currTheme.refreshUser();
-                        textController.clear();
-                      }).catchError((error) {
-                        if (kDebugMode) {
-                          print(error);
-                        }
-                      });
-                    } else {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            titlePadding: const EdgeInsets.all(10),
-                            title: Text(
-                              "Sorry! Couldnt find the course!",
-                              style: style.copyWith(
-                                  color: Colors.white, fontSize: 16),
-                            ),
-                            backgroundColor: Colors.red,
-                          );
-                        },
-                      ).then((value) {
-                        textController.clear();
-                      }).catchError((error) {
-                        if (kDebugMode) {
-                          print(error);
-                        }
-                      });
-                    }
                   });
                 },
               ),
@@ -692,7 +481,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Navigator.push(
                                     context,
                                     PageTransition(
-                                        child: PrivacyPolicyScreen(),
+                                        child: const PrivacyPolicyScreen(),
                                         type: PageTransitionType
                                             .rightToLeftWithFade));
                               },

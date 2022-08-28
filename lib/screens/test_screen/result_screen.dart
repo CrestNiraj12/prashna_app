@@ -21,7 +21,7 @@ class ResultScreen extends StatefulWidget {
   final int correctAnswers;
   final List questions;
 
-  ResultScreen(
+  const ResultScreen(
       {Key? key,
       required this.setId,
       required this.selected,
@@ -35,7 +35,8 @@ class ResultScreen extends StatefulWidget {
 }
 
 class _ResultScreenState extends State<ResultScreen> {
-  static Future<SharedPreferences> _storage = SharedPreferences.getInstance();
+  static final Future<SharedPreferences> _storage =
+      SharedPreferences.getInstance();
   int _correct = 0;
   int _incorrect = 0;
   int _left = 0;

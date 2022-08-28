@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:duration/duration.dart';
 import "package:flutter/material.dart";
 import '../../constants.dart';
 import '../../models/set.dart';
@@ -159,7 +158,7 @@ class _SetScreenState extends State<SetScreen> {
         ),
         body: SafeArea(
             child: SingleChildScrollView(
-                child: Container(
+                child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: _loading
                         ? SizedBox(
@@ -192,7 +191,7 @@ class _SetScreenState extends State<SetScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Container(
+                                              SizedBox(
                                                 width: _set.image == null
                                                     ? MediaQuery.of(context)
                                                             .size
@@ -249,7 +248,7 @@ class _SetScreenState extends State<SetScreen> {
                                                 ),
                                               ),
                                               _set.image != null
-                                                  ? Container(
+                                                  ? SizedBox(
                                                       height: 100,
                                                       child: InteractiveViewer(
                                                           boundaryMargin:

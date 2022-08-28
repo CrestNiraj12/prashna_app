@@ -10,7 +10,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -101,11 +101,11 @@ class _LoginScreenState extends State<LoginScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Error"),
+              title: const Text("Error"),
               content: Text(message),
               actions: [
                 TextButton(
-                  child: Text("Ok"),
+                  child: const Text("Ok"),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -147,119 +147,115 @@ class _LoginScreenState extends State<LoginScreen> {
               elevation: 0,
             ),
             body: Center(
-                child: Container(
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                        child: SingleChildScrollView(
-                            child: AbsorbPointer(
-                                absorbing: absorbing,
-                                child: Opacity(
-                                    opacity: absorbing ? 0.5 : 1.0,
-                                    child: Form(
-                                        key: _formKey,
-                                        child: AutofillGroup(
-                                            child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              width: 60,
-                                              height: 120,
-                                              child: Image.asset(
-                                                  'images/ideas.png'),
-                                            ),
-                                            Text(
-                                                "Sign in or Create a New Account",
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                    child: SingleChildScrollView(
+                        child: AbsorbPointer(
+                            absorbing: absorbing,
+                            child: Opacity(
+                                opacity: absorbing ? 0.5 : 1.0,
+                                child: Form(
+                                    key: _formKey,
+                                    child: AutofillGroup(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(
+                                          width: 60,
+                                          height: 120,
+                                          child:
+                                              Image.asset('images/ideas.png'),
+                                        ),
+                                        Text("Sign in or Create a New Account",
+                                            textAlign: TextAlign.center,
+                                            style: style.copyWith(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold)),
+                                        const SizedBox(height: 30.0),
+                                        emailField,
+                                        const SizedBox(height: 18.0),
+                                        passField,
+                                        const SizedBox(height: 5.0),
+                                        SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: RichText(
+                                              textAlign: TextAlign.right,
+                                              text: TextSpan(
+                                                  text: "Forgot Password?",
+                                                  style: const TextStyle(
+                                                      color: LIGHT_GREY,
+                                                      fontSize: 12),
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              '/reset-password');
+                                                        })),
+                                        ),
+                                        const SizedBox(
+                                          height: 35.0,
+                                        ),
+                                        loginButton,
+                                        const SizedBox(height: 15.0),
+                                        googleSignInButton,
+                                        const SizedBox(height: 15.0),
+                                        createNewAccountButton,
+                                        const SizedBox(height: 15.0),
+                                        Container(
+                                            margin: const EdgeInsets.fromLTRB(
+                                                50.0, 0, 50.0, 25.0),
+                                            child: RichText(
                                                 textAlign: TextAlign.center,
-                                                style: style.copyWith(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            const SizedBox(height: 30.0),
-                                            emailField,
-                                            const SizedBox(height: 18.0),
-                                            passField,
-                                            const SizedBox(height: 5.0),
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: RichText(
-                                                  textAlign: TextAlign.right,
-                                                  text: TextSpan(
-                                                      text: "Forgot Password?",
-                                                      style: const TextStyle(
-                                                          color: LIGHT_GREY,
-                                                          fontSize: 12),
-                                                      recognizer:
-                                                          TapGestureRecognizer()
-                                                            ..onTap = () {
-                                                              Navigator.pushNamed(
-                                                                  context,
-                                                                  '/reset-password');
-                                                            })),
-                                            ),
-                                            const SizedBox(
-                                              height: 35.0,
-                                            ),
-                                            loginButton,
-                                            const SizedBox(height: 15.0),
-                                            googleSignInButton,
-                                            const SizedBox(height: 15.0),
-                                            createNewAccountButton,
-                                            const SizedBox(height: 15.0),
-                                            Container(
-                                                margin:
-                                                    const EdgeInsets.fromLTRB(
-                                                        50.0, 0, 50.0, 25.0),
-                                                child: RichText(
-                                                    textAlign: TextAlign.center,
-                                                    text: TextSpan(
-                                                        children: [
-                                                          const TextSpan(
-                                                              text:
-                                                                  "By logging in you are agreeing with our"),
-                                                          TextSpan(
-                                                              text:
-                                                                  " Privacy Policy ",
-                                                              style: const TextStyle(
-                                                                  color:
-                                                                      PRIMARY_BLUE),
-                                                              recognizer:
-                                                                  TapGestureRecognizer()
-                                                                    ..onTap =
-                                                                        () {
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          PageTransition(
-                                                                              child: PrivacyPolicyScreen(),
-                                                                              type: PageTransitionType.rightToLeftWithFade));
-                                                                    }),
-                                                          const TextSpan(
-                                                              text: "&"),
-                                                          TextSpan(
-                                                              text:
-                                                                  " Terms of Service ",
-                                                              style: const TextStyle(
-                                                                  color:
-                                                                      PRIMARY_BLUE),
-                                                              recognizer:
-                                                                  TapGestureRecognizer()
-                                                                    ..onTap =
-                                                                        () {
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          PageTransition(
-                                                                              child: TermsOfServiceScreen(),
-                                                                              type: PageTransitionType.rightToLeftWithFade));
-                                                                    }),
-                                                        ],
-                                                        style: style.copyWith(
-                                                          fontSize: 14,
-                                                        ))))
-                                          ],
-                                        )))))))))));
+                                                text: TextSpan(
+                                                    children: [
+                                                      const TextSpan(
+                                                          text:
+                                                              "By logging in you are agreeing with our"),
+                                                      TextSpan(
+                                                          text:
+                                                              " Privacy Policy ",
+                                                          style: const TextStyle(
+                                                              color:
+                                                                  PRIMARY_BLUE),
+                                                          recognizer:
+                                                              TapGestureRecognizer()
+                                                                ..onTap = () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      PageTransition(
+                                                                          child:
+                                                                              PrivacyPolicyScreen(),
+                                                                          type:
+                                                                              PageTransitionType.rightToLeftWithFade));
+                                                                }),
+                                                      const TextSpan(text: "&"),
+                                                      TextSpan(
+                                                          text:
+                                                              " Terms of Service ",
+                                                          style: const TextStyle(
+                                                              color:
+                                                                  PRIMARY_BLUE),
+                                                          recognizer:
+                                                              TapGestureRecognizer()
+                                                                ..onTap = () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      PageTransition(
+                                                                          child:
+                                                                              TermsOfServiceScreen(),
+                                                                          type:
+                                                                              PageTransitionType.rightToLeftWithFade));
+                                                                }),
+                                                    ],
+                                                    style: style.copyWith(
+                                                      fontSize: 14,
+                                                    ))))
+                                      ],
+                                    ))))))))));
   }
 }

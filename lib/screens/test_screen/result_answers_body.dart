@@ -16,7 +16,7 @@ class ResultAnswersBody extends StatefulWidget {
   final String? hintImage;
   final bool richText;
 
-  ResultAnswersBody(
+  const ResultAnswersBody(
       {Key? key,
       required this.question,
       this.questionImage,

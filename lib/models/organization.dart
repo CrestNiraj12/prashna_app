@@ -32,8 +32,6 @@ class Organization {
         services = json['organization']['services'] ?? "Not available",
         userId = json['id'].toString(),
         emailVerified = json['email_verified_at'] != null ? true : false,
-        logo = json['avatar'] != null
-            ? json['avatar']
-            : "https://ui-avatars.com/api/?background=random&size=500&name=" +
-                json['name'].toString().trim().toLowerCase();
+        logo = json['avatar'] ??
+            "https://ui-avatars.com/api/?background=random&size=500&name=${json['name'].toString().trim().toLowerCase()}";
 }

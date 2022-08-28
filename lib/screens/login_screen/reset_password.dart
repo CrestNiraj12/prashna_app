@@ -9,7 +9,8 @@ import '../../utilities/globals.dart';
 import 'package:provider/provider.dart';
 
 class ResetPasswordFormScreen extends StatefulWidget {
-  ResetPasswordFormScreen({Key? key, required this.email, required this.token})
+  const ResetPasswordFormScreen(
+      {Key? key, required this.email, required this.token})
       : super(key: key);
   final String email, token;
   @override
@@ -37,7 +38,7 @@ class _ResetPasswordFormScreenState extends State<ResetPasswordFormScreen> {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         backgroundColor: bgColor,
       ),
     );
@@ -45,12 +46,13 @@ class _ResetPasswordFormScreenState extends State<ResetPasswordFormScreen> {
 
   void changePassword(Map data) async {
     try {
+      final nav = Navigator.of(context);
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       ScaffoldMessenger.of(context)
           .showSnackBar(showLoadingSnackbar("Processing request"));
       await dio().post('/reset-password', data: data);
       snackBar('Password changed successfully!', bgColor: Colors.green);
-      Navigator.pushReplacementNamed(context, '/login');
+      nav.pushReplacementNamed('/login');
     } on DioError catch (e) {
       snackBar(
           e.response!.data['errors']['password'][0] ??
@@ -81,7 +83,7 @@ class _ResetPasswordFormScreenState extends State<ResetPasswordFormScreen> {
           filled: true,
           prefixIcon: Icon(prefixIcon, color: PRIMARY_BLUE),
           focusColor: PRIMARY_BLUE,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           labelStyle: style,
           labelText: labelText,
           errorMaxLines: 2);
@@ -112,7 +114,7 @@ class _ResetPasswordFormScreenState extends State<ResetPasswordFormScreen> {
         decoration:
             inputFieldDecorate("Confirm Password", Icons.confirmation_num));
 
-    Future<Null> handleSubmit() async {
+    Future<void> handleSubmit() async {
       Map data = {
         "email": widget.email,
         "token": widget.token,
@@ -129,43 +131,42 @@ class _ResetPasswordFormScreenState extends State<ResetPasswordFormScreen> {
 
     return Scaffold(
         body: Center(
-            child: Container(
-                child: Padding(
-                    padding: const EdgeInsets.all(25.0),
-                    child: SingleChildScrollView(
-                        child: Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  width: 120,
-                                  height: 180,
-                                  child: Image.asset('images/ideas.png'),
-                                ),
-                                Text(
-                                    "Please fill up the following fields to reset your password",
-                                    textAlign: TextAlign.left,
-                                    style: style.copyWith(
-                                        color: Provider.of<Auth>(context,
-                                                    listen: true)
+            child: Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: SingleChildScrollView(
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 120,
+                              height: 180,
+                              child: Image.asset('images/ideas.png'),
+                            ),
+                            Text(
+                                "Please fill up the following fields to reset your password",
+                                textAlign: TextAlign.left,
+                                style: style.copyWith(
+                                    color:
+                                        Provider.of<Auth>(context, listen: true)
                                                 .darkTheme
                                             ? Colors.white
                                             : PRIMARY_DARK,
-                                        fontSize: 16,
-                                        fontFamily: 'Montserrat')),
-                                const SizedBox(height: 30.0),
-                                passField,
-                                const SizedBox(
-                                  height: 15.0,
-                                ),
-                                confirmPassField,
-                                const SizedBox(
-                                  height: 35.0,
-                                ),
-                                resetButton,
-                              ],
-                            )))))));
+                                    fontSize: 16,
+                                    fontFamily: 'Montserrat')),
+                            const SizedBox(height: 30.0),
+                            passField,
+                            const SizedBox(
+                              height: 15.0,
+                            ),
+                            confirmPassField,
+                            const SizedBox(
+                              height: 35.0,
+                            ),
+                            resetButton,
+                          ],
+                        ))))));
   }
 }

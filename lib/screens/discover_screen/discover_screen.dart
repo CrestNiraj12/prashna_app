@@ -58,7 +58,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                     child: CoursesScreen(id: course.id),
                     type: PageTransitionType.fade));
           },
-          child: Container(
+          child: SizedBox(
               width: width,
               height: height,
               child: Padding(

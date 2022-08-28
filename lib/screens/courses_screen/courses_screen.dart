@@ -7,7 +7,6 @@ import '../../screens/organization_screen/organization_screen.dart';
 import '../../screens/subjects_screen/subjects_screen.dart';
 import '../../utilities/api.dart';
 import '../../utilities/auth.dart';
-import '../../utilities/globals.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -81,7 +80,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                     settings: const RouteSettings(name: "Subject"),
                     builder: (context) => SubjectsScreen(id: subject!.id)),
               ),
-          child: Container(
+          child: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
@@ -99,7 +98,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width:
                                         MediaQuery.of(context).size.width - 100,
                                     child: Text(
@@ -177,7 +176,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
         ),
         body: SafeArea(
             child: SingleChildScrollView(
-                child: Container(
+                child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: _loading
                         ? SizedBox(
@@ -318,7 +317,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      _course != null && _subjects!.length > 0
+                                      _course != null && _subjects!.isNotEmpty
                                           ? Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(

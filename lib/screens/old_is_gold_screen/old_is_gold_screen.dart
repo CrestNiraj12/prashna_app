@@ -160,7 +160,7 @@ class _OldIsGoldScreenState extends State<OldIsGoldScreen>
 
     return Scaffold(
         body: SafeArea(
-            child: Container(
+            child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: _loading
                     ? SizedBox(
@@ -211,8 +211,8 @@ class _OldIsGoldScreenState extends State<OldIsGoldScreen>
                                         Container(
                                           margin: const EdgeInsets.only(
                                               bottom: 5, top: 40),
-                                          constraints:
-                                              BoxConstraints(maxHeight: 80),
+                                          constraints: const BoxConstraints(
+                                              maxHeight: 80),
                                           child: AutoSizeText(
                                             _oig!.title,
                                             style: style,
@@ -222,8 +222,8 @@ class _OldIsGoldScreenState extends State<OldIsGoldScreen>
                                           margin: const EdgeInsets.symmetric(
                                             vertical: 10,
                                           ),
-                                          constraints:
-                                              BoxConstraints(maxHeight: 80),
+                                          constraints: const BoxConstraints(
+                                              maxHeight: 80),
                                           child: SingleChildScrollView(
                                             child: AutoSizeText(
                                               _oig!.description,

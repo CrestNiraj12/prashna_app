@@ -26,10 +26,8 @@ class User {
         name = json['name'],
         email = json['email'],
         emailVerified = json['email_verified_at'] != null ? true : false,
-        avatar = json['avatar'] != null
-            ? json['avatar']
-            : "https://ui-avatars.com/api/?background=random&size=500&name=" +
-                json['name'].toString().trim().toLowerCase(),
+        avatar = json['avatar'] ??
+            "https://ui-avatars.com/api/?background=random&size=500&name=${json['name'].toString().trim().toLowerCase()}",
         followedSetCategories = json['set_categories'] != null
             ? json['set_categories']
                 .map<SetCategory?>((cat) {

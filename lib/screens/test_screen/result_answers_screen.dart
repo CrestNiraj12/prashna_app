@@ -10,7 +10,7 @@ class ResultAnswersScreen extends StatefulWidget {
   final List givenAnswers;
   final int page;
 
-  ResultAnswersScreen(
+  const ResultAnswersScreen(
       {Key? key,
       required this.quizId,
       required this.givenAnswers,

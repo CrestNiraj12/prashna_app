@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:prashna_app/components/questionStatusCard.dart';
 import 'package:prashna_app/constants.dart';
@@ -12,7 +11,6 @@ import 'package:prashna_app/utilities/findIcon.dart';
 import 'package:prashna_app/utilities/globals.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class ResultWithScoreScreen extends StatefulWidget {
@@ -21,7 +19,7 @@ class ResultWithScoreScreen extends StatefulWidget {
   final double score, accuracy;
   final List questions;
 
-  ResultWithScoreScreen(
+  const ResultWithScoreScreen(
       {Key? key,
       required this.setId,
       required this.quiz,

@@ -3,7 +3,7 @@ import '../../constants.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class TermsOfServiceScreen extends StatefulWidget {
-  TermsOfServiceScreen({
+  const TermsOfServiceScreen({
     Key? key,
   }) : super(key: key);
 

@@ -11,7 +11,7 @@ import '../../utilities/globals.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
-  RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({Key? key}) : super(key: key);
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -200,71 +200,67 @@ class _RegisterScreenState extends State<RegisterScreen> {
           elevation: 0,
         ),
         body: Center(
-            child: Container(
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: SingleChildScrollView(
-                        child: Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  width: 60,
-                                  height: 120,
-                                  child: Image.asset('images/ideas.png'),
-                                ),
-                                Text("Create a New Account",
+            child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: SingleChildScrollView(
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 60,
+                              height: 120,
+                              child: Image.asset('images/ideas.png'),
+                            ),
+                            Text("Create a New Account",
+                                textAlign: TextAlign.center,
+                                style: style.copyWith(
+                                    fontSize: 14, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 30.0),
+                            nameField,
+                            const SizedBox(height: 18.0),
+                            emailField,
+                            const SizedBox(height: 18.0),
+                            passField,
+                            const SizedBox(height: 18.0),
+                            confirmPassField,
+                            const SizedBox(
+                              height: 35.0,
+                            ),
+                            registerButton,
+                            const SizedBox(height: 15.0),
+                            signInButton,
+                            const SizedBox(height: 15.0),
+                            Container(
+                                margin: const EdgeInsets.fromLTRB(
+                                    50.0, 0, 50.0, 25.0),
+                                child: RichText(
                                     textAlign: TextAlign.center,
-                                    style: style.copyWith(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 30.0),
-                                nameField,
-                                const SizedBox(height: 18.0),
-                                emailField,
-                                const SizedBox(height: 18.0),
-                                passField,
-                                const SizedBox(height: 18.0),
-                                confirmPassField,
-                                const SizedBox(
-                                  height: 35.0,
-                                ),
-                                registerButton,
-                                const SizedBox(height: 15.0),
-                                signInButton,
-                                const SizedBox(height: 15.0),
-                                Container(
-                                    margin: const EdgeInsets.fromLTRB(
-                                        50.0, 0, 50.0, 25.0),
-                                    child: RichText(
-                                        textAlign: TextAlign.center,
-                                        text: TextSpan(
-                                            children: [
-                                              const TextSpan(
-                                                  text:
-                                                      "By creating an account you are agreeing with our"),
-                                              TextSpan(
-                                                  text: " Privacy Policy ",
-                                                  style: const TextStyle(
-                                                      color: PRIMARY_BLUE),
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {}),
-                                              const TextSpan(text: "&"),
-                                              TextSpan(
-                                                  text: " Terms of Service ",
-                                                  style: const TextStyle(
-                                                      color: PRIMARY_BLUE),
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {}),
-                                            ],
-                                            style: style.copyWith(
-                                              fontSize: 14,
-                                            ))))
-                              ],
-                            )))))));
+                                    text: TextSpan(
+                                        children: [
+                                          const TextSpan(
+                                              text:
+                                                  "By creating an account you are agreeing with our"),
+                                          TextSpan(
+                                              text: " Privacy Policy ",
+                                              style: const TextStyle(
+                                                  color: PRIMARY_BLUE),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {}),
+                                          const TextSpan(text: "&"),
+                                          TextSpan(
+                                              text: " Terms of Service ",
+                                              style: const TextStyle(
+                                                  color: PRIMARY_BLUE),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {}),
+                                        ],
+                                        style: style.copyWith(
+                                          fontSize: 14,
+                                        ))))
+                          ],
+                        ))))));
   }
 }

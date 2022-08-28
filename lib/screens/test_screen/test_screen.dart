@@ -17,7 +17,7 @@ class TestScreen extends StatefulWidget {
   final bool retake;
   final bool result;
 
-  TestScreen(
+  const TestScreen(
       {Key? key,
       required this.setId,
       required this.questionCount,

@@ -13,7 +13,8 @@ import 'globals.dart';
 
 class Auth extends ChangeNotifier {
   LocalStorage localStorage = LocalStorage();
-  static Future<SharedPreferences> _storage = SharedPreferences.getInstance();
+  static final Future<SharedPreferences> _storage =
+      SharedPreferences.getInstance();
   bool _darkTheme = false;
   bool _isLoggedIn = false;
   bool _isLoggedInFromGoogle = false;
@@ -63,7 +64,7 @@ class Auth extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Null> authenticate(Map creds) async {
+  Future<void> authenticate(Map creds) async {
     try {
       Dio.Response response = await dio().post('/sanctum/token', data: creds);
       String token = response.data.toString();
@@ -75,7 +76,7 @@ class Auth extends ChangeNotifier {
     }
   }
 
-  Future<Null> authWithToken(String? token) async {
+  Future<void> authWithToken(String? token) async {
     final SharedPreferences storage = await _storage;
     try {
       if (token != null && token.isNotEmpty) {
@@ -89,18 +90,21 @@ class Auth extends ChangeNotifier {
         Map<String, dynamic> user = response.data;
         _user = User.fromJson(user);
         notifyListeners();
-      } else
+      } else {
         throw Dio.DioErrorType.connectTimeout;
+      }
     } on Dio.DioError catch (e) {
-      print(e);
-      print(e.response);
+      if (kDebugMode) {
+        print(e);
+        print(e.response);
+      }
       _error = e.response?.statusCode == 401
           ? "Session expired!"
           : "Connection Error!";
     }
   }
 
-  Future<Null> loginUser(BuildContext context,
+  Future<void> loginUser(BuildContext context,
       {Map? creds, String? token}) async {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
@@ -109,10 +113,11 @@ class Auth extends ChangeNotifier {
     ScaffoldMessenger.of(context)
         .showSnackBar(showLoadingSnackbar("Logging in"));
 
-    if (token != null && token.isNotEmpty)
+    if (token != null && token.isNotEmpty) {
       await authWithToken(token);
-    else
+    } else {
       await authenticate(creds!);
+    }
     afterLoginInfo(context);
   }
 
@@ -120,7 +125,9 @@ class Auth extends ChangeNotifier {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser =
         await GoogleSignIn().signIn().catchError((error) {
-      print('Signin cancelled');
+      if (kDebugMode) {
+        print('Signin cancelled');
+      }
     });
 
     if (googleUser == null) {
@@ -141,38 +148,38 @@ class Auth extends ChangeNotifier {
     return await fb.FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  Future<Null> loginWithGoogle(
+  Future<void> loginWithGoogle(
       BuildContext context, Function showMessage) async {
+    final mess = ScaffoldMessenger.of(context);
     _absorbing = true;
     notifyListeners();
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(showLoadingSnackbar("Logging in"));
+    mess.removeCurrentSnackBar();
+    mess.showSnackBar(showLoadingSnackbar("Logging in"));
     try {
       await signInWithGoogle();
       fb.User? user = fb.FirebaseAuth.instance.currentUser;
       if (user != null) {
-        final String? _deviceModel = await getDeviceModel();
+        final String deviceModel = await getDeviceModel();
 
         Map creds = {
           "uid": user.uid,
           "name": user.displayName,
           "email": user.email,
-          "device_name": _deviceModel ?? "unknown",
+          "device_name": deviceModel,
           "avatar": user.photoURL,
           "type": 1
         };
 
         Dio.Response response = await dio().post('/register', data: creds);
         String token = response.data.toString();
-        final GoogleSignIn _googleSignIn = GoogleSignIn();
-        await _googleSignIn.signOut();
+        final GoogleSignIn googleSignIn = GoogleSignIn();
+        await googleSignIn.signOut();
         await fb.FirebaseAuth.instance.signOut();
         loginUser(context, token: token);
       } else {
         _absorbing = false;
         notifyListeners();
-        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        mess.removeCurrentSnackBar();
       }
     } on Dio.DioError catch (e) {
       _absorbing = false;
@@ -182,19 +189,21 @@ class Auth extends ChangeNotifier {
         if (errors != null && errors['email'] != null) {
           ScaffoldMessenger.of(context).removeCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Email is already registered!"),
+            content: const Text("Email is already registered!"),
             backgroundColor: Colors.red[400],
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           ));
           return;
         }
       }
-      print(e.response);
+      if (kDebugMode) {
+        print(e.response);
+      }
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Error while logging in!"),
+        content: const Text("Error while logging in!"),
         backgroundColor: Colors.red[400],
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ));
     } catch (e) {
       if (e is fb.FirebaseAuthException) {
@@ -249,8 +258,8 @@ class Auth extends ChangeNotifier {
         backgroundColor: Colors.green,
         duration: Duration(seconds: 1),
       ));
-      await Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      await Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
     } catch (e) {
       if (kDebugMode) {
         print(e);

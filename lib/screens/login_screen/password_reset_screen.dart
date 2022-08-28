@@ -9,7 +9,7 @@ import '../../utilities/globals.dart';
 import 'package:provider/provider.dart';
 
 class PasswordResetScreen extends StatefulWidget {
-  PasswordResetScreen({Key? key}) : super(key: key);
+  const PasswordResetScreen({Key? key}) : super(key: key);
   @override
   _PasswordResetScreenState createState() => _PasswordResetScreenState();
 }
@@ -69,7 +69,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
             color: PRIMARY_BLUE,
           ),
           focusColor: PRIMARY_BLUE,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           labelStyle: style,
           labelText: labelText,
           errorMaxLines: 2);
@@ -85,6 +85,8 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
         decoration: inputFieldDecorate("Email address", Icons.email));
 
     Future<void> handleSubmit() async {
+      final mess = ScaffoldMessenger.of(context);
+      final nav = Navigator.of(context);
       Map data = {
         "email": emailController.text.trim(),
       };
@@ -93,18 +95,16 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
         final bool verified = await verifyEmail(data);
 
         if (verified) {
-          ScaffoldMessenger.of(context).removeCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          mess.removeCurrentSnackBar();
+          mess.showSnackBar(const SnackBar(
             content:
                 Text('Password reset code successfully sent to your email!'),
             backgroundColor: Colors.green,
           ));
 
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CodeVerificationScreen(email: data['email'])));
+          nav.push(MaterialPageRoute(
+              builder: (context) =>
+                  CodeVerificationScreen(email: data['email'])));
         }
       }
     }
@@ -115,39 +115,38 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
 
     return Scaffold(
         body: Center(
-            child: Container(
-                child: Padding(
-                    padding: const EdgeInsets.all(25.0),
-                    child: SingleChildScrollView(
-                        child: Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  width: 120,
-                                  height: 180,
-                                  child: Image.asset('images/ideas.png'),
-                                ),
-                                Text("Reset your password".toUpperCase(),
-                                    textAlign: TextAlign.center,
-                                    style: style.copyWith(
-                                        fontSize: 20.0, letterSpacing: 3)),
-                                const SizedBox(
-                                  height: 15.0,
-                                ),
-                                Text(
-                                    "A password reset code will be sent to your email",
-                                    textAlign: TextAlign.center,
-                                    style: style.copyWith(color: PRIMARY_BLUE)),
-                                const SizedBox(height: 50.0),
-                                emailField,
-                                const SizedBox(
-                                  height: 35.0,
-                                ),
-                                resetButton,
-                              ],
-                            )))))));
+            child: Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: SingleChildScrollView(
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 120,
+                              height: 180,
+                              child: Image.asset('images/ideas.png'),
+                            ),
+                            Text("Reset your password".toUpperCase(),
+                                textAlign: TextAlign.center,
+                                style: style.copyWith(
+                                    fontSize: 20.0, letterSpacing: 3)),
+                            const SizedBox(
+                              height: 15.0,
+                            ),
+                            Text(
+                                "A password reset code will be sent to your email",
+                                textAlign: TextAlign.center,
+                                style: style.copyWith(color: PRIMARY_BLUE)),
+                            const SizedBox(height: 50.0),
+                            emailField,
+                            const SizedBox(
+                              height: 35.0,
+                            ),
+                            resetButton,
+                          ],
+                        ))))));
   }
 }

@@ -7,7 +7,6 @@ import '../../screens/organization_screen/organization_screen.dart';
 import '../../screens/set_screen/set_screen.dart';
 import '../../utilities/api.dart';
 import '../../utilities/auth.dart';
-import '../../utilities/globals.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -86,7 +85,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                     settings: const RouteSettings(name: "Set"),
                     builder: (context) => SetScreen(id: set!.id)),
               ),
-          child: Container(
+          child: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
@@ -104,7 +103,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width:
                                         MediaQuery.of(context).size.width - 100,
                                     child: Text(
@@ -223,7 +222,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
         ),
         body: SafeArea(
             child: SingleChildScrollView(
-                child: Container(
+                child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: _loading
                         ? SizedBox(
@@ -379,7 +378,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                                                         : PRIMARY_GREY),
                                               ))
                                           : Container(),
-                                      _setCategory != null && _sets!.length > 0
+                                      _setCategory != null && _sets!.isNotEmpty
                                           ? Column(
                                               children: _sets!
                                                   .asMap()

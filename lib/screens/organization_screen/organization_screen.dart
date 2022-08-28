@@ -7,7 +7,7 @@ import '../../utilities/auth.dart';
 import 'package:provider/provider.dart';
 
 class OrganizationScreen extends StatefulWidget {
-  OrganizationScreen({Key? key, required this.id}) : super(key: key);
+  const OrganizationScreen({Key? key, required this.id}) : super(key: key);
   final String id;
   @override
   _OrganizationScreenState createState() => _OrganizationScreenState();
@@ -24,15 +24,12 @@ class _OrganizationScreenState extends State<OrganizationScreen> {
   }
 
   void loadOrganization() async {
-    Response response =
-        await dio().get("/organizations/" + widget.id.toString());
+    Response response = await dio().get("/organizations/${widget.id}");
 
     setState(() {
       _organization = Organization.fromJson(response.data);
       _loading = false;
     });
-
-    print(_organization.services);
   }
 
   @override
@@ -79,7 +76,7 @@ class _OrganizationScreenState extends State<OrganizationScreen> {
         ),
         body: SafeArea(
             child: SingleChildScrollView(
-                child: Container(
+                child: SizedBox(
                     width: size.width,
                     child: _loading
                         ? SizedBox(

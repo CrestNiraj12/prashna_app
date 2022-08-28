@@ -12,7 +12,7 @@ class MatchCard {
   }
 
   void setMatched(bool isMatched) {
-    this.matched = isMatched;
+    matched = isMatched;
   }
 
   void setIncorrect(bool? incorrect) {
