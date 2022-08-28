@@ -50,6 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currTheme = Provider.of<Auth>(context, listen: false);
     TextStyle style = TextStyle(
       fontSize: 12.0,
       color: Provider.of<Auth>(context, listen: false).darkTheme
@@ -195,8 +196,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Sign up", style: appbarStyle.copyWith(fontSize: 16)),
-          backgroundColor: PRIMARY_BLUE,
+          iconTheme: IconThemeData(
+            color: currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
+          ),
+          title: Text("Sign up",
+              style: appbarStyle.copyWith(
+                  fontSize: 16,
+                  color: currTheme.darkTheme ? Colors.white : PRIMARY_DARK)),
+          backgroundColor: Colors.transparent,
           elevation: 0,
         ),
         body: Center(

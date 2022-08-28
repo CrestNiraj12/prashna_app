@@ -113,9 +113,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     Widget _createCard(course, {required double width, double height = 100.0}) {
       return Card(
         elevation: 0,
-        color: Provider.of<Auth>(context, listen: false).darkTheme
-            ? PRIMARY_DARK
-            : PRIMARY_BLUE,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
         child: InkWell(
           splashColor: PRIMARY_BLUE.withAlpha(50),
           onTap: () {
@@ -126,7 +126,19 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                     child: CoursesScreen(id: course.id),
                     type: PageTransitionType.fade));
           },
-          child: SizedBox(
+          child: Container(
+              decoration: BoxDecoration(
+                color: Provider.of<Auth>(context, listen: false).darkTheme
+                    ? PRIMARY_DARK
+                    : PRIMARY_BLUE,
+                borderRadius: BorderRadius.circular(15.0),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                  image: const AssetImage("images/background.jpg"),
+                ),
+              ),
               width: width,
               height: height,
               child: Padding(
@@ -142,10 +154,11 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                             course.title,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 14.0,
+                                letterSpacing: 0.3,
                                 fontFamily: 'Roboto',
                                 color: Colors.white,
-                                fontWeight: FontWeight.w800),
+                                fontWeight: FontWeight.w600),
                           ))
                     ],
                   ))),
@@ -156,9 +169,38 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Prashna (Old is Gold)",
-              style: style.copyWith(fontSize: 16)),
-          backgroundColor: PRIMARY_BLUE,
+          leadingWidth: 75,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Row(
+              children: [
+                SizedBox(
+                  height: 35,
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Switch(
+                        value: currTheme.darkTheme,
+                        activeTrackColor: LIGHT_GREY,
+                        activeColor: PRIMARY_GREY,
+                        onChanged: (bool toggle) {
+                          currTheme.darkTheme = toggle;
+                        }),
+                  ),
+                ),
+                Icon(
+                  currTheme.darkTheme ? Icons.dark_mode : Icons.light_mode,
+                  color: currTheme.darkTheme ? Colors.white : PRIMARY_BLUE,
+                  size: 20,
+                )
+              ],
+            ),
+          ),
+          title: SizedBox(
+            width: 60,
+            height: 46,
+            child: Image.asset('images/ideas.png'),
+          ),
+          backgroundColor: Colors.transparent,
           elevation: 0,
           actions: [
             GestureDetector(
@@ -170,19 +212,21 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                           : const ProfileScreen(),
                       type: PageTransitionType.fade)),
               child: Padding(
-                padding: const EdgeInsets.only(right: 10.0),
+                padding: const EdgeInsets.only(right: 15.0),
                 child: user != null
                     ? Container(
-                        width: 22.0,
-                        height: 22.0,
+                        width: 30.0,
+                        height: 30.0,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(user.avatar))))
-                    : const Icon(
+                    : Icon(
                         Icons.account_circle,
                         size: 22,
+                        color:
+                            currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
                       ),
               ),
             ),

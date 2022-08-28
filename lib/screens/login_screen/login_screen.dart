@@ -30,7 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool absorbing = Provider.of<Auth>(context, listen: true).absorbing;
+    final currTheme = Provider.of<Auth>(context, listen: true);
+    bool absorbing = currTheme.absorbing;
     TextStyle style = TextStyle(
         fontSize: 12.0,
         color: Provider.of<Auth>(context, listen: true).darkTheme
@@ -142,13 +143,20 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text("Login", style: appbarStyle.copyWith(fontSize: 16)),
-              backgroundColor: PRIMARY_BLUE,
+              iconTheme: IconThemeData(
+                color: currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
+              ),
+              title: Text("Login",
+                  style: appbarStyle.copyWith(
+                      fontSize: 16,
+                      color:
+                          currTheme.darkTheme ? Colors.white : PRIMARY_DARK)),
+              backgroundColor: Colors.transparent,
               elevation: 0,
             ),
             body: Center(
                 child: Padding(
-                    padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: SingleChildScrollView(
                         child: AbsorbPointer(
                             absorbing: absorbing,
@@ -229,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                       context,
                                                                       PageTransition(
                                                                           child:
-                                                                              PrivacyPolicyScreen(),
+                                                                              const PrivacyPolicyScreen(),
                                                                           type:
                                                                               PageTransitionType.rightToLeftWithFade));
                                                                 }),
@@ -247,7 +255,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                       context,
                                                                       PageTransition(
                                                                           child:
-                                                                              TermsOfServiceScreen(),
+                                                                              const TermsOfServiceScreen(),
                                                                           type:
                                                                               PageTransitionType.rightToLeftWithFade));
                                                                 }),
