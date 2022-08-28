@@ -270,43 +270,62 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                             color: PRIMARY_BLUE,
                           )),
                         )
-                      : Column(
-                          children: [
-                            ...List<int>.generate((_courses.length / 2).round(),
-                                (int index) => index * 2).map(
-                              (i) => Container(
-                                margin: const EdgeInsets.only(bottom: 5),
-                                child: (i + 2) <= _courses.length
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                            ..._courses.sublist(i, i + 2).map(
-                                                (item) => _createCard(item,
-                                                    width:
-                                                        MediaQuery.of(context)
+                      : _courses.isEmpty
+                          ? SizedBox(
+                              height: MediaQuery.of(context).size.height - 300,
+                              child: Center(
+                                child: Text(
+                                  "No courses found!",
+                                  style: style.copyWith(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 18,
+                                      color: currTheme.darkTheme
+                                          ? Colors.white
+                                          : PRIMARY_DARK),
+                                ),
+                              ))
+                          : Column(
+                              children: [
+                                ...List<int>.generate(
+                                    (_courses.length / 2).round(),
+                                    (int index) => index * 2).map(
+                                  (i) => Container(
+                                    margin: const EdgeInsets.only(bottom: 5),
+                                    child: (i + 2) <= _courses.length
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                                ..._courses
+                                                    .sublist(i, i + 2)
+                                                    .map((item) => _createCard(
+                                                        item,
+                                                        width: MediaQuery.of(
+                                                                        context)
                                                                     .size
                                                                     .width /
                                                                 2 -
                                                             18))
-                                          ])
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                            ..._courses.sublist(i, i + 1).map(
-                                                (item) => _createCard(item,
-                                                    width:
-                                                        MediaQuery.of(context)
+                                              ])
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                                ..._courses
+                                                    .sublist(i, i + 1)
+                                                    .map((item) => _createCard(
+                                                        item,
+                                                        width: MediaQuery.of(
+                                                                        context)
                                                                     .size
                                                                     .width /
                                                                 2 -
                                                             18))
-                                          ]),
-                              ),
+                                              ]),
+                                  ),
+                                )
+                              ],
                             )
-                          ],
-                        )
                 ],
               ),
             ),
