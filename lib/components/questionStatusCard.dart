@@ -93,14 +93,14 @@ class _QuestionStatusCardState extends State<QuestionStatusCard> {
     return GestureDetector(
       onTap: () {
         if (widget.questions.isNotEmpty) {
-          // Navigator.push(
-          //     context,
-          //     PageTransition(
-          //         child: ResultAnswersScreen(
-          //           givenAnswers: widget.questions,
-          //           quizId: widget.quizId,
-          //         ),
-          //         type: PageTransitionType.fade));
+          Navigator.push(
+              context,
+              PageTransition(
+                  child: ResultAnswersScreen(
+                    givenAnswers: widget.questions,
+                    quizId: widget.quizId,
+                  ),
+                  type: PageTransitionType.fade));
         }
       },
       child: Card(

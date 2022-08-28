@@ -78,12 +78,10 @@ class _SetScreenState extends State<SetScreen> {
                           ? OldIsGoldScreen(
                               id: datas[index]['id'],
                             )
-                          : OldIsGoldScreen(id: datas[index]['id'])
-                      // : StartScreen(
-                      //     quizId: datas[index]['id'],
-                      //     setId: _set.id,
-                      //   )
-                      ,
+                          : StartScreen(
+                              quizId: datas[index]['id'],
+                              setId: _set.id,
+                            ),
                       type: PageTransitionType.rightToLeftWithFade)),
               child: Card(
                 elevation: 5,
@@ -141,35 +139,6 @@ class _SetScreenState extends State<SetScreen> {
                                     ],
                                   )
                                 : Container(),
-                            type == "QUIZ"
-                                ? SizedBox(
-                                    width: 120,
-                                    child: RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          const WidgetSpan(
-                                            child: Icon(
-                                              Icons.numbers,
-                                              size: 14,
-                                              color: PRIMARY_BLUE,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                              text:
-                                                  " ${datas[index]['totalMarks']}",
-                                              style: style.copyWith(
-                                                  color: currTheme.darkTheme
-                                                      ? Colors.white
-                                                      : PRIMARY_DARK,
-                                                  fontSize: 12.0,
-                                                  fontWeight:
-                                                      FontWeight.normal)),
-                                        ],
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  )
-                                : Container()
                           ],
                         ),
                       ),

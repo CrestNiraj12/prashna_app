@@ -298,14 +298,6 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                                               )
                                                             ],
                                                           ),
-                                                    Text(
-                                                      " | Code: ${_course!.code}",
-                                                      style: style.copyWith(
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.white),
-                                                    )
                                                   ],
                                                 ),
                                               )

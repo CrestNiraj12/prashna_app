@@ -345,16 +345,6 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                                                                   )
                                                                 ],
                                                               ),
-                                                        Text(
-                                                          " | Code: ${_setCategory!.code}",
-                                                          style: style.copyWith(
-                                                              fontSize: 10,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color:
-                                                                  Colors.white),
-                                                        )
                                                       ],
                                                     ),
                                                   )
