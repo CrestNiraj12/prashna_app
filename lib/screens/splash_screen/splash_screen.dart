@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:prashna_app/screens/discover_screen/discover_screen.dart';
 import '../../constants.dart';
 import '../../utilities/auth.dart';
@@ -86,12 +85,6 @@ class _SplashScreenState extends State<SplashScreen> {
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w700),
             ),
-            const SizedBox(
-              height: 50,
-            ),
-            const SpinKitFoldingCube(
-              color: PRIMARY_DARK,
-            )
           ]),
     )));
   }
