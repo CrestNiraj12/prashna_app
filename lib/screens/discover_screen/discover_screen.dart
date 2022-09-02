@@ -1,12 +1,18 @@
 import 'package:dio/dio.dart';
 import "package:flutter/material.dart";
 import 'package:prashna_app/models/course.dart';
+import 'package:prashna_app/models/set.dart';
+import 'package:prashna_app/models/setCategory.dart';
 import 'package:prashna_app/screens/courses_screen/courses_screen.dart';
+import 'package:prashna_app/screens/discover_screen/searchTab.dart';
 import 'package:prashna_app/screens/login_screen/login_screen.dart';
 import 'package:prashna_app/screens/profile_screen/profile_screen.dart';
+import 'package:prashna_app/screens/set_screen/set_screen.dart';
+import 'package:prashna_app/screens/subjects_screen/subjects_screen.dart';
 import '../../constants.dart';
 import '../../utilities/api.dart';
 import '../../utilities/auth.dart';
+import 'getCard.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
@@ -16,26 +22,52 @@ class DiscoverScreen extends StatefulWidget {
   _DiscoverScreenState createState() => _DiscoverScreenState();
 }
 
-class _DiscoverScreenState extends State<DiscoverScreen> {
-  late List _courses;
-  bool _loading = true;
+class _DiscoverScreenState extends State<DiscoverScreen>
+    with SingleTickerProviderStateMixin {
   final _searchController = TextEditingController();
-  List<Course> _allCourses = [];
+  late List<Course> _allCourses;
+  late List<SetCategory> _categories;
+  late List<Set> _sets;
+  late List<Course> _filteredCourses;
+  late List<Set> _filteredSets;
+  late List<SetCategory> _filteredCategories;
+  static List<String> tabs = [COURSES, SUBJECTS, SETS];
+  bool _loading = true;
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: tabs.length, vsync: this);
     loadCourses();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _searchController.dispose();
+    super.dispose();
   }
 
   void loadCourses() async {
     Response response = await dio().get("/prashna-courses");
     List<Course> courses =
         response.data.map<Course>((course) => Course.fromJson(course)).toList();
+    response = await dio().get("/prashna-subjects");
+    List<SetCategory> categories = response.data
+        .map<SetCategory>((category) => SetCategory.fromJson(category))
+        .toList();
+    response = await dio().get("/prashna-sets");
+    List<Set> sets =
+        response.data.map<Set>((set) => Set.fromJson(set)).toList();
 
     setState(() {
-      _courses = courses;
+      _filteredCourses = courses;
+      _categories = categories;
+      _sets = sets;
       _allCourses = courses;
+      _filteredCategories = categories;
+      _filteredSets = sets;
       _loading = false;
     });
   }
@@ -70,7 +102,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                   onPressed: () {
                     _searchController.clear();
                     setState(() {
-                      _courses = _allCourses;
+                      _filteredCourses = _allCourses;
+                      _filteredCategories = _categories;
+                      _filteredSets = _sets;
                     });
                   },
                   icon: const Icon(Icons.clear)),
@@ -94,76 +128,102 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
         if (text.isEmpty) {
           setState(() {
-            _courses = _allCourses;
+            _filteredCourses = _allCourses;
+            _filteredCategories = _categories;
+            _filteredSets = _sets;
             _loading = false;
           });
         } else {
-          Response response =
-              await dio().get("/search/courses/q=${text.trim().toLowerCase()}");
+          Response response = await dio()
+              .get("/prashna/search/courses/q=${text.trim().toLowerCase()}");
+          final courses = response.data;
+          response = await dio()
+              .get("/prashna/set/categories/q=${text.trim().toLowerCase()}");
+          final subjects = response.data;
+          response =
+              await dio().get("/prashna/sets/q=${text.trim().toLowerCase()}");
+          final sets = response.data;
+
           setState(() {
-            _courses = response.data
-                .map<Course>((data) => Course.fromJson(data))
+            _filteredCourses =
+                courses.map<Course>((data) => Course.fromJson(data)).toList();
+            _filteredCategories = subjects
+                .map<SetCategory>((data) => SetCategory.fromJson(data))
                 .toList();
+            _filteredSets =
+                sets.map<Set>((data) => Set.fromJson(data)).toList();
             _loading = false;
           });
         }
       },
     );
 
-    Widget _createCard(course, {required double width, double height = 100.0}) {
-      return Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: InkWell(
-          splashColor: PRIMARY_BLUE.withAlpha(50),
-          onTap: () {
-            Navigator.push(
-                context,
-                PageTransition(
-                    settings: const RouteSettings(name: "Course"),
-                    child: CoursesScreen(id: course.id),
-                    type: PageTransitionType.fade));
-          },
-          child: Container(
-              decoration: BoxDecoration(
-                color: Provider.of<Auth>(context, listen: false).darkTheme
-                    ? PRIMARY_DARK
-                    : PRIMARY_BLUE,
-                borderRadius: BorderRadius.circular(15.0),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                  image: const AssetImage("images/background.jpg"),
-                ),
-              ),
-              width: width,
-              height: height,
-              child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                          alignment: Alignment.center,
-                          width: width,
-                          child: Text(
-                            course.title,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 14.0,
-                                letterSpacing: 0.3,
-                                fontFamily: 'Roboto',
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600),
-                          ))
-                    ],
-                  ))),
-        ),
-      );
+    Widget getPage(String type) {
+      List dataList = type == COURSES
+          ? _filteredCourses
+          : type == SUBJECTS
+              ? _filteredCategories
+              : type == SETS
+                  ? _filteredSets
+                  : [];
+
+      return dataList.isEmpty
+          ? Container(
+              margin: const EdgeInsets.only(top: 250),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "No ${type.toLowerCase()} found!",
+                      style: style.copyWith(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18,
+                          color: currTheme.darkTheme
+                              ? Colors.white
+                              : PRIMARY_DARK),
+                    ),
+                  ]))
+          : Column(
+              children: [
+                ...List<int>.generate(
+                        (dataList.length / 2).round(), (int index) => index * 2)
+                    .map(
+                  (i) => Container(
+                    margin: const EdgeInsets.only(bottom: 5),
+                    child: (i + 2) <= dataList.length
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                                ...dataList.sublist(i, i + 2).map((item) =>
+                                    createCard(context, type, item,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                    2 -
+                                                18))
+                              ])
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                                ...dataList.sublist(i, i + 1).map((item) =>
+                                    createCard(context, type, item,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                    2 -
+                                                18))
+                              ]),
+                  ),
+                )
+              ],
+            );
+    }
+
+    List<Widget> getDataList() {
+      List<Widget> list = [];
+      for (var tab in tabs) {
+        list.add(getPage(tab));
+      }
+      return list;
     }
 
     return Scaffold(
@@ -233,102 +293,49 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           ],
         ),
         body: SafeArea(
-            child: SingleChildScrollView(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Find courses",
-                              style: searchStyle.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: PRIMARY_BLUE)),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          searchField
-                        ]),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  _loading
-                      ? SizedBox(
-                          height: MediaQuery.of(context).size.height - 300,
-                          child: const Center(
-                              child: CircularProgressIndicator(
-                            color: PRIMARY_BLUE,
-                          )),
-                        )
-                      : _courses.isEmpty
-                          ? SizedBox(
-                              height: MediaQuery.of(context).size.height - 300,
-                              child: Center(
-                                child: Text(
-                                  "No courses found!",
-                                  style: style.copyWith(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 18,
-                                      color: currTheme.darkTheme
-                                          ? Colors.white
-                                          : PRIMARY_DARK),
-                                ),
-                              ))
-                          : Column(
-                              children: [
-                                ...List<int>.generate(
-                                    (_courses.length / 2).round(),
-                                    (int index) => index * 2).map(
-                                  (i) => Container(
-                                    margin: const EdgeInsets.only(bottom: 5),
-                                    child: (i + 2) <= _courses.length
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                                ..._courses
-                                                    .sublist(i, i + 2)
-                                                    .map((item) => _createCard(
-                                                        item,
-                                                        width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                2 -
-                                                            18))
-                                              ])
-                                        : Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                                ..._courses
-                                                    .sublist(i, i + 1)
-                                                    .map((item) => _createCard(
-                                                        item,
-                                                        width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                2 -
-                                                            18))
-                                              ]),
-                                  ),
-                                )
-                              ],
-                            )
-                ],
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Find courses",
+                          style: searchStyle.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: PRIMARY_BLUE)),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      searchField
+                    ]),
               ),
-            ),
+              const SizedBox(
+                height: 10,
+              ),
+              _loading
+                  ? SizedBox(
+                      height: MediaQuery.of(context).size.height - 300,
+                      child: const Center(
+                          child: CircularProgressIndicator(
+                        color: PRIMARY_BLUE,
+                      )),
+                    )
+                  : SizedBox(
+                      height: MediaQuery.of(context).size.height - 300,
+                      child: TabBarComponent(
+                          tabs: tabs,
+                          dataList: getDataList(),
+                          tabController: _tabController),
+                    )
+            ],
           ),
         )));
   }

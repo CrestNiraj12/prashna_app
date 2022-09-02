@@ -7,3 +7,7 @@ const PRIMARY_GREY = Color(0xFF4f4f57);
 const LIGHT_GREY = Color(0xFF9499a5);
 const PRIMARY_LIGHT = Color(0xFFF2F2F2);
 const GREENISH_GREY = Color(0xFF393939);
+
+const COURSES = 'COURSES';
+const SUBJECTS = 'SUBJECTS';
+const SETS = 'SETS';

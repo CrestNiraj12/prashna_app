@@ -16,11 +16,13 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (context) => Auth())],
-    child: App(),
+    child: const App(),
   ));
 }
 
 class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
+
   @override
   _AppState createState() => _AppState();
 }
@@ -46,6 +48,8 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage("images/ideas.png"), context);
+
     ThemeData themeData(isDarkTheme, BuildContext context) {
       return ThemeData(
         primarySwatch: Colors.blue,
@@ -66,7 +70,7 @@ class _AppState extends State<App> {
         themeMode: Provider.of<Auth>(context, listen: true).darkTheme
             ? ThemeMode.dark
             : ThemeMode.light,
-        home: SplashScreen(),
+        home: const SplashScreen(),
         initialRoute: '/',
         onGenerateRoute: (settings) {
           PageTransition getPageTransition(
@@ -83,13 +87,14 @@ class _AppState extends State<App> {
 
           switch (settings.name) {
             case '/login':
-              return getPageTransition(LoginScreen(), PageTransitionType.fade);
+              return getPageTransition(
+                  const LoginScreen(), PageTransitionType.fade);
             case '/register':
               return getPageTransition(
-                  RegisterScreen(), PageTransitionType.fade);
+                  const RegisterScreen(), PageTransitionType.fade);
             case '/reset-password':
               return getPageTransition(
-                  PasswordResetScreen(), PageTransitionType.fade);
+                  const PasswordResetScreen(), PageTransitionType.fade);
             case '/dashboard':
               return getPageTransition(
                   const DiscoverScreen(), PageTransitionType.fade);
