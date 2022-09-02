@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:prashna_app/screens/discover_screen/discover_screen.dart';
+import 'package:prashna_app/screens/discover_screen/main_screen.dart';
 import '../../constants.dart';
 import '../../utilities/auth.dart';
 import 'package:page_transition/page_transition.dart';
@@ -34,25 +34,16 @@ class _SplashScreenState extends State<SplashScreen> {
     if (token != null) {
       try {
         await provider.authWithToken(token);
-        navigator.pushReplacement(PageTransition(
-            child: const DiscoverScreen(),
-            type: PageTransitionType.fade,
-            settings: const RouteSettings(name: "Discover")));
       } catch (e) {
         if (kDebugMode) {
           print(e);
         }
-        navigator.pushReplacement(PageTransition(
-            child: const DiscoverScreen(),
-            type: PageTransitionType.fade,
-            settings: const RouteSettings(name: "Discover")));
       }
-    } else {
-      navigator.pushReplacement(PageTransition(
-          child: const DiscoverScreen(),
-          type: PageTransitionType.fade,
-          settings: const RouteSettings(name: "Discover")));
     }
+    navigator.pushReplacement(PageTransition(
+        child: const MainScreen(),
+        type: PageTransitionType.fade,
+        settings: const RouteSettings(name: "Discover")));
   }
 
   @override

@@ -49,7 +49,6 @@ dependencies:
   firebase_analytics: ^8.3.0
   firebase_auth: ^3.0.2
   page_transition: ^2.0.2
-  animated_bottom_navigation_bar: ^0.3.2
   auto_size_text: ^3.0.0-nullsafety.0
   like_button: ^2.0.3
   flip_card: ^0.6.0
@@ -94,6 +93,7 @@ flutter:
   assets:
     - images/ideas.png
     - images/background.jpg
+    - images/locked.jpg
     - favicon.ico
 
   # An image asset can refer to one or more resolution-specific "variants", see

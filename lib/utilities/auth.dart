@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart' as Dio;
 import 'package:prashna_app/models/set.dart';
-import 'package:prashna_app/screens/discover_screen/discover_screen.dart';
+import 'package:prashna_app/screens/discover_screen/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:prashna_app/models/user.dart';
 import 'package:prashna_app/screens/login_screen/login_screen.dart';
@@ -221,7 +221,7 @@ class Auth extends ChangeNotifier {
           context,
           MaterialPageRoute(
               settings: const RouteSettings(name: "Home"),
-              builder: (context) => const DiscoverScreen()));
+              builder: (context) => const MainScreen()));
     } else if (!_isLoggedIn) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(_error!),

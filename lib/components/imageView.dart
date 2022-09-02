@@ -38,9 +38,9 @@ class _ImageViewComponentState extends State<ImageViewComponent> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: widget.height != null ? widget.height : 200,
+          height: widget.height ?? 200,
           child: GestureDetector(
             onDoubleTapDown: _handleDoubleTapDown,
             onDoubleTap: _handleDoubleTap,

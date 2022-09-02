@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'package:device_info/device_info.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:prashna_app/utilities/api.dart';
+import 'package:prashna_app/utilities/auth.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import '../constants.dart';
+import 'package:prashna_app/constants.dart';
 
 String ordinalNum(int n) {
   if (n == 11 || n == 12 || n == 13) {
@@ -70,4 +74,96 @@ class LocalStorage {
     final SharedPreferences localStorage = await _localStorage;
     return localStorage.getBool(THEME_STATUS) ?? false;
   }
+}
+
+Future<bool> onFollowCourse(
+    BuildContext context, bool isLiked, int courseID) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final currTheme = Provider.of<Auth>(context, listen: false);
+  messenger.removeCurrentSnackBar();
+  final SharedPreferences storage = await SharedPreferences.getInstance();
+  final String? token = storage.getString('token');
+  if (!isLiked) {
+    Response response = await dio().post("/user/courses",
+        data: {"course_id": courseID},
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    messenger.showSnackBar(SnackBar(
+        content:
+            Text(response.data, style: const TextStyle(color: Colors.white)),
+        backgroundColor: Colors.green[400],
+        duration: const Duration(seconds: 1)));
+  } else {
+    Response response = await dio().delete("/user/courses/$courseID",
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    messenger.showSnackBar(SnackBar(
+        content: Text(
+          response.data,
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red[400],
+        duration: const Duration(seconds: 1)));
+  }
+  currTheme.refreshUser();
+  return !isLiked;
+}
+
+Future<bool> onFollow(
+    BuildContext context, bool isLiked, int categoryID) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final currTheme = Provider.of<Auth>(context, listen: false);
+  messenger.removeCurrentSnackBar();
+  final SharedPreferences storage = await SharedPreferences.getInstance();
+  final String? token = storage.getString('token');
+  if (!isLiked) {
+    Response response = await dio().post("/user/categories",
+        data: {"category_id": categoryID},
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    messenger.showSnackBar(SnackBar(
+        content:
+            Text(response.data, style: const TextStyle(color: Colors.white)),
+        backgroundColor: Colors.green[400],
+        duration: const Duration(seconds: 1)));
+  } else {
+    Response response = await dio().delete("/user/categories/$categoryID",
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    messenger.showSnackBar(SnackBar(
+        content: Text(
+          response.data,
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red[400],
+        duration: const Duration(seconds: 1)));
+  }
+  currTheme.refreshUser();
+  return !isLiked;
+}
+
+Future<bool> onFollowSet(BuildContext context, bool isLiked, int setID) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final currTheme = Provider.of<Auth>(context, listen: false);
+  messenger.removeCurrentSnackBar();
+  final SharedPreferences storage = await SharedPreferences.getInstance();
+  final String? token = storage.getString('token');
+  if (!isLiked) {
+    Response response = await dio().post("/user/followedSets",
+        data: {"set_id": setID},
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    messenger.showSnackBar(SnackBar(
+        content:
+            Text(response.data, style: const TextStyle(color: Colors.white)),
+        backgroundColor: Colors.green[400],
+        duration: const Duration(seconds: 1)));
+  } else {
+    Response response = await dio().delete("/user/followedSets/$setID",
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    messenger.showSnackBar(SnackBar(
+        content: Text(
+          response.data,
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red[400],
+        duration: const Duration(seconds: 1)));
+  }
+  currTheme.refreshUser();
+  return !isLiked;
 }

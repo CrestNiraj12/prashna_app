@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:prashna_app/screens/login_screen/login_screen.dart';
 import '../../constants.dart';
 import '../../screens/policy_screen/privacy_policy.dart';
 import '../../utilities/api.dart';
@@ -38,6 +39,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void loadToken() async {
     final SharedPreferences storage = await _storage;
     token = storage.getString('token');
+
+    if (token == null) {
+      Navigator.pushReplacement(
+          context,
+          PageTransition(
+              child: const LoginScreen(), type: PageTransitionType.fade));
+    }
   }
 
   // snackBar Widget
@@ -360,7 +368,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         currTheme.refreshUser();
                         textController.clear();
                       }).catchError((error) {
-                        print(error);
+                        if (kDebugMode) {
+                          print(error);
+                        }
                       });
                     } else {
                       showDialog(
@@ -379,7 +389,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ).then((value) {
                         textController.clear();
                       }).catchError((error) {
-                        print(error);
+                        if (kDebugMode) {
+                          print(error);
+                        }
                       });
                     }
                   });
@@ -461,7 +473,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         currTheme.refreshUser();
                         textController.clear();
                       }).catchError((error) {
-                        print(error);
+                        if (kDebugMode) {
+                          print(error);
+                        }
                       });
                     } else {
                       showDialog(
@@ -480,7 +494,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ).then((value) {
                         textController.clear();
                       }).catchError((error) {
-                        print(error);
+                        if (kDebugMode) {
+                          print(error);
+                        }
                       });
                     }
                   });

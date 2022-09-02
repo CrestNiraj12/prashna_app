@@ -4,12 +4,9 @@ import 'package:prashna_app/components/score.dart';
 import 'package:prashna_app/models/course.dart';
 import 'package:prashna_app/models/set.dart';
 import 'package:prashna_app/models/setCategory.dart';
-import 'package:prashna_app/screens/courses_screen/courses_screen.dart';
 import 'package:prashna_app/screens/discover_screen/searchTab.dart';
 import 'package:prashna_app/screens/login_screen/login_screen.dart';
 import 'package:prashna_app/screens/profile_screen/profile_screen.dart';
-import 'package:prashna_app/screens/set_screen/set_screen.dart';
-import 'package:prashna_app/screens/subjects_screen/subjects_screen.dart';
 import '../../constants.dart';
 import '../../utilities/api.dart';
 import '../../utilities/auth.dart';
@@ -227,120 +224,171 @@ class _DiscoverScreenState extends State<DiscoverScreen>
       return list;
     }
 
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          leadingWidth: 75,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Row(
-              children: [
-                SizedBox(
-                  height: 35,
-                  child: FittedBox(
-                    fit: BoxFit.fill,
-                    child: Switch(
-                        value: currTheme.darkTheme,
-                        activeTrackColor: LIGHT_GREY,
-                        activeColor: PRIMARY_GREY,
-                        onChanged: (bool toggle) {
-                          currTheme.darkTheme = toggle;
-                        }),
+    Future<bool> _onWillPop() async {
+      return await showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor:
+                    currTheme.darkTheme ? SECONDARY_DARK : Colors.white,
+                title: Text(
+                  'Are you sure?',
+                  style: style.copyWith(color: Colors.red[800], fontSize: 16),
+                ),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: const <Widget>[
+                      Text('Would you like to exit the app?'),
+                    ],
                   ),
                 ),
-                Icon(
-                  currTheme.darkTheme ? Icons.dark_mode : Icons.light_mode,
-                  color: currTheme.darkTheme ? Colors.white : PRIMARY_BLUE,
-                  size: 20,
-                )
-              ],
-            ),
-          ),
-          title: SizedBox(
-            width: 60,
-            height: 46,
-            child: Image.asset('images/ideas.png'),
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: [
-            GestureDetector(
-              onTap: () => Navigator.push(
-                  context,
-                  PageTransition(
-                      child: user == null
-                          ? const LoginScreen()
-                          : const ProfileScreen(),
-                      type: PageTransitionType.fade)),
-              child: Padding(
-                padding: const EdgeInsets.only(right: 15.0),
-                child: user != null
-                    ? Container(
-                        width: 30.0,
-                        height: 30.0,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(user.avatar))))
-                    : Icon(
-                        Icons.account_circle,
-                        size: 22,
-                        color:
-                            currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
-                      ),
+                actions: <Widget>[
+                  OutlinedButton(
+                    child: Text('No',
+                        style: style.copyWith(
+                            fontSize: 12,
+                            color: currTheme.darkTheme
+                                ? Colors.white
+                                : PRIMARY_DARK)),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.red[800]),
+                    child: Text(
+                      'Yes',
+                      style: style.copyWith(color: Colors.white, fontSize: 12),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                  ),
+                ],
+              );
+            },
+          ) ??
+          false;
+    }
+
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            leadingWidth: 75,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Row(
+                children: [
+                  SizedBox(
+                    height: 35,
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+                      child: Switch(
+                          value: currTheme.darkTheme,
+                          activeTrackColor: LIGHT_GREY,
+                          activeColor: PRIMARY_GREY,
+                          onChanged: (bool toggle) {
+                            currTheme.darkTheme = toggle;
+                          }),
+                    ),
+                  ),
+                  Icon(
+                    currTheme.darkTheme ? Icons.dark_mode : Icons.light_mode,
+                    color: currTheme.darkTheme ? Colors.white : PRIMARY_BLUE,
+                    size: 20,
+                  )
+                ],
               ),
             ),
-          ],
-        ),
-        body: SafeArea(
-            child: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Score(),
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Find courses",
-                            style: searchStyle.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: PRIMARY_BLUE)),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        searchField
-                      ]),
-                ),
-                _loading
-                    ? SizedBox(
-                        height: MediaQuery.of(context).size.height - 300,
-                        child: const Center(
-                            child: CircularProgressIndicator(
-                          color: PRIMARY_BLUE,
-                        )),
-                      )
-                    : SizedBox(
-                        height: MediaQuery.of(context).size.height - 300,
-                        child: TabBarComponent(
-                            tabs: tabs,
-                            dataList: getDataList(),
-                            tabController: _tabController),
-                      )
-              ],
+            title: SizedBox(
+              width: 60,
+              height: 46,
+              child: Image.asset('images/ideas.png'),
             ),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            actions: [
+              GestureDetector(
+                onTap: () => Navigator.push(
+                    context,
+                    PageTransition(
+                        child: user == null
+                            ? const LoginScreen()
+                            : const ProfileScreen(),
+                        type: PageTransitionType.fade)),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: user != null
+                      ? Container(
+                          width: 30.0,
+                          height: 30.0,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(user.avatar))))
+                      : Icon(
+                          Icons.account_circle,
+                          size: 22,
+                          color:
+                              currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
+                        ),
+                ),
+              ),
+            ],
           ),
-        )));
+          body: SafeArea(
+              child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Score(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Find courses",
+                              style: searchStyle.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: PRIMARY_BLUE)),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          searchField
+                        ]),
+                  ),
+                  _loading
+                      ? SizedBox(
+                          height: MediaQuery.of(context).size.height - 300,
+                          child: const Center(
+                              child: CircularProgressIndicator(
+                            color: PRIMARY_BLUE,
+                          )),
+                        )
+                      : SizedBox(
+                          height: MediaQuery.of(context).size.height - 300,
+                          child: TabBarComponent(
+                              tabs: tabs,
+                              dataList: getDataList(),
+                              tabController: _tabController),
+                        )
+                ],
+              ),
+            ),
+          ))),
+    );
   }
 }
