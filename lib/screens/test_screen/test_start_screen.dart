@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:prashna_app/components/loginHint.dart';
 import 'package:prashna_app/constants.dart';
 import 'package:prashna_app/models/quiz.dart';
 import 'package:prashna_app/screens/test_screen/result_screen_with_score.dart';
@@ -346,6 +347,8 @@ class _StartScreenState extends State<StartScreen> {
                                             "4. You can access hints and detailed summary after submitting the test.",
                                             style: smallTextStyle,
                                           ),
+                                          const SizedBox(height: 10),
+                                          LoginHint()
                                         ],
                                       ),
                                     ])),

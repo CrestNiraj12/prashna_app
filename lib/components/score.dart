@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import "package:flutter/material.dart";
 import 'package:intl/intl.dart';
+import 'package:prashna_app/components/loginHint.dart';
 import '../constants.dart';
 import '../utilities/api.dart';
 import '../utilities/auth.dart';
@@ -30,15 +31,17 @@ class _ScoreState extends State<Score> {
   void _getScore() async {
     final SharedPreferences storage = await _storage;
     final String? token = storage.getString('token');
-    Response response = await dio().get("/test/total-score",
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
-    setState(() {
-      _totalScore = response.data["totalScore"];
-      _totalTime = response.data["totalTime"];
-      _dailyScore = response.data["dailyScore"];
-      _dailyTime = response.data["dailyTime"];
-      _loading = false;
-    });
+    if (token != null) {
+      Response response = await dio().get("/test/total-score",
+          options: Options(headers: {'Authorization': 'Bearer $token'}));
+      setState(() {
+        _totalScore = response.data["totalScore"];
+        _totalTime = response.data["totalTime"];
+        _dailyScore = response.data["dailyScore"];
+        _dailyTime = response.data["dailyTime"];
+        _loading = false;
+      });
+    }
   }
 
   @override
@@ -47,7 +50,7 @@ class _ScoreState extends State<Score> {
 
     TextStyle style = TextStyle(
         color: currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
-        fontSize: 15.0,
+        fontSize: 13.0,
         fontWeight: FontWeight.w500,
         fontFamily: 'Montserrat');
 
@@ -59,7 +62,7 @@ class _ScoreState extends State<Score> {
                 child: Icon(
               icon,
               color: PRIMARY_BLUE,
-              size: 20,
+              size: 16,
             )),
             TextSpan(text: "  $text"),
           ],
@@ -105,74 +108,78 @@ class _ScoreState extends State<Score> {
       );
     }
 
-    return Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        elevation: 5.0,
-        color: currTheme.darkTheme ? PRIMARY_DARK : Colors.white,
-        child: Container(
-          height: 130,
-          child: Stack(
-            children: [
-              Positioned(
-                  top: -5,
-                  right: 0,
-                  child: IconButton(
-                      iconSize: 16,
-                      splashRadius: 16,
-                      padding: EdgeInsets.zero,
-                      onPressed: _showHelp,
-                      icon: const Icon(
-                        Icons.help_outline,
-                        color: LIGHT_GREY,
-                      ))),
-              _loading
-                  ? const SizedBox(
-                      height: 130,
-                      child: Center(
-                          child: CircularProgressIndicator(
-                        color: PRIMARY_BLUE,
-                      )),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+    return currTheme.user == null
+        ? LoginHint()
+        : Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            elevation: 0,
+            color: currTheme.darkTheme ? PRIMARY_DARK : Colors.white,
+            child: SizedBox(
+              height: 100,
+              child: Stack(
+                children: [
+                  Positioned(
+                      top: -5,
+                      right: 0,
+                      child: IconButton(
+                          iconSize: 16,
+                          splashRadius: 16,
+                          padding: EdgeInsets.zero,
+                          onPressed: _showHelp,
+                          icon: const Icon(
+                            Icons.help_outline,
+                            color: LIGHT_GREY,
+                          ))),
+                  _loading
+                      ? const SizedBox(
+                          height: 130,
+                          child: Center(
+                              child: CircularProgressIndicator(
+                            color: PRIMARY_BLUE,
+                          )),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              getInfo("$_totalScore learned", Icons.school),
-                              Container(
-                                width: 90,
-                                child:
-                                    getInfo("$_totalTime min", Icons.timelapse),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  getInfo("$_totalScore learned", Icons.school),
+                                  SizedBox(
+                                    width: 90,
+                                    child: getInfo(
+                                        "$_totalTime min", Icons.timelapse),
+                                  ),
+                                ],
                               ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  getInfo("$_dailyScore learned",
+                                      Icons.library_books),
+                                  SizedBox(
+                                      width: 90,
+                                      child: getInfo(
+                                          "$_dailyTime min", Icons.alarm)),
+                                ],
+                              )
                             ],
                           ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              getInfo(
-                                  "$_dailyScore learned", Icons.library_books),
-                              Container(
-                                  width: 90,
-                                  child:
-                                      getInfo("$_dailyTime min", Icons.alarm)),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-            ],
-          ),
-        ));
+                        ),
+                ],
+              ),
+            ));
   }
 }

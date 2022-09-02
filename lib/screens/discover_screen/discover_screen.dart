@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import "package:flutter/material.dart";
+import 'package:prashna_app/components/score.dart';
 import 'package:prashna_app/models/course.dart';
 import 'package:prashna_app/models/set.dart';
 import 'package:prashna_app/models/setCategory.dart';
@@ -296,46 +297,49 @@ class _DiscoverScreenState extends State<DiscoverScreen>
             child: Container(
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Find courses",
-                          style: searchStyle.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: PRIMARY_BLUE)),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      searchField
-                    ]),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              _loading
-                  ? SizedBox(
-                      height: MediaQuery.of(context).size.height - 300,
-                      child: const Center(
-                          child: CircularProgressIndicator(
-                        color: PRIMARY_BLUE,
-                      )),
-                    )
-                  : SizedBox(
-                      height: MediaQuery.of(context).size.height - 300,
-                      child: TabBarComponent(
-                          tabs: tabs,
-                          dataList: getDataList(),
-                          tabController: _tabController),
-                    )
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Score(),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Find courses",
+                            style: searchStyle.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: PRIMARY_BLUE)),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        searchField
+                      ]),
+                ),
+                _loading
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height - 300,
+                        child: const Center(
+                            child: CircularProgressIndicator(
+                          color: PRIMARY_BLUE,
+                        )),
+                      )
+                    : SizedBox(
+                        height: MediaQuery.of(context).size.height - 300,
+                        child: TabBarComponent(
+                            tabs: tabs,
+                            dataList: getDataList(),
+                            tabController: _tabController),
+                      )
+              ],
+            ),
           ),
         )));
   }

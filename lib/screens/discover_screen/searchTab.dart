@@ -45,6 +45,7 @@ class _TabBarComponentState extends State<TabBarComponent> {
           margin: const EdgeInsets.only(top: 20, bottom: 20),
           child: TabBar(
             isScrollable: true,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             labelPadding: const EdgeInsets.symmetric(horizontal: 10),
             indicator: BoxDecoration(
                 border: Border.all(
