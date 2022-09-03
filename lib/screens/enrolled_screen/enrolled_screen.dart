@@ -26,12 +26,6 @@ class _EnrolledScreenState extends State<EnrolledScreen> {
     List<Set?> sets = user != null ? user.followedSets : [];
     List<Course?> courses = user != null ? user.followedCourses : [];
 
-    TextStyle style = const TextStyle(
-        fontSize: 26,
-        color: Colors.white,
-        fontWeight: FontWeight.w800,
-        fontFamily: 'Montserrat');
-
     TextStyle textStyle = TextStyle(
         fontSize: 13,
         color: currTheme.darkTheme ? Colors.white : PRIMARY_DARK,

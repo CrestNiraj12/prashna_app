@@ -166,7 +166,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           title: Text(
                             "Successfully updated your profile!",
                             style: style.copyWith(
-                                color: Colors.white, fontSize: 16),
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Roboto'),
                           ),
                           backgroundColor: Colors.green,
                         );
@@ -359,7 +361,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             title: Text(
                               "Successfully enrolled the subject!",
                               style: style.copyWith(
-                                  color: Colors.white, fontSize: 16),
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Roboto'),
                             ),
                             backgroundColor: Colors.green,
                           );
@@ -464,7 +468,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             title: Text(
                               "Successfully enrolled the course!",
                               style: style.copyWith(
-                                  color: Colors.white, fontSize: 16),
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Roboto'),
                             ),
                             backgroundColor: Colors.green,
                           );

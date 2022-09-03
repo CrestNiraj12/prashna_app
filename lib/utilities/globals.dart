@@ -85,7 +85,7 @@ Future<bool> onFollowCourse(
   final String? token = storage.getString('token');
   if (!isLiked) {
     Response response = await dio().post("/user/courses",
-        data: {"course_id": courseID},
+        data: {"course_id": courseID, "prashna": true},
         options: Options(headers: {'Authorization': 'Bearer $token'}));
     messenger.showSnackBar(SnackBar(
         content:
@@ -116,7 +116,7 @@ Future<bool> onFollow(
   final String? token = storage.getString('token');
   if (!isLiked) {
     Response response = await dio().post("/user/categories",
-        data: {"category_id": categoryID},
+        data: {"category_id": categoryID, "prashna": true},
         options: Options(headers: {'Authorization': 'Bearer $token'}));
     messenger.showSnackBar(SnackBar(
         content:
