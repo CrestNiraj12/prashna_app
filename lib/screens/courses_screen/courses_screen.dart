@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import "package:flutter/material.dart";
+import 'package:prashna_app/components/loginHintTitle.dart';
+import 'package:prashna_app/utilities/globals.dart';
 import '../../constants.dart';
 import '../../models/course.dart';
 import '../../models/setCategory.dart';
@@ -65,6 +67,12 @@ class _CoursesScreenState extends State<CoursesScreen> {
   Widget build(BuildContext context) {
     final currTheme = Provider.of<Auth>(context, listen: true);
     final bool darkTheme = currTheme.darkTheme;
+    final List<Course?> followedCourses =
+        currTheme.user != null ? currTheme.user!.followedCourses : [];
+
+    bool isEnrolled() => _loading == false && followedCourses.isNotEmpty
+        ? followedCourses.map((c) => c!.id).contains(widget.id)
+        : false;
 
     TextStyle style = const TextStyle(
         fontSize: 16.0,
@@ -105,6 +113,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                       "${index + 1}. ${subject!.title}",
                                       style: style.copyWith(
                                           fontWeight: FontWeight.bold,
+                                          fontFamily: "Roboto",
                                           color: darkTheme
                                               ? Colors.white
                                               : PRIMARY_DARK),
@@ -237,6 +246,68 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                                   ),
                                                 ),
                                               ),
+                                        currTheme.user == null
+                                            ? LoginHintTitle()
+                                            : Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    3,
+                                                constraints:
+                                                    const BoxConstraints(
+                                                        maxHeight: 40),
+                                                child: ElevatedButton(
+                                                    onPressed: () {
+                                                      onFollowCourse(
+                                                          context,
+                                                          isEnrolled(),
+                                                          widget.id);
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: isEnrolled()
+                                                          ? PRIMARY_BLUE
+                                                              .withRed(150)
+                                                          : PRIMARY_BLUE
+                                                              .withGreen(150),
+                                                      elevation: 5,
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              0),
+                                                      fixedSize:
+                                                          const Size.fromRadius(
+                                                              20),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                          isEnrolled()
+                                                              ? Icons.check
+                                                              : Icons.add,
+                                                          size: 16,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 5),
+                                                        Text(
+                                                          isEnrolled()
+                                                              ? "Enrolled"
+                                                              : "Enroll",
+                                                          style: const TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  "Montserrat",
+                                                              fontSize: 16),
+                                                        ),
+                                                      ],
+                                                    )),
+                                              ),
                                         _course != null
                                             ? Padding(
                                                 padding: const EdgeInsets.only(
@@ -297,6 +368,14 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                                               )
                                                             ],
                                                           ),
+                                                    Text(
+                                                      " | Code: ${_course!.code}",
+                                                      style: style.copyWith(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white),
+                                                    )
                                                   ],
                                                 ),
                                               )

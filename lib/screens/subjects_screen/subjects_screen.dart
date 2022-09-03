@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import "package:flutter/material.dart";
+import 'package:prashna_app/components/loginHintTitle.dart';
+import 'package:prashna_app/utilities/globals.dart';
 import '../../constants.dart';
 import '../../models/set.dart';
 import '../../models/setCategory.dart';
@@ -70,6 +72,12 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
   Widget build(BuildContext context) {
     final currTheme = Provider.of<Auth>(context, listen: true);
     final bool darkTheme = currTheme.darkTheme;
+    final List<SetCategory?> followedSetCategories =
+        currTheme.user != null ? currTheme.user!.followedSetCategories : [];
+
+    bool isEnrolled() => _loading == false && followedSetCategories.isNotEmpty
+        ? followedSetCategories.map((s) => s!.id).contains(widget.id)
+        : false;
 
     TextStyle style = const TextStyle(
         fontSize: 16.0,
@@ -110,6 +118,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                                       "${index + 1}. ${set!.title}",
                                       style: style.copyWith(
                                           fontWeight: FontWeight.bold,
+                                          fontFamily: "Roboto",
                                           color: darkTheme
                                               ? Colors.white
                                               : PRIMARY_DARK),
@@ -289,6 +298,71 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                                                   ),
                                                 ),
                                               ),
+                                        currTheme.user == null
+                                            ? LoginHintTitle()
+                                            : widget.isFollowedSets
+                                                ? Container()
+                                                : Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            3,
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                            maxHeight: 40),
+                                                    child: ElevatedButton(
+                                                        onPressed: () {
+                                                          onFollow(
+                                                              context,
+                                                              isEnrolled(),
+                                                              widget.id);
+                                                        },
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          primary: isEnrolled()
+                                                              ? PRIMARY_BLUE
+                                                                  .withRed(150)
+                                                              : PRIMARY_BLUE
+                                                                  .withGreen(
+                                                                      150),
+                                                          elevation: 5,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(0),
+                                                          fixedSize: const Size
+                                                              .fromRadius(20),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Icon(
+                                                              isEnrolled()
+                                                                  ? Icons.check
+                                                                  : Icons.add,
+                                                              size: 16,
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 5),
+                                                            Text(
+                                                              isEnrolled()
+                                                                  ? "Enrolled"
+                                                                  : "Enroll",
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontFamily:
+                                                                      "Montserrat",
+                                                                  fontSize: 16),
+                                                            ),
+                                                          ],
+                                                        )),
+                                                  ),
                                         widget.isFollowedSets
                                             ? Container()
                                             : _setCategory != null
@@ -344,6 +418,16 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                                                                   )
                                                                 ],
                                                               ),
+                                                        Text(
+                                                          " | Code: ${_setCategory!.code}",
+                                                          style: style.copyWith(
+                                                              fontSize: 10,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white),
+                                                        )
                                                       ],
                                                     ),
                                                   )

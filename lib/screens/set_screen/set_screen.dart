@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import "package:flutter/material.dart";
+import 'package:prashna_app/components/loginHintTitle.dart';
+import 'package:prashna_app/utilities/globals.dart';
 import '../../constants.dart';
 import '../../models/set.dart';
 import '../../screens/subjects_screen/subjects_screen.dart';
@@ -54,6 +56,12 @@ class _SetScreenState extends State<SetScreen> {
   @override
   Widget build(BuildContext context) {
     final currTheme = Provider.of<Auth>(context, listen: true);
+    final List<Set?> followedSets =
+        currTheme.user != null ? currTheme.user!.followedSets : [];
+
+    bool isEnrolled() => _loading == false && followedSets.isNotEmpty
+        ? followedSets.map((s) => s!.id).contains(widget.id)
+        : false;
 
     TextStyle style = const TextStyle(
         fontSize: 24.0,
@@ -268,9 +276,134 @@ class _SetScreenState extends State<SetScreen> {
                                                             ),
                                                           )),
                                                     )
-                                                  : Container()
+                                                  : Container(),
                                             ],
                                           ),
+                                          currTheme.user == null
+                                              ? Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 25),
+                                                  child: LoginHintTitle())
+                                              : Container(
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  margin: const EdgeInsets.only(
+                                                      top: 25),
+                                                  constraints:
+                                                      const BoxConstraints(
+                                                          maxHeight: 40),
+                                                  child: Row(
+                                                    children: [
+                                                      ElevatedButton(
+                                                          onPressed: () {
+                                                            onFollowSet(
+                                                                context,
+                                                                isEnrolled(),
+                                                                widget.id);
+                                                          },
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            primary: isEnrolled()
+                                                                ? PRIMARY_BLUE
+                                                                    .withRed(
+                                                                        150)
+                                                                : PRIMARY_BLUE
+                                                                    .withGreen(
+                                                                        150),
+                                                            elevation: 5,
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(0),
+                                                            fixedSize: const Size
+                                                                .fromRadius(70),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Icon(
+                                                                isEnrolled()
+                                                                    ? Icons
+                                                                        .check
+                                                                    : Icons.add,
+                                                                size: 16,
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 5),
+                                                              Text(
+                                                                isEnrolled()
+                                                                    ? "Enrolled"
+                                                                    : "Enroll",
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontFamily:
+                                                                        "Montserrat",
+                                                                    fontSize:
+                                                                        16),
+                                                              ),
+                                                            ],
+                                                          )),
+                                                      const SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      _set.category != null
+                                                          ? ElevatedButton(
+                                                              onPressed: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    PageTransition(
+                                                                        child: SubjectsScreen(
+                                                                            id: _set
+                                                                                .category!.id),
+                                                                        type: PageTransitionType
+                                                                            .fade));
+                                                              },
+                                                              style:
+                                                                  OutlinedButton
+                                                                      .styleFrom(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(0),
+                                                                fixedSize:
+                                                                    const Size
+                                                                        .fromRadius(80),
+                                                              ),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: const [
+                                                                  Icon(
+                                                                    Icons.link,
+                                                                    size: 16,
+                                                                  ),
+                                                                  SizedBox(
+                                                                      width: 5),
+                                                                  Text(
+                                                                    "Go to Subject",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontFamily:
+                                                                            "Montserrat",
+                                                                        fontSize:
+                                                                            14),
+                                                                  ),
+                                                                ],
+                                                              ))
+                                                          : Container(),
+                                                    ],
+                                                  ),
+                                                ),
                                         ],
                                       ),
                                       _set.category != null

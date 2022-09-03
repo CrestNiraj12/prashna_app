@@ -49,6 +49,9 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     precacheImage(const AssetImage("images/ideas.png"), context);
+    precacheImage(const AssetImage("images/background.jpg"), context);
+    precacheImage(const AssetImage("images/locked.jpg"), context);
+    precacheImage(const AssetImage("images/empty.jpg"), context);
 
     ThemeData themeData(isDarkTheme, BuildContext context) {
       return ThemeData(

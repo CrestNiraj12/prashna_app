@@ -123,8 +123,7 @@ class _StartScreenState extends State<StartScreen> {
                     IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: () {
-                          Navigator.popUntil(
-                              context, ModalRoute.withName("Set"));
+                          Navigator.pop(context);
                         }),
                     Center(
                         heightFactor: 2,

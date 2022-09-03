@@ -29,12 +29,15 @@ class _SplashScreenState extends State<SplashScreen> {
     final provider = Provider.of<Auth>(context, listen: false);
     final navigator = Navigator.of(context);
     final SharedPreferences storage = await _storage;
+
     String? token = storage.getString('token');
 
     if (token != null) {
       try {
         await provider.authWithToken(token);
       } catch (e) {
+        storage.setBool("authenticated", false);
+        storage.remove('token');
         if (kDebugMode) {
           print(e);
         }

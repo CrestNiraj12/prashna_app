@@ -149,75 +149,71 @@ class _EnrolledScreenState extends State<EnrolledScreen> {
                   ),
                 ),
               )
-            : SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: SingleChildScrollView(
-                    child: Column(children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                        color: PRIMARY_BLUE,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(40),
-                          bottomRight: Radius.circular(40),
-                        )),
-                    height: 350,
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.fromLTRB(20, 80, 20, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Hello,",
-                          style: style,
-                        ),
-                        const SizedBox(height: 10.0),
-                        Text(
-                          "${user.name} 👋",
-                          style: style,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                      padding: const EdgeInsets.only(
-                          top: 10, right: 20.0, left: 20.0, bottom: 20.0),
+            : setCategories.isEmpty && sets.isEmpty && courses.isEmpty
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            courses.isNotEmpty
-                                ? Container(
-                                    margin: const EdgeInsets.only(top: 10),
-                                    child: Carousel(
-                                      title: "Enrolled Courses",
-                                      courses: courses,
-                                      isCourse: true,
-                                    ),
-                                  )
-                                : Container(),
-                            sets.isNotEmpty
-                                ? Carousel(
-                                    title: "Followed Sets",
-                                    sets: sets,
-                                    isSet: true,
-                                  )
-                                : Container(),
-                            setCategories.isNotEmpty
-                                ? Column(
-                                    children: setCategories
-                                        .asMap()
-                                        .entries
-                                        .map((cat) => Carousel(
-                                            title: cat.value!.title,
-                                            categoryId: cat.value!.id,
-                                            sets: cat.value!.sets!))
-                                        .toList())
-                                : Container(),
-                          ])),
-                ]))));
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 250,
+                            child: Image.asset("images/empty.jpg"),
+                          ),
+                          const SizedBox(
+                            height: 80,
+                          ),
+                          Text(
+                            "Your enrolled courses, subjects and sets will appear here!",
+                            textAlign: TextAlign.center,
+                            style: textStyle.copyWith(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: SingleChildScrollView(
+                        child: Column(children: [
+                      Container(
+                          padding: const EdgeInsets.only(
+                              top: 10, right: 20.0, left: 20.0, bottom: 20.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                courses.isNotEmpty
+                                    ? Container(
+                                        margin: const EdgeInsets.only(top: 10),
+                                        child: Carousel(
+                                          title: "Enrolled Courses",
+                                          courses: courses,
+                                          isCourse: true,
+                                        ),
+                                      )
+                                    : Container(),
+                                sets.isNotEmpty
+                                    ? Carousel(
+                                        title: "Followed Sets",
+                                        sets: sets,
+                                        isSet: true,
+                                      )
+                                    : Container(),
+                                setCategories.isNotEmpty
+                                    ? Column(
+                                        children: setCategories
+                                            .asMap()
+                                            .entries
+                                            .map((cat) => Carousel(
+                                                title: cat.value!.title,
+                                                categoryId: cat.value!.id,
+                                                sets: cat.value!.sets!))
+                                            .toList())
+                                    : Container(),
+                              ])),
+                    ]))));
   }
 }

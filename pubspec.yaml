@@ -66,6 +66,7 @@ dependencies:
   share_plus: ^4.0.10
   url_launcher: ^6.1.5
   cached_network_image: ^3.2.1
+  dio_http_cache: ^0.3.0
 
 dev_dependencies:
   flutter_test:
@@ -94,6 +95,7 @@ flutter:
     - images/ideas.png
     - images/background.jpg
     - images/locked.jpg
+    - images/empty.jpg
     - favicon.ico
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import "package:flutter/material.dart";
 import 'package:prashna_app/components/score.dart';
 import 'package:prashna_app/models/course.dart';
@@ -30,8 +31,9 @@ class _DiscoverScreenState extends State<DiscoverScreen>
   late List<Set> _filteredSets;
   late List<SetCategory> _filteredCategories;
   static List<String> tabs = [COURSES, SUBJECTS, SETS];
-  bool _loading = true;
+  bool _loading = false;
   late TabController _tabController;
+  bool _refresh = false;
 
   @override
   void initState() {
@@ -48,14 +50,23 @@ class _DiscoverScreenState extends State<DiscoverScreen>
   }
 
   void loadCourses() async {
-    Response response = await dio().get("/prashna-courses");
+    setState(() {
+      _loading = true;
+    });
+    Response response = await dio().get("/prashna-courses",
+        options: buildCacheOptions(const Duration(days: 1),
+            forceRefresh: _refresh, maxStale: const Duration(days: 2)));
     List<Course> courses =
         response.data.map<Course>((course) => Course.fromJson(course)).toList();
-    response = await dio().get("/prashna-subjects");
+    response = await dio().get("/prashna-subjects",
+        options: buildCacheOptions(const Duration(days: 1),
+            forceRefresh: _refresh, maxStale: const Duration(days: 2)));
     List<SetCategory> categories = response.data
         .map<SetCategory>((category) => SetCategory.fromJson(category))
         .toList();
-    response = await dio().get("/prashna-sets");
+    response = await dio().get("/prashna-sets",
+        options: buildCacheOptions(const Duration(days: 1),
+            forceRefresh: _refresh, maxStale: const Duration(days: 2)));
     List<Set> sets =
         response.data.map<Set>((set) => Set.fromJson(set)).toList();
 
@@ -67,6 +78,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
       _filteredCategories = categories;
       _filteredSets = sets;
       _loading = false;
+      _refresh = false;
     });
   }
 
@@ -74,6 +86,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
   Widget build(BuildContext context) {
     final currTheme = Provider.of<Auth>(context, listen: true);
     final user = currTheme.user;
+
     TextStyle searchStyle = const TextStyle(
         fontSize: 16, color: PRIMARY_DARK, fontFamily: 'Montserrat');
 
@@ -182,37 +195,40 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                               : PRIMARY_DARK),
                     ),
                   ]))
-          : Column(
-              children: [
-                ...List<int>.generate(
-                        (dataList.length / 2).round(), (int index) => index * 2)
-                    .map(
-                  (i) => Container(
-                    margin: const EdgeInsets.only(bottom: 5),
-                    child: (i + 2) <= dataList.length
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                                ...dataList.sublist(i, i + 2).map((item) =>
-                                    createCard(context, type, item,
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                    2 -
-                                                18))
-                              ])
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                                ...dataList.sublist(i, i + 1).map((item) =>
-                                    createCard(context, type, item,
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                    2 -
-                                                18))
-                              ]),
-                  ),
-                )
-              ],
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  ...List<int>.generate((dataList.length / 2).round(),
+                      (int index) => index * 2).map(
+                    (i) => Container(
+                      margin: const EdgeInsets.only(bottom: 5),
+                      child: (i + 2) <= dataList.length
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                  ...dataList.sublist(i, i + 2).map((item) =>
+                                      createCard(context, type, item,
+                                          width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2 -
+                                              18))
+                                ])
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                  ...dataList.sublist(i, i + 1).map((item) =>
+                                      createCard(context, type, item,
+                                          width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2 -
+                                              18))
+                                ]),
+                    ),
+                  )
+                ],
+              ),
             );
     }
 
@@ -234,7 +250,8 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                     currTheme.darkTheme ? SECONDARY_DARK : Colors.white,
                 title: Text(
                   'Are you sure?',
-                  style: style.copyWith(color: Colors.red[800], fontSize: 16),
+                  style: style.copyWith(
+                      color: PRIMARY_BLUE, fontSize: 16, fontFamily: 'Roboto'),
                 ),
                 content: SingleChildScrollView(
                   child: ListBody(
@@ -256,7 +273,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                     },
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.red[800]),
+                    style: ElevatedButton.styleFrom(primary: Colors.red[400]),
                     child: Text(
                       'Yes',
                       style: style.copyWith(color: Colors.white, fontSize: 12),
@@ -340,55 +357,60 @@ class _DiscoverScreenState extends State<DiscoverScreen>
               ),
             ],
           ),
-          body: SafeArea(
-              child: Container(
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Score(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Find courses",
-                              style: searchStyle.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: PRIMARY_BLUE)),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          searchField
-                        ]),
-                  ),
-                  _loading
-                      ? SizedBox(
-                          height: MediaQuery.of(context).size.height - 300,
-                          child: const Center(
-                              child: CircularProgressIndicator(
-                            color: PRIMARY_BLUE,
-                          )),
-                        )
-                      : SizedBox(
-                          height: MediaQuery.of(context).size.height - 300,
-                          child: TabBarComponent(
-                              tabs: tabs,
-                              dataList: getDataList(),
-                              tabController: _tabController),
-                        )
-                ],
-              ),
-            ),
-          ))),
+          body: RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  _refresh = true;
+                });
+                loadCourses();
+              },
+              child: SafeArea(
+                  child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Score(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Find courses",
+                                style: searchStyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    color: PRIMARY_BLUE)),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            searchField
+                          ]),
+                    ),
+                    _loading
+                        ? SizedBox(
+                            height: MediaQuery.of(context).size.height - 400,
+                            child: const Center(
+                                child: CircularProgressIndicator(
+                              color: PRIMARY_BLUE,
+                            )),
+                          )
+                        : Expanded(
+                            child: TabBarComponent(
+                                tabs: tabs,
+                                dataList: getDataList(),
+                                tabController: _tabController),
+                          )
+                  ],
+                ),
+              )))),
     );
   }
 }
