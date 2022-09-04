@@ -74,6 +74,7 @@ class _ResultScreenState extends State<ResultScreen> {
   }
 
   void setScore() async {
+    final curr = Provider.of<Auth>(context, listen: false);
     final SharedPreferences storage = await _storage;
     final String? token = storage.getString('token');
     List questions = [];
@@ -120,8 +121,9 @@ class _ResultScreenState extends State<ResultScreen> {
 
     Response response = await dio().get("/quiz/rank/${widget.quiz.id}");
     final distinctIds = response.data['scores'].toSet().toList();
-    final rank = distinctIds.indexWhere((id) =>
-        id.toString() == Provider.of<Auth>(context, listen: false).user!.id);
+    final user = curr.user;
+    final rank = distinctIds
+        .indexWhere((id) => id.toString() == (user != null ? user.id : -1));
 
     setState(() {
       _totalUsers = response.data['totalUsers'] + 1;
