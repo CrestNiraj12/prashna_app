@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prashna_app/constants.dart';
 import 'package:prashna_app/models/quiz.dart';
-import 'package:prashna_app/models/quizQuestion.dart';
+import 'package:prashna_app/models/quiz_question.dart';
 import 'package:prashna_app/screens/learn_screen/quiz_body.dart';
 import 'package:prashna_app/screens/test_screen/bottom_sheet.dart';
 import 'package:prashna_app/screens/test_screen/result_screen.dart';
@@ -27,7 +27,7 @@ class TestScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _TestScreenState createState() => _TestScreenState();
+  State<TestScreen> createState() => _TestScreenState();
 }
 
 class _TestScreenState extends State<TestScreen> {

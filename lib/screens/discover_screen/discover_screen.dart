@@ -4,21 +4,21 @@ import "package:flutter/material.dart";
 import 'package:prashna_app/components/score.dart';
 import 'package:prashna_app/models/course.dart';
 import 'package:prashna_app/models/set.dart';
-import 'package:prashna_app/models/setCategory.dart';
-import 'package:prashna_app/screens/discover_screen/searchTab.dart';
+import 'package:prashna_app/models/set_category.dart';
+import 'package:prashna_app/screens/discover_screen/search_tab.dart';
 import 'package:prashna_app/screens/login_screen/login_screen.dart';
 import 'package:prashna_app/screens/profile_screen/profile_screen.dart';
 import '../../constants.dart';
 import '../../utilities/api.dart';
 import '../../utilities/auth.dart';
-import 'getCard.dart';
+import 'get_card.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({Key? key}) : super(key: key);
   @override
-  _DiscoverScreenState createState() => _DiscoverScreenState();
+  State<DiscoverScreen> createState() => _DiscoverScreenState();
 }
 
 class _DiscoverScreenState extends State<DiscoverScreen>

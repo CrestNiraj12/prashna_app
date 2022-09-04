@@ -1,4 +1,4 @@
-import 'oldIsGoldQuestion.dart';
+import 'old_is_gold_question.dart';
 
 class OldIsGoldCategory {
   final int id;

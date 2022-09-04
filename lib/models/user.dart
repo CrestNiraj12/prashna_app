@@ -1,6 +1,6 @@
 import 'course.dart';
 import 'set.dart';
-import 'setCategory.dart';
+import 'set_category.dart';
 
 class User {
   String id;

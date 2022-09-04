@@ -43,7 +43,7 @@ class QuizBody extends StatefulWidget {
       : super(key: key);
 
   @override
-  _QuizBodyState createState() => _QuizBodyState();
+  State<QuizBody> createState() => _QuizBodyState();
 }
 
 class _QuizBodyState extends State<QuizBody> {

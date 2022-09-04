@@ -6,6 +6,8 @@ import 'package:prashna_app/utilities/auth.dart';
 import 'package:provider/provider.dart';
 
 class LoginHintTitle extends StatelessWidget {
+  const LoginHintTitle({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final currTheme = Provider.of<Auth>(context, listen: true);

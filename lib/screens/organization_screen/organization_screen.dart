@@ -10,7 +10,7 @@ class OrganizationScreen extends StatefulWidget {
   const OrganizationScreen({Key? key, required this.id}) : super(key: key);
   final String id;
   @override
-  _OrganizationScreenState createState() => _OrganizationScreenState();
+  State<OrganizationScreen> createState() => _OrganizationScreenState();
 }
 
 class _OrganizationScreenState extends State<OrganizationScreen> {

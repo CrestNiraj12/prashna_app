@@ -22,7 +22,7 @@ class StartScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _StartScreenState createState() => _StartScreenState();
+  State<StartScreen> createState() => _StartScreenState();
 }
 
 class _StartScreenState extends State<StartScreen> {
@@ -343,7 +343,7 @@ class _StartScreenState extends State<StartScreen> {
                                           ),
                                           const SizedBox(height: 10),
                                           currTheme.user == null
-                                              ? LoginHint()
+                                              ? const LoginHint()
                                               : Container()
                                         ],
                                       ),

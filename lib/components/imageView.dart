@@ -13,7 +13,7 @@ class ImageViewComponent extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ImageViewComponentState createState() => _ImageViewComponentState();
+  State<ImageViewComponent> createState() => _ImageViewComponentState();
 }
 
 class _ImageViewComponentState extends State<ImageViewComponent> {

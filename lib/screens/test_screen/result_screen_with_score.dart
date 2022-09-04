@@ -7,7 +7,7 @@ import 'package:prashna_app/screens/test_screen/result_answers_screen.dart';
 import 'package:prashna_app/screens/test_screen/test_screen.dart';
 import 'package:prashna_app/utilities/api.dart';
 import 'package:prashna_app/utilities/auth.dart';
-import 'package:prashna_app/utilities/findIcon.dart';
+import 'package:prashna_app/utilities/find_icon.dart';
 import 'package:prashna_app/utilities/globals.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +29,7 @@ class ResultWithScoreScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ResultWithScoreScreenState createState() => _ResultWithScoreScreenState();
+  State<ResultWithScoreScreen> createState() => _ResultWithScoreScreenState();
 }
 
 class _ResultWithScoreScreenState extends State<ResultWithScoreScreen> {

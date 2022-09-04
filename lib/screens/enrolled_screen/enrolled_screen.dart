@@ -4,7 +4,7 @@ import 'package:prashna_app/components/carousel.dart';
 import 'package:prashna_app/constants.dart';
 import 'package:prashna_app/models/course.dart';
 import 'package:prashna_app/models/set.dart';
-import 'package:prashna_app/models/setCategory.dart';
+import 'package:prashna_app/models/set_category.dart';
 import 'package:prashna_app/screens/login_screen/login_screen.dart';
 import 'package:prashna_app/screens/profile_screen/profile_screen.dart';
 import 'package:prashna_app/utilities/auth.dart';
@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class EnrolledScreen extends StatefulWidget {
   const EnrolledScreen({Key? key}) : super(key: key);
   @override
-  _EnrolledScreenState createState() => _EnrolledScreenState();
+  State<EnrolledScreen> createState() => _EnrolledScreenState();
 }
 
 class _EnrolledScreenState extends State<EnrolledScreen> {

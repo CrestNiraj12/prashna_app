@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -37,14 +37,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void loadToken() async {
+    final nav = Navigator.of(context);
     final SharedPreferences storage = await _storage;
     token = storage.getString('token');
 
     if (token == null) {
-      Navigator.pushReplacement(
-          context,
-          PageTransition(
-              child: const LoginScreen(), type: PageTransitionType.fade));
+      nav.pushReplacement(PageTransition(
+          child: const LoginScreen(), type: PageTransitionType.fade));
     }
   }
 

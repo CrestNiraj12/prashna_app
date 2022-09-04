@@ -2,20 +2,8 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
-class TermsOfServiceScreen extends StatefulWidget {
-  const TermsOfServiceScreen({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  _TermsOfServiceScreenState createState() => _TermsOfServiceScreenState();
-}
-
-class _TermsOfServiceScreenState extends State<TermsOfServiceScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
+class TermsOfServiceScreen extends StatelessWidget {
+  const TermsOfServiceScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

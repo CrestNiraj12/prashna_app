@@ -31,7 +31,7 @@ class ResultAnswersBody extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ResultAnswersBodyState createState() => _ResultAnswersBodyState();
+  State<ResultAnswersBody> createState() => _ResultAnswersBodyState();
 }
 
 class _ResultAnswersBodyState extends State<ResultAnswersBody> {
@@ -133,7 +133,7 @@ class _ResultAnswersBodyState extends State<ResultAnswersBody> {
                                         border: 1px solid black;
                                         border-collapse: collapse;
                                         margin-top:10px;
-                                      }</style>""" + "<div style='display: flex'>" + alphas[option.key] + ". <span style='margin-left: 2px'>" + option.value}</span></div>',
+                                      }</style><div style='display: flex'>${alphas[option.key]}. <span style='margin-left: 2px'>${option.value}"""}</span></div>',
                                     style: TeXViewStyle(
                                         margin: const TeXViewMargin.only(
                                             bottom: 10),
@@ -160,17 +160,13 @@ class _ResultAnswersBodyState extends State<ResultAnswersBody> {
                                       fontSize: 12),
                                   contentColor: Colors.red[600]),
                             )
-                          : TeXViewDocument(
-                              """<style>table, th, td {
+                          : TeXViewDocument("""<style>table, th, td {
                                         border: 1px solid black;
                                         border-collapse: collapse;
                                         margin-top:10px;
                                         padding: 5px;
-                                      }</style>""" +
-                                  "<div style='display: flex'>Given Answer: " +
-                                  "<span style='margin-left: 2px'>" +
-                                  widget.givenAnswer! +
-                                  '</span></div>',
+                                      }</style><div style='display: flex'>
+                                      Given Answer: <span style='margin-left: 2px'>${widget.givenAnswer!}</span></div>""",
                               style: TeXViewStyle(
                                   margin: const TeXViewMargin.only(top: 20),
                                   contentColor: widget.status == 1

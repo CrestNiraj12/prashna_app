@@ -1,4 +1,4 @@
-import 'summaryQuestion.dart';
+import 'summary_question.dart';
 
 class Summary {
   final int id;

@@ -4,7 +4,7 @@ import 'package:like_button/like_button.dart';
 import 'package:prashna_app/constants.dart';
 import 'package:prashna_app/models/course.dart';
 import 'package:prashna_app/models/set.dart';
-import 'package:prashna_app/models/setCategory.dart';
+import 'package:prashna_app/models/set_category.dart';
 import 'package:prashna_app/screens/courses_screen/courses_screen.dart';
 import 'package:prashna_app/screens/subjects_screen/subjects_screen.dart';
 import 'package:prashna_app/screens/set_screen/set_screen.dart';
@@ -36,7 +36,7 @@ class Carousel extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CarouselState createState() => _CarouselState();
+  State<Carousel> createState() => _CarouselState();
 }
 
 class _CarouselState extends State<Carousel> {

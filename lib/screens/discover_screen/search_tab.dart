@@ -16,7 +16,7 @@ class TabBarComponent extends StatefulWidget {
       : super(key: key);
 
   @override
-  _TabBarComponentState createState() => _TabBarComponentState();
+  State<TabBarComponent> createState() => _TabBarComponentState();
 }
 
 class _TabBarComponentState extends State<TabBarComponent> {

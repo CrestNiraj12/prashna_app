@@ -3,8 +3,8 @@ import "package:flutter/material.dart";
 import 'package:flutter_tex/flutter_tex.dart';
 import '../../components/customIcons.dart';
 import '../../constants.dart';
-import '../../models/oldIsGold.dart';
-import '../../models/oldIsGoldQuestion.dart';
+import '../../models/old_is_gold.dart';
+import '../../models/old_is_gold_question.dart';
 import '../../utilities/api.dart';
 import '../../utilities/auth.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +15,7 @@ class OldIsGoldScreen extends StatefulWidget {
   const OldIsGoldScreen({Key? key, required this.id}) : super(key: key);
   final int id;
   @override
-  _OldIsGoldScreenState createState() => _OldIsGoldScreenState();
+  State<OldIsGoldScreen> createState() => _OldIsGoldScreenState();
 }
 
 class _OldIsGoldScreenState extends State<OldIsGoldScreen>

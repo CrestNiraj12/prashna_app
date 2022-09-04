@@ -17,7 +17,7 @@ class CodeVerificationScreen extends StatefulWidget {
   final String email;
 
   @override
-  _CodeVerificationScreenState createState() => _CodeVerificationScreenState();
+  State<CodeVerificationScreen> createState() => _CodeVerificationScreenState();
 }
 
 class _CodeVerificationScreenState extends State<CodeVerificationScreen> {

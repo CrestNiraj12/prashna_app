@@ -4,7 +4,7 @@ import 'package:prashna_app/components/loginHintTitle.dart';
 import 'package:prashna_app/utilities/globals.dart';
 import '../../constants.dart';
 import '../../models/set.dart';
-import '../../models/setCategory.dart';
+import '../../models/set_category.dart';
 import '../../screens/organization_screen/organization_screen.dart';
 import '../../screens/set_screen/set_screen.dart';
 import '../../utilities/api.dart';
@@ -25,7 +25,7 @@ class SubjectsScreen extends StatefulWidget {
   final String title;
   final bool isFollowedSets;
   @override
-  _SubjectsScreenState createState() => _SubjectsScreenState();
+  State<SubjectsScreen> createState() => _SubjectsScreenState();
 }
 
 class _SubjectsScreenState extends State<SubjectsScreen> {
@@ -299,7 +299,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
                                                 ),
                                               ),
                                         currTheme.user == null
-                                            ? LoginHintTitle()
+                                            ? const LoginHintTitle()
                                             : widget.isFollowedSets
                                                 ? Container()
                                                 : Container(

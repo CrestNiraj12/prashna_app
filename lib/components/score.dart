@@ -12,7 +12,7 @@ class Score extends StatefulWidget {
   const Score({Key? key}) : super(key: key);
 
   @override
-  _ScoreState createState() => _ScoreState();
+  State<Score> createState() => _ScoreState();
 }
 
 class _ScoreState extends State<Score> {
@@ -109,7 +109,7 @@ class _ScoreState extends State<Score> {
     }
 
     return currTheme.user == null
-        ? LoginHint()
+        ? const LoginHint()
         : Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),

@@ -1,4 +1,4 @@
-import 'setCategory.dart';
+import 'set_category.dart';
 import 'user.dart';
 
 class Course {

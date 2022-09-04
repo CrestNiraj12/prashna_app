@@ -63,16 +63,16 @@ class LocalStorage {
   static final Future<SharedPreferences> _localStorage =
       SharedPreferences.getInstance();
 
-  static const THEME_STATUS = "THEMESTATUS";
+  static const themeStatus = "THEMESTATUS";
 
   setDarkTheme(bool value) async {
     final SharedPreferences localStorage = await _localStorage;
-    localStorage.setBool(THEME_STATUS, value);
+    localStorage.setBool(themeStatus, value);
   }
 
   Future<bool> getTheme() async {
     final SharedPreferences localStorage = await _localStorage;
-    return localStorage.getBool(THEME_STATUS) ?? false;
+    return localStorage.getBool(themeStatus) ?? false;
   }
 }
 

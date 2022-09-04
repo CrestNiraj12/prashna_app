@@ -4,7 +4,7 @@ import 'package:prashna_app/components/loginHintTitle.dart';
 import 'package:prashna_app/utilities/globals.dart';
 import '../../constants.dart';
 import '../../models/course.dart';
-import '../../models/setCategory.dart';
+import '../../models/set_category.dart';
 import '../../screens/organization_screen/organization_screen.dart';
 import '../../screens/subjects_screen/subjects_screen.dart';
 import '../../utilities/api.dart';
@@ -13,14 +13,14 @@ import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class CoursesScreen extends StatefulWidget {
-  CoursesScreen(
+  const CoursesScreen(
       {Key? key, required this.id, this.subjects = const [], this.title = ""})
       : super(key: key);
   final int id;
   final List<SetCategory?> subjects;
   final String title;
   @override
-  _CoursesScreenState createState() => _CoursesScreenState();
+  State<CoursesScreen> createState() => _CoursesScreenState();
 }
 
 class _CoursesScreenState extends State<CoursesScreen> {
@@ -247,7 +247,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                                 ),
                                               ),
                                         currTheme.user == null
-                                            ? LoginHintTitle()
+                                            ? const LoginHintTitle()
                                             : Container(
                                                 width: MediaQuery.of(context)
                                                         .size

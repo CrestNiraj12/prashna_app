@@ -18,7 +18,7 @@ class SetScreen extends StatefulWidget {
   const SetScreen({Key? key, required this.id}) : super(key: key);
   final int id;
   @override
-  _SetScreenState createState() => _SetScreenState();
+  State<SetScreen> createState() => _SetScreenState();
 }
 
 class _SetScreenState extends State<SetScreen> {
@@ -283,7 +283,7 @@ class _SetScreenState extends State<SetScreen> {
                                               ? Container(
                                                   margin: const EdgeInsets.only(
                                                       top: 25),
-                                                  child: LoginHintTitle())
+                                                  child: const LoginHintTitle())
                                               : Container(
                                                   width: MediaQuery.of(context)
                                                       .size

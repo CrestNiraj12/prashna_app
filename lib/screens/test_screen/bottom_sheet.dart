@@ -18,7 +18,7 @@ class TestBottomSheet extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _TestBottomSheetState createState() => _TestBottomSheetState();
+  State<TestBottomSheet> createState() => _TestBottomSheetState();
 }
 
 class _TestBottomSheetState extends State<TestBottomSheet> {

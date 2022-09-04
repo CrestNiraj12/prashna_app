@@ -2,20 +2,8 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
-class PrivacyPolicyScreen extends StatefulWidget {
-  const PrivacyPolicyScreen({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  _PrivacyPolicyScreenState createState() => _PrivacyPolicyScreenState();
-}
-
-class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
+class PrivacyPolicyScreen extends StatelessWidget {
+  const PrivacyPolicyScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

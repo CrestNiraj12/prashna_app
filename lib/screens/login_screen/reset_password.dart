@@ -14,7 +14,7 @@ class ResetPasswordFormScreen extends StatefulWidget {
       : super(key: key);
   final String email, token;
   @override
-  _ResetPasswordFormScreenState createState() =>
+  State<ResetPasswordFormScreen> createState() =>
       _ResetPasswordFormScreenState();
 }
 

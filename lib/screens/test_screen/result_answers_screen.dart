@@ -18,7 +18,7 @@ class ResultAnswersScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ResultAnswersScreenState createState() => _ResultAnswersScreenState();
+  State<ResultAnswersScreen> createState() => _ResultAnswersScreenState();
 }
 
 class _ResultAnswersScreenState extends State<ResultAnswersScreen> {
