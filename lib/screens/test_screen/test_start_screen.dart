@@ -280,72 +280,77 @@ class _StartScreenState extends State<StartScreen> {
                                           ],
                                         ),
                                       ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Center(
-                                            child: Text(
-                                              "How to use Prashna (Old is Gold)",
-                                              style: style.copyWith(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold),
+                                      currTheme.user == null
+                                          ? const LoginHint()
+                                          : Container(),
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Center(
+                                              child: Text(
+                                                "How to use Prashna (Old is Gold)",
+                                                style: style.copyWith(
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 20),
-                                          Text(
-                                            "1. Choose an answer to check if you're correct.",
-                                            style: smallTextStyle,
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            "2. Use navigation bar to view number of questions",
-                                            style: smallTextStyle,
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            "3. The color palette represents followings.",
-                                            style: smallTextStyle,
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      getIndex(
-                                                          Colors.yellow[800]!,
-                                                          "Answered"),
-                                                      getIndex(Colors.red[400]!,
-                                                          "Left"),
-                                                    ]),
-                                                const SizedBox(height: 5),
-                                                Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      getIndex(PRIMARY_BLUE,
-                                                          "Current"),
-                                                    ])
-                                              ]),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            "4. You can access hints and correct answer after choosing an incorrect answer.",
-                                            style: smallTextStyle,
-                                          ),
-                                          const SizedBox(height: 10),
-                                          currTheme.user == null
-                                              ? const LoginHint()
-                                              : Container()
-                                        ],
+                                            const SizedBox(height: 20),
+                                            Text(
+                                              "1. Choose an answer to check if you're correct.",
+                                              style: smallTextStyle,
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              "2. Use navigation bar to view number of questions",
+                                              style: smallTextStyle,
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              "3. The color palette represents followings.",
+                                              style: smallTextStyle,
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        getIndex(
+                                                            Colors.yellow[800]!,
+                                                            "Answered"),
+                                                        getIndex(
+                                                            Colors.red[400]!,
+                                                            "Left"),
+                                                      ]),
+                                                  const SizedBox(height: 5),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        getIndex(PRIMARY_BLUE,
+                                                            "Current"),
+                                                      ])
+                                                ]),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              "4. You can access hints and correct answer after choosing an incorrect answer.",
+                                              style: smallTextStyle,
+                                            ),
+                                            const SizedBox(height: 10),
+                                          ],
+                                        ),
                                       ),
                                     ])),
                           ]),
