@@ -37,9 +37,9 @@ class _DiscoverScreenState extends State<DiscoverScreen>
 
   @override
   void initState() {
-    super.initState();
     _tabController = TabController(length: tabs.length, vsync: this);
     loadCourses();
+    super.initState();
   }
 
   @override
@@ -180,7 +180,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
 
       return dataList.isEmpty
           ? Container(
-              margin: const EdgeInsets.only(top: 250),
+              margin: const EdgeInsets.only(top: 150),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -357,15 +357,18 @@ class _DiscoverScreenState extends State<DiscoverScreen>
               ),
             ],
           ),
-          body: RefreshIndicator(
-              onRefresh: () async {
-                setState(() {
-                  _refresh = true;
-                });
-                loadCourses();
-              },
-              child: SafeArea(
-                  child: Container(
+          body: SafeArea(
+              child: RefreshIndicator(
+            onRefresh: () async {
+              setState(() {
+                _refresh = true;
+              });
+              loadCourses();
+            },
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Container(
+                height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -395,12 +398,14 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                           ]),
                     ),
                     _loading
-                        ? SizedBox(
-                            height: MediaQuery.of(context).size.height - 400,
-                            child: const Center(
-                                child: CircularProgressIndicator(
-                              color: PRIMARY_BLUE,
-                            )),
+                        ? Expanded(
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height - 400,
+                              child: const Center(
+                                  child: CircularProgressIndicator(
+                                color: PRIMARY_BLUE,
+                              )),
+                            ),
                           )
                         : Expanded(
                             child: TabBarComponent(
@@ -410,7 +415,9 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                           )
                   ],
                 ),
-              )))),
+              ),
+            ),
+          ))),
     );
   }
 }

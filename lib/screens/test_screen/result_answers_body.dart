@@ -250,6 +250,8 @@ class _ResultAnswersBodyState extends State<ResultAnswersBody> {
                         height: 20,
                       ),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: widget.options.asMap().entries.map((option) {
                           return Container(
                             margin: const EdgeInsets.only(bottom: 10),

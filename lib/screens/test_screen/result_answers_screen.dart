@@ -142,7 +142,8 @@ class _ResultAnswersScreenState extends State<ResultAnswersScreen> {
                                       hintImage: _givenAnswers[position]
                                           .value["hintImage"],
                                       richText: _givenAnswers[position]
-                                          .value['richText'],
+                                              .value['richText'] ==
+                                          1,
                                       status: _givenAnswers[position]
                                           .value["status"])),
                         )

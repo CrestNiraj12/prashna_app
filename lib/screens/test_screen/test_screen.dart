@@ -37,7 +37,6 @@ class _TestScreenState extends State<TestScreen> {
   List _questions = [];
   List<Map<String, dynamic>> _selectedByPage = [];
   bool _loading = true;
-  bool _absorbing = true;
 
   List getList(List source, String filter) => source
       .map((option) =>
@@ -47,7 +46,6 @@ class _TestScreenState extends State<TestScreen> {
   @override
   void initState() {
     super.initState();
-    _absorbing = !widget.retake;
     loadSet();
   }
 
@@ -126,7 +124,7 @@ class _TestScreenState extends State<TestScreen> {
           builder: (_) => TestBottomSheet(
                 currentPage: _pageNumber,
                 selectedByPage: _selectedByPage,
-                goToPage: goToPage,
+                // goToPage: goToPage,
                 questionCount: widget.questionCount,
               ));
     }
@@ -275,121 +273,82 @@ class _TestScreenState extends State<TestScreen> {
                 )
               : Stack(
                   children: [
-                    AbsorbPointer(
-                      absorbing: _absorbing,
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            width: MediaQuery.of(context).size.width,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                OutlinedButton(
-                                    onPressed: _showCancelDialog,
-                                    style: OutlinedButton.styleFrom(
-                                      side: BorderSide(
-                                          width: 1.0, color: Colors.red[800]!),
-                                    ),
-                                    child: Text("Cancel",
-                                        style: style.copyWith(
-                                            fontSize: 12,
-                                            color: Colors.red[800]))),
-                                ElevatedButton(
-                                    onPressed: _showSubmitDialog,
-                                    style: ElevatedButton.styleFrom(
-                                        elevation: 0, primary: PRIMARY_BLUE),
-                                    child: Text("Submit",
-                                        style: style.copyWith(
-                                            fontSize: 12, color: Colors.white)))
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: PreloadPageView.builder(
-                                physics: const ScrollPhysics(
-                                    parent: ClampingScrollPhysics()),
-                                controller: pageController,
-                                preloadPagesCount: _questions.length,
-                                itemCount: _questions.length,
-                                onPageChanged: (page) {
-                                  setState(() {
-                                    _pageNumber = page;
-                                    _selectedByPage[page]['seen'] = true;
-                                  });
-                                },
-                                itemBuilder: (BuildContext context,
-                                        int position) =>
-                                    QuizBody(
-                                      questionId: _questions[position]["id"],
-                                      index: _pageNumber,
-                                      question: _questions[position]
-                                          ["question"],
-                                      options: _questions[position]["options"],
-                                      image: _questions[position]
-                                          ["questionImage"],
-                                      goToNextPage: goToNextPage,
-                                      increaseCorrectAnswers:
-                                          increaseCorrectAnswers,
-                                      isTest: true,
-                                      selected: _selectedByPage[_pageNumber]
-                                          ['option'],
-                                      setSelected: setSelected,
-                                      richText: _questions[position]
-                                          ["richText"],
-                                    )),
-                          ),
-                          Container(
-                            height: 80,
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-                            width: MediaQuery.of(context).size.width,
-                            child: ElevatedButton(
-                                onPressed: _showBottomSheet,
-                                style: ElevatedButton.styleFrom(
-                                    primary: PRIMARY_BLUE),
-                                child: Text(
-                                  "Question Navigation",
-                                  style: style.copyWith(
-                                      fontSize: 13, color: Colors.white),
-                                )),
-                          )
-                        ],
-                      ),
-                    ),
-                    Visibility(
-                      visible: _absorbing,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _absorbing = false;
-                          });
-                        },
-                        onHorizontalDragStart: (dragStartDetails) {
-                          setState(() {
-                            _absorbing = false;
-                          });
-                        },
-                        child: Container(
-                          color: currTheme.darkTheme
-                              ? PRIMARY_DARK.withOpacity(0.8)
-                              : LIGHT_GREY.withOpacity(0.6),
-                          height: MediaQuery.of(context).size.height,
+                    Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           width: MediaQuery.of(context).size.width,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Swipe left/right to navigate",
-                                  style: style.copyWith(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center),
-                              const Icon(Icons.switch_right_sharp,
-                                  size: 80, color: PRIMARY_BLUE)
+                              OutlinedButton(
+                                  onPressed: _showCancelDialog,
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(
+                                        width: 1.0, color: Colors.red[800]!),
+                                  ),
+                                  child: Text("Cancel",
+                                      style: style.copyWith(
+                                          fontSize: 12,
+                                          color: Colors.red[800]))),
+                              ElevatedButton(
+                                  onPressed: _showSubmitDialog,
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0, primary: PRIMARY_BLUE),
+                                  child: Text("Submit",
+                                      style: style.copyWith(
+                                          fontSize: 12, color: Colors.white)))
                             ],
                           ),
                         ),
-                      ),
+                        Expanded(
+                          child: PreloadPageView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              controller: pageController,
+                              preloadPagesCount: _questions.length,
+                              itemCount: _questions.length,
+                              onPageChanged: (page) {
+                                setState(() {
+                                  _pageNumber = page;
+                                  _selectedByPage[page]['seen'] = true;
+                                });
+                              },
+                              itemBuilder: (BuildContext context,
+                                      int position) =>
+                                  QuizBody(
+                                    questionId: _questions[position]["id"],
+                                    index: _pageNumber,
+                                    question: _questions[position]["question"],
+                                    options: _questions[position]["options"],
+                                    image: _questions[position]
+                                        ["questionImage"],
+                                    goToNextPage: goToNextPage,
+                                    increaseCorrectAnswers:
+                                        increaseCorrectAnswers,
+                                    selected: _selectedByPage[_pageNumber]
+                                        ['option'],
+                                    setSelected: setSelected,
+                                    richText: _questions[position]["richText"],
+                                    hint: _questions[position]['hint'],
+                                    hintImage: _questions[position]
+                                        ['hintImage'],
+                                  )),
+                        ),
+                        Container(
+                          height: 80,
+                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                          width: MediaQuery.of(context).size.width,
+                          child: ElevatedButton(
+                              onPressed: _showBottomSheet,
+                              style: ElevatedButton.styleFrom(
+                                  primary: PRIMARY_BLUE),
+                              child: Text(
+                                "Question Navigation",
+                                style: style.copyWith(
+                                    fontSize: 13, color: Colors.white),
+                              )),
+                        )
+                      ],
                     ),
                   ],
                 ),

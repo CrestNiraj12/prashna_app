@@ -5,14 +5,14 @@ import 'package:provider/provider.dart';
 
 class TestBottomSheet extends StatefulWidget {
   final int questionCount;
-  final Function goToPage;
+  // final Function goToPage;
   final List selectedByPage;
   final int currentPage;
 
   const TestBottomSheet({
     Key? key,
     required this.questionCount,
-    required this.goToPage,
+    // required this.goToPage,
     required this.selectedByPage,
     required this.currentPage,
   }) : super(key: key);
@@ -52,10 +52,10 @@ class _TestBottomSheetState extends State<TestBottomSheet> {
           children: List<int>.generate(widget.questionCount, (i) => i + 1)
               .map((i) => GestureDetector(
                     onTap: () {
-                      setState(() {
-                        widget.goToPage(i);
-                        _currentPage = i - 1;
-                      });
+                      // setState(() {
+                      //   widget.goToPage(i);
+                      //   _currentPage = i - 1;
+                      // });
                     },
                     child: Container(
                       decoration: BoxDecoration(

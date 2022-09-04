@@ -20,11 +20,12 @@ class QuizBody extends StatefulWidget {
   final Function? setSelected;
   final bool isTest;
   final String? selected;
-  final Function? onIncorrect;
   final int index;
   final bool richText;
+  final String? hint;
+  final String? hintImage;
 
-  QuizBody(
+  const QuizBody(
       {Key? key,
       this.questionId = -1,
       required this.index,
@@ -34,9 +35,10 @@ class QuizBody extends StatefulWidget {
       required this.goToNextPage,
       required this.increaseCorrectAnswers,
       required this.richText,
+      this.hint,
+      this.hintImage,
       this.setSelected,
       this.selected,
-      this.onIncorrect,
       this.isTest = false})
       : super(key: key);
 
@@ -171,116 +173,6 @@ class _QuizBodyState extends State<QuizBody> {
       );
     }
 
-    void onSelect(
-        int index, String question, Map selected, String correctAnswer) {
-      if (!widget.isTest) {
-        setState(() {
-          _absorbing = true;
-        });
-      } else {
-        setState(() {
-          widget.setSelected!(selected['option']);
-        });
-      }
-      if (selected['isCorrect']) {
-        widget.increaseCorrectAnswers();
-        if (!widget.isTest) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              Future.delayed(const Duration(seconds: 1), () {
-                try {
-                  Navigator.of(context).pop(true);
-                } catch (e) {
-                  return;
-                }
-              });
-              return AlertDialog(
-                titlePadding: const EdgeInsets.all(10),
-                title: Text(
-                  '😄 Nicely Done',
-                  style: style.copyWith(color: Colors.white, fontSize: 16),
-                ),
-                backgroundColor: Colors.green,
-              );
-            },
-          ).then((value) => widget.goToNextPage());
-        }
-      } else {
-        if (!widget.isTest) {
-          widget.onIncorrect!({
-            "question": question,
-            "image": widget.image,
-            "answer": correctAnswer,
-            "options": widget.options
-          });
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                titlePadding: EdgeInsets.zero,
-                title: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    color: Colors.red,
-                    child: Text(
-                      '😕 Incorrect',
-                      style: style.copyWith(color: Colors.white, fontSize: 18),
-                    )),
-                contentPadding: EdgeInsets.zero,
-                content: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("${widget.index + 1}. $question",
-                              style: style.copyWith(fontSize: 16)),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "Correct Answer:".toUpperCase(),
-                            style: style.copyWith(
-                                letterSpacing: 1,
-                                fontSize: 10,
-                                color: Colors.green),
-                          ),
-                          Text(correctAnswer,
-                              style: style.copyWith(fontSize: 14)),
-                          const Divider(),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            "You Answered:".toUpperCase(),
-                            style: style.copyWith(
-                                letterSpacing: 1,
-                                fontSize: 10,
-                                color: Colors.red),
-                          ),
-                          Text(selected['option'],
-                              style: style.copyWith(fontSize: 14)),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Center(
-                              child: OutlinedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(true);
-                                    widget.goToNextPage();
-                                  },
-                                  child: const Text("Continue")))
-                        ])),
-              );
-            },
-          ).then((value) => widget.goToNextPage());
-        }
-      }
-    }
-
     TeXViewWidget _teXViewWidget(String body) {
       return TeXViewColumn(children: [
         TeXViewDocument(body,
@@ -290,6 +182,229 @@ class _QuizBodyState extends State<QuizBody> {
                         ? Colors.white
                         : PRIMARY_DARK))
       ]);
+    }
+
+    void onSelect(
+        int index, String question, Map selected, String correctAnswer,
+        {bool richText = false, String? hint, String? hintImage}) {
+      setState(() {
+        _absorbing = true;
+        widget.setSelected!(selected['option']);
+      });
+      if (selected['isCorrect']) {
+        widget.increaseCorrectAnswers();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            Future.delayed(const Duration(seconds: 1), () {
+              try {
+                Navigator.of(context).pop(true);
+              } catch (e) {
+                return;
+              }
+            });
+            return AlertDialog(
+              titlePadding: const EdgeInsets.all(12),
+              title: Text(
+                '😄 Nicely Done',
+                style: style.copyWith(color: Colors.white, fontSize: 14),
+              ),
+              backgroundColor: Colors.green,
+            );
+          },
+        ).then((value) => widget.goToNextPage());
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              titlePadding: EdgeInsets.zero,
+              title: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  color: Colors.red,
+                  child: Text(
+                    '😕 Incorrect',
+                    style: style.copyWith(color: Colors.white, fontSize: 18),
+                  )),
+              contentPadding: EdgeInsets.zero,
+              content: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // richTe6xt
+                        // ? TeXView(
+                        //     renderingEngine:
+                        //         const TeXViewRenderingEngine.mathjax(),
+                        //     child: TeXViewColumn(children: [
+                        //       TeXViewDocument("""<style>table, th, td {
+                        //             border: 1px solid black;
+                        //             border-collapse: collapse;
+                        //             margin-top:10px;
+                        //              padding: 5px;
+                        //           }</style>
+                        //           <div style='display: flex'>${(widget.index + 1).toString()}. <span style='margin-left: 2px'>${widget.question}</span></div>""",
+                        //           style: TeXViewStyle(
+                        //               padding: const TeXViewPadding.only(
+                        //                   bottom: 20),
+                        //               contentColor: Provider.of<Auth>(
+                        //                           context,
+                        //                           listen: false)
+                        //                       .darkTheme
+                        //                   ? Colors.white
+                        //                   : PRIMARY_DARK,
+                        //               fontStyle:
+                        //                   TeXViewFontStyle(fontSize: 16))),
+                        //       TeXViewDocument("CORRECT ANSWER: ",
+                        //           style: TeXViewStyle(
+                        //               contentColor: Colors.green,
+                        //               fontStyle:
+                        //                   TeXViewFontStyle(fontSize: 10))),
+                        //       TeXViewDocument(
+                        //           '${"""<style>table, th, td {
+                        //               border: 1px solid black;
+                        //               border-collapse: collapse;
+                        //               margin-top:10px;
+                        //                padding: 5px;
+                        //             }</style>$correctAnswer"""}</span></div>',
+                        //           style: TeXViewStyle(
+                        //               contentColor: Provider.of<Auth>(
+                        //                           context,
+                        //                           listen: false)
+                        //                       .darkTheme
+                        //                   ? Colors.white
+                        //                   : PRIMARY_DARK,
+                        //               fontStyle:
+                        //                   TeXViewFontStyle(fontSize: 14))),
+                        //       TeXViewDocument("YOU ANSWERED: ",
+                        //           style: TeXViewStyle(
+                        //               contentColor: Colors.red,
+                        //               fontStyle:
+                        //                   TeXViewFontStyle(fontSize: 10))),
+                        //       TeXViewDocument(
+                        //           '${"""<style>table, th, td {
+                        //               border: 1px solid black;
+                        //               border-collapse: collapse;
+                        //               margin-top:10px;
+                        //                padding: 5px;
+                        //             }</style>${selected['option']}"""}</span></div>',
+                        //           style: TeXViewStyle(
+                        //               contentColor: Provider.of<Auth>(
+                        //                           context,
+                        //                           listen: false)
+                        //                       .darkTheme
+                        //                   ? Colors.white
+                        //                   : PRIMARY_DARK,
+                        //               fontStyle:
+                        //                   TeXViewFontStyle(fontSize: 14))),
+                        //     ])):
+                        Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("${widget.index + 1}. $question",
+                                  style: style.copyWith(fontSize: 16)),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Correct Answer:".toUpperCase(),
+                                style: style.copyWith(
+                                    letterSpacing: 1,
+                                    fontSize: 10,
+                                    color: Colors.green),
+                              ),
+                              Text(correctAnswer,
+                                  style: style.copyWith(fontSize: 14)),
+                              const Divider(),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "You Answered:".toUpperCase(),
+                                style: style.copyWith(
+                                    letterSpacing: 1,
+                                    fontSize: 10,
+                                    color: Colors.red),
+                              ),
+                              Text(selected['option'],
+                                  style: style.copyWith(fontSize: 14)),
+                              (hint != null || hintImage != null)
+                                  ? Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            children: const [
+                                              WidgetSpan(
+                                                alignment:
+                                                    PlaceholderAlignment.middle,
+                                                child: Icon(
+                                                  Icons.lightbulb,
+                                                  size: 13,
+                                                  color: Colors.yellow,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: " Hint",
+                                              ),
+                                            ],
+                                            style: style.copyWith(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                                color: PRIMARY_BLUE),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        hint != null
+                                            ? Text(
+                                                hint,
+                                                style: style.copyWith(
+                                                  fontSize: 15,
+                                                ),
+                                              )
+                                            : Container(),
+                                        hintImage != null
+                                            ? const SizedBox(
+                                                height: 5,
+                                              )
+                                            : Container(),
+                                        hintImage != null
+                                            ? ImageViewComponent(
+                                                image: hintImage,
+                                                height: 100,
+                                              )
+                                            : Container(),
+                                      ],
+                                    )
+                                  : Container()
+                            ]),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Center(
+                            child: OutlinedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(true);
+                                  widget.goToNextPage();
+                                },
+                                child: const Text("Continue")))
+                      ])),
+            );
+          },
+        ).then((value) => widget.goToNextPage());
+      }
     }
 
     return SingleChildScrollView(
@@ -353,11 +468,7 @@ class _QuizBodyState extends State<QuizBody> {
                                         margin-top:10px;
                                          padding: 5px;
                                       }</style>
-                                      <div style='display: flex'>""" +
-                                        (widget.index + 1).toString() +
-                                        ". <span style='margin-left: 2px'>" +
-                                        widget.question +
-                                        "</span></div>"),
+                                      <div style='display: flex'>${(widget.index + 1).toString()}. <span style='margin-left: 2px'>${widget.question}</span></div>"""),
                                     widget.image != null
                                         ? TeXViewContainer(
                                             child: TeXViewImage.network(
@@ -388,12 +499,12 @@ class _QuizBodyState extends State<QuizBody> {
                                                   rippleEffect: true,
                                                   id: option.key.toString(),
                                                   child: TeXViewDocument(
-                                                      '${"""<style>table, th, td {
+                                                      '${"${"""<style>table, th, td {
                                           border: 1px solid black;
                                           border-collapse: collapse;
                                           margin-top:10px;
                                            padding: 5px;
-                                        }</style>""" + "<div style='display: flex'>" + alphas[option.key] + ". <span style='margin-left: 2px'>" + option.value['option']}</span></div>',
+                                        }</style><div style='display: flex'>${alphas[option.key]}"""}. <span style='margin-left: 2px'>${option.value['option']}"}</span></div>',
                                                       style: const TeXViewStyle(
                                                           padding:
                                                               TeXViewPadding
@@ -407,20 +518,19 @@ class _QuizBodyState extends State<QuizBody> {
                                                     TeXViewBorderRadius.all(5),
                                                 elevation: 3),
                                             normalItemStyle: TeXViewStyle(
-                                                margin: const TeXViewMargin.only(
-                                                    bottom: 10),
+                                                contentColor:
+                                                    Provider.of<Auth>(context, listen: false).darkTheme
+                                                        ? Colors.white
+                                                        : PRIMARY_DARK,
+                                                margin:
+                                                    const TeXViewMargin.only(
+                                                        bottom: 10),
                                                 borderRadius:
                                                     const TeXViewBorderRadius.all(
                                                         5),
                                                 border: const TeXViewBorder.all(
-                                                    TeXViewBorderDecoration(
-                                                        borderWidth: 1,
-                                                        borderColor:
-                                                            PRIMARY_BLUE)),
-                                                backgroundColor:
-                                                    Provider.of<Auth>(context, listen: false).darkTheme
-                                                        ? PRIMARY_DARK
-                                                        : PRIMARY_LIGHT,
+                                                    TeXViewBorderDecoration(borderWidth: 1, borderColor: PRIMARY_BLUE)),
+                                                backgroundColor: Provider.of<Auth>(context, listen: false).darkTheme ? PRIMARY_DARK : PRIMARY_LIGHT,
                                                 elevation: 3),
                                             onTap: (id) {
                                               int index = int.parse(id);
@@ -431,7 +541,10 @@ class _QuizBodyState extends State<QuizBody> {
                                                   widget.options
                                                       .where((element) =>
                                                           element['isCorrect'])
-                                                      .toList()[0]['option']);
+                                                      .toList()[0]['option'],
+                                                  richText: true,
+                                                  hint: widget.hint,
+                                                  hintImage: widget.hintImage);
                                             }))
                                   ]),
                                   loadingWidgetBuilder: (BuildContext context) {
@@ -522,7 +635,9 @@ class _QuizBodyState extends State<QuizBody> {
                                           widget.options
                                               .where((element) =>
                                                   element['isCorrect'])
-                                              .toList()[0]['option']);
+                                              .toList()[0]['option'],
+                                          hint: widget.hint,
+                                          hintImage: widget.hintImage);
                                     });
                               }))
                       : Container(),

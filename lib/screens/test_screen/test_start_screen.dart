@@ -69,11 +69,10 @@ class _StartScreenState extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currTheme = Provider.of<Auth>(context, listen: false);
     TextStyle style = TextStyle(
         fontSize: 16,
-        color: Provider.of<Auth>(context, listen: false).darkTheme
-            ? Colors.white
-            : PRIMARY_DARK,
+        color: currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
         fontFamily: 'Montserrat');
 
     TextStyle headingStyle = const TextStyle(
@@ -83,16 +82,12 @@ class _StartScreenState extends State<StartScreen> {
 
     TextStyle titleStyle = TextStyle(
         fontWeight: FontWeight.bold,
-        color: Provider.of<Auth>(context, listen: false).darkTheme
-            ? Colors.white
-            : PRIMARY_DARK,
+        color: currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
         fontFamily: 'Montserrat');
 
     TextStyle smallTextStyle = TextStyle(
         fontSize: 13,
-        color: Provider.of<Auth>(context, listen: false).darkTheme
-            ? Colors.white
-            : PRIMARY_DARK,
+        color: currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
         fontFamily: 'Montserrat');
 
     Widget getIndex(Color color, String text) {
@@ -301,12 +296,12 @@ class _StartScreenState extends State<StartScreen> {
                                           ),
                                           const SizedBox(height: 20),
                                           Text(
-                                            "1. Swipe left or right to switch the questions.",
+                                            "1. Choose an answer to check if you're correct.",
                                             style: smallTextStyle,
                                           ),
                                           const SizedBox(height: 10),
                                           Text(
-                                            "2. Use navigation bar to easily move between questions",
+                                            "2. Use navigation bar to view number of questions",
                                             style: smallTextStyle,
                                           ),
                                           const SizedBox(height: 10),
@@ -343,11 +338,13 @@ class _StartScreenState extends State<StartScreen> {
                                               ]),
                                           const SizedBox(height: 10),
                                           Text(
-                                            "4. You can access hints and detailed summary after submitting the test.",
+                                            "4. You can access hints and correct answer after choosing an incorrect answer.",
                                             style: smallTextStyle,
                                           ),
                                           const SizedBox(height: 10),
-                                          LoginHint()
+                                          currTheme.user == null
+                                              ? LoginHint()
+                                              : Container()
                                         ],
                                       ),
                                     ])),
@@ -357,9 +354,7 @@ class _StartScreenState extends State<StartScreen> {
         bottomNavigationBar: BottomAppBar(
           elevation: 0,
           child: Container(
-            color: Provider.of<Auth>(context, listen: false).darkTheme
-                ? SECONDARY_DARK
-                : PRIMARY_LIGHT,
+            color: currTheme.darkTheme ? SECONDARY_DARK : PRIMARY_LIGHT,
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
             height: 80,

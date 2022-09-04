@@ -27,6 +27,12 @@ Widget createCard(context, String type, data,
         Navigator.push(
             context,
             PageTransition(
+                settings: RouteSettings(
+                    name: type == SETS
+                        ? "Set"
+                        : type == COURSES
+                            ? "Course"
+                            : "Subject"),
                 child: type == COURSES
                     ? CoursesScreen(id: data.id)
                     : type == SUBJECTS
