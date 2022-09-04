@@ -329,19 +329,9 @@ class _StartScreenState extends State<StartScreen> {
                                                         getIndex(
                                                             Colors.yellow[800]!,
                                                             "Answered"),
-                                                        getIndex(
-                                                            Colors.red[400]!,
-                                                            "Left"),
-                                                      ]),
-                                                  const SizedBox(height: 5),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
                                                         getIndex(PRIMARY_BLUE,
                                                             "Current"),
-                                                      ])
+                                                      ]),
                                                 ]),
                                             const SizedBox(height: 10),
                                             Text(
