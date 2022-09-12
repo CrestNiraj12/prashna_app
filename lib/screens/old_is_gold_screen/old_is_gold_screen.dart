@@ -195,7 +195,109 @@ class _OldIsGoldScreenState extends State<OldIsGoldScreen>
                                 SliverAppBar(
                                   pinned: false,
                                   primary: false,
-                                  expandedHeight: 200,
+                                  expandedHeight: 100,
+                                  // expandedHeight: 200,
+                                  actions: [
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 3, right: 5),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          _oig!.instagram != null
+                                              ? IconButton(
+                                                  padding: EdgeInsets.zero,
+                                                  constraints:
+                                                      const BoxConstraints(),
+                                                  icon: Icon(
+                                                    CustomIcons.instagram,
+                                                    color: Colors
+                                                        .pinkAccent.shade100,
+                                                    size: 16,
+                                                  ),
+                                                  tooltip: 'Instagram group',
+                                                  onPressed: () async {
+                                                    if (!await launchUrl(
+                                                        Uri.parse(_oig!
+                                                            .instagram!))) {
+                                                      throw 'Could not launch';
+                                                    }
+                                                  },
+                                                )
+                                              : Container(),
+                                          _oig!.facebook != null
+                                              ? IconButton(
+                                                  padding: EdgeInsets.zero,
+                                                  constraints:
+                                                      const BoxConstraints(),
+                                                  icon: Icon(
+                                                    Icons.facebook,
+                                                    color: Colors
+                                                        .blueAccent.shade100,
+                                                    size: 16,
+                                                  ),
+                                                  tooltip: 'Facebook group',
+                                                  onPressed: () async {
+                                                    if (!await launchUrl(
+                                                        Uri.parse(
+                                                            _oig!.facebook!))) {
+                                                      throw 'Could not launch';
+                                                    }
+                                                  },
+                                                )
+                                              : Container(),
+                                          _oig!.whatsapp != null
+                                              ? IconButton(
+                                                  padding: EdgeInsets.zero,
+                                                  constraints:
+                                                      const BoxConstraints(),
+                                                  icon: const Icon(
+                                                    Icons.whatsapp,
+                                                    color:
+                                                        Colors.lightGreenAccent,
+                                                    size: 16,
+                                                  ),
+                                                  tooltip: 'Whatsapp group',
+                                                  onPressed: () async {
+                                                    if (!await launchUrl(
+                                                        Uri.parse(
+                                                            _oig!.facebook!))) {
+                                                      throw 'Could not launch';
+                                                    }
+                                                  },
+                                                )
+                                              : Container(),
+                                          _oig!.twitter != null
+                                              ? IconButton(
+                                                  padding: EdgeInsets.zero,
+                                                  constraints:
+                                                      const BoxConstraints(),
+                                                  icon: const Icon(
+                                                    CustomIcons.twitter,
+                                                    color:
+                                                        Colors.lightBlueAccent,
+                                                    size: 16,
+                                                  ),
+                                                  tooltip: 'Twitter group',
+                                                  onPressed: () async {
+                                                    if (!await launchUrl(
+                                                        Uri.parse(
+                                                            _oig!.twitter!))) {
+                                                      throw 'Could not launch';
+                                                    }
+                                                  },
+                                                )
+                                              : Container(),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                   flexibleSpace: FlexibleSpaceBar(
                                       background: Container(
                                     color: PRIMARY_BLUE,
@@ -218,135 +320,135 @@ class _OldIsGoldScreenState extends State<OldIsGoldScreen>
                                             style: style,
                                           ),
                                         ),
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(
-                                            vertical: 10,
-                                          ),
-                                          constraints: const BoxConstraints(
-                                              maxHeight: 80),
-                                          child: SingleChildScrollView(
-                                            child: AutoSizeText(
-                                              _oig!.description,
-                                              style: style.copyWith(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.normal,
-                                                  fontFamily: "Roboto"),
-                                            ),
-                                          ),
-                                        ),
+                                        // Container(
+                                        //   margin: const EdgeInsets.symmetric(
+                                        //     vertical: 10,
+                                        //   ),
+                                        //   constraints: const BoxConstraints(
+                                        //       maxHeight: 80),
+                                        //   child: SingleChildScrollView(
+                                        //     child: AutoSizeText(
+                                        //       _oig!.description,
+                                        //       style: style.copyWith(
+                                        //           fontSize: 14,
+                                        //           fontWeight: FontWeight.normal,
+                                        //           fontFamily: "Roboto"),
+                                        //     ),
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   )),
                                 ),
-                                (_oig!.instagram == null &&
-                                        _oig!.facebook == null &&
-                                        _oig!.whatsapp == null &&
-                                        _oig!.twitter == null)
-                                    ? SliverToBoxAdapter(child: Container())
-                                    : SliverAppBar(
-                                        pinned: false,
-                                        expandedHeight: 90,
-                                        automaticallyImplyLeading: false,
-                                        backgroundColor: PRIMARY_BLUE,
-                                        flexibleSpace: FlexibleSpaceBar(
-                                            background: Container(
-                                          decoration: BoxDecoration(
-                                              color: currTheme.darkTheme
-                                                  ? PRIMARY_DARK
-                                                  : Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0)),
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 70, vertical: 5),
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8, horizontal: 5),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "Join our group: ",
-                                                style: quesStyle.copyWith(
-                                                    fontFamily: "Montserrat",
-                                                    fontSize: 12.0),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  _oig!.instagram != null
-                                                      ? IconButton(
-                                                          icon: const Icon(
-                                                            CustomIcons
-                                                                .instagram,
-                                                            color: Colors.pink,
-                                                          ),
-                                                          tooltip:
-                                                              'Instagram group',
-                                                          onPressed: () async {
-                                                            if (!await launchUrl(
-                                                                Uri.parse(_oig!
-                                                                    .instagram!))) {
-                                                              throw 'Could not launch';
-                                                            }
-                                                          },
-                                                        )
-                                                      : Container(),
-                                                  _oig!.facebook != null
-                                                      ? IconButton(
-                                                          icon: Icon(
-                                                              Icons.facebook,
-                                                              color: Colors
-                                                                  .blue[900]),
-                                                          tooltip:
-                                                              'Facebook group',
-                                                          onPressed: () async {
-                                                            if (!await launchUrl(
-                                                                Uri.parse(_oig!
-                                                                    .facebook!))) {
-                                                              throw 'Could not launch';
-                                                            }
-                                                          },
-                                                        )
-                                                      : Container(),
-                                                  _oig!.facebook != null
-                                                      ? IconButton(
-                                                          icon: const Icon(
-                                                              Icons.whatsapp,
-                                                              color:
-                                                                  Colors.green),
-                                                          tooltip:
-                                                              'Whatsapp group',
-                                                          onPressed: () async {
-                                                            if (!await launchUrl(
-                                                                Uri.parse(_oig!
-                                                                    .facebook!))) {
-                                                              throw 'Could not launch';
-                                                            }
-                                                          },
-                                                        )
-                                                      : Container(),
-                                                  _oig!.twitter != null
-                                                      ? IconButton(
-                                                          icon: const Icon(
-                                                              CustomIcons
-                                                                  .twitter,
-                                                              color:
-                                                                  Colors.blue),
-                                                          tooltip:
-                                                              'Twitter group',
-                                                          onPressed: () async {
-                                                            if (!await launchUrl(
-                                                                Uri.parse(_oig!
-                                                                    .twitter!))) {
-                                                              throw 'Could not launch';
-                                                            }
-                                                          },
-                                                        )
-                                                      : Container(),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ))),
+                                // (_oig!.instagram == null &&
+                                //         _oig!.facebook == null &&
+                                //         _oig!.whatsapp == null &&
+                                //         _oig!.twitter == null)
+                                //     ? SliverToBoxAdapter(child: Container())
+                                //     : SliverAppBar(
+                                //         pinned: false,
+                                //         expandedHeight: 90,
+                                //         automaticallyImplyLeading: false,
+                                //         backgroundColor: PRIMARY_BLUE,
+                                //         flexibleSpace: FlexibleSpaceBar(
+                                //             background: Container(
+                                //           decoration: BoxDecoration(
+                                //               color: currTheme.darkTheme
+                                //                   ? PRIMARY_DARK
+                                //                   : Colors.white,
+                                //               borderRadius:
+                                //                   BorderRadius.circular(5.0)),
+                                //           margin: const EdgeInsets.symmetric(
+                                //               horizontal: 70, vertical: 5),
+                                //           padding: const EdgeInsets.symmetric(
+                                //               vertical: 8, horizontal: 5),
+                                //           child: Column(
+                                //             children: [
+                                //               Text(
+                                //                 "Join our group: ",
+                                //                 style: quesStyle.copyWith(
+                                //                     fontFamily: "Montserrat",
+                                //                     fontSize: 12.0),
+                                //               ),
+                                //               Row(
+                                //                 mainAxisAlignment:
+                                //                     MainAxisAlignment.center,
+                                //                 children: [
+                                //                   _oig!.instagram != null
+                                //                       ? IconButton(
+                                //                           icon: const Icon(
+                                //                             CustomIcons
+                                //                                 .instagram,
+                                //                             color: Colors.pink,
+                                //                           ),
+                                //                           tooltip:
+                                //                               'Instagram group',
+                                //                           onPressed: () async {
+                                //                             if (!await launchUrl(
+                                //                                 Uri.parse(_oig!
+                                //                                     .instagram!))) {
+                                //                               throw 'Could not launch';
+                                //                             }
+                                //                           },
+                                //                         )
+                                //                       : Container(),
+                                //                   _oig!.facebook != null
+                                //                       ? IconButton(
+                                //                           icon: Icon(
+                                //                               Icons.facebook,
+                                //                               color: Colors
+                                //                                   .blue[900]),
+                                //                           tooltip:
+                                //                               'Facebook group',
+                                //                           onPressed: () async {
+                                //                             if (!await launchUrl(
+                                //                                 Uri.parse(_oig!
+                                //                                     .facebook!))) {
+                                //                               throw 'Could not launch';
+                                //                             }
+                                //                           },
+                                //                         )
+                                //                       : Container(),
+                                //                   _oig!.facebook != null
+                                //                       ? IconButton(
+                                //                           icon: const Icon(
+                                //                               Icons.whatsapp,
+                                //                               color:
+                                //                                   Colors.green),
+                                //                           tooltip:
+                                //                               'Whatsapp group',
+                                //                           onPressed: () async {
+                                //                             if (!await launchUrl(
+                                //                                 Uri.parse(_oig!
+                                //                                     .facebook!))) {
+                                //                               throw 'Could not launch';
+                                //                             }
+                                //                           },
+                                //                         )
+                                //                       : Container(),
+                                //                   _oig!.twitter != null
+                                //                       ? IconButton(
+                                //                           icon: const Icon(
+                                //                               CustomIcons
+                                //                                   .twitter,
+                                //                               color:
+                                //                                   Colors.blue),
+                                //                           tooltip:
+                                //                               'Twitter group',
+                                //                           onPressed: () async {
+                                //                             if (!await launchUrl(
+                                //                                 Uri.parse(_oig!
+                                //                                     .twitter!))) {
+                                //                               throw 'Could not launch';
+                                //                             }
+                                //                           },
+                                //                         )
+                                //                       : Container(),
+                                //                 ],
+                                //               ),
+                                //             ],
+                                //           ),
+                                //         ))),
                                 SliverAppBar(
                                   pinned: true,
                                   automaticallyImplyLeading: false,

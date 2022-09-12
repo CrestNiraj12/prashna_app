@@ -179,16 +179,17 @@ class _EnrolledScreenState extends State<EnrolledScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                courses.isNotEmpty
-                                    ? Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: Carousel(
-                                          title: "Enrolled Courses",
-                                          courses: courses,
-                                          isCourse: true,
-                                        ),
-                                      )
-                                    : Container(),
+                                // courses.isNotEmpty
+                                //     ? Container(
+                                //         margin: const EdgeInsets.only(top: 10),
+                                //         child: Carousel(
+                                //           title: "Enrolled Courses",
+                                //           courses: courses,
+                                //           isCourse: true,
+                                //         ),
+                                //       )
+                                //     : Container(),
+
                                 sets.isNotEmpty
                                     ? Carousel(
                                         title: "Followed Sets",
@@ -196,16 +197,74 @@ class _EnrolledScreenState extends State<EnrolledScreen> {
                                         isSet: true,
                                       )
                                     : Container(),
+                                courses.isNotEmpty
+                                    ? Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 15.0),
+                                            child: Text(
+                                              "Enrolled courses",
+                                              style: textStyle.copyWith(
+                                                  fontSize: 16,
+                                                  color: PRIMARY_BLUE,
+                                                  letterSpacing: 0.5,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          Column(
+                                              children: courses
+                                                  .asMap()
+                                                  .entries
+                                                  .map((course) => Carousel(
+                                                        title:
+                                                            "${course.key + 1}. ${course.value!.title}",
+                                                        courseId:
+                                                            course.value!.id,
+                                                        setCategories: course
+                                                            .value!.subjects!,
+                                                        isCourse: true,
+                                                      ))
+                                                  .toList()),
+                                        ],
+                                      )
+                                    : Container(),
+
                                 setCategories.isNotEmpty
                                     ? Column(
-                                        children: setCategories
-                                            .asMap()
-                                            .entries
-                                            .map((cat) => Carousel(
-                                                title: cat.value!.title,
-                                                categoryId: cat.value!.id,
-                                                sets: cat.value!.sets!))
-                                            .toList())
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 15.0),
+                                            child: Text(
+                                              "Enrolled subjects",
+                                              style: textStyle.copyWith(
+                                                  fontSize: 16,
+                                                  color: PRIMARY_BLUE,
+                                                  letterSpacing: 0.5,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          Column(
+                                              children: setCategories
+                                                  .asMap()
+                                                  .entries
+                                                  .map((cat) => Carousel(
+                                                      title:
+                                                          "${cat.key + 1}. ${cat.value!.title}",
+                                                      categoryId: cat.value!.id,
+                                                      sets: cat.value!.sets!))
+                                                  .toList()),
+                                        ],
+                                      )
                                     : Container(),
                               ])),
                     ]))));

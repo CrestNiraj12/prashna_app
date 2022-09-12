@@ -3,7 +3,6 @@ import 'package:dio_http_cache/dio_http_cache.dart';
 import "package:flutter/material.dart";
 import 'package:prashna_app/components/score.dart';
 import 'package:prashna_app/models/course.dart';
-import 'package:prashna_app/models/set.dart';
 import 'package:prashna_app/models/set_category.dart';
 import 'package:prashna_app/screens/discover_screen/search_tab.dart';
 import 'package:prashna_app/screens/login_screen/login_screen.dart';
@@ -26,11 +25,9 @@ class _DiscoverScreenState extends State<DiscoverScreen>
   final _searchController = TextEditingController();
   late List<Course> _allCourses;
   late List<SetCategory> _categories;
-  late List<Set> _sets;
   late List<Course> _filteredCourses;
-  late List<Set> _filteredSets;
   late List<SetCategory> _filteredCategories;
-  static List<String> tabs = [COURSES, SUBJECTS, SETS];
+  static List<String> tabs = [COURSES, SUBJECTS];
   bool _loading = false;
   late TabController _tabController;
   bool _refresh = false;
@@ -64,19 +61,12 @@ class _DiscoverScreenState extends State<DiscoverScreen>
     List<SetCategory> categories = response.data
         .map<SetCategory>((category) => SetCategory.fromJson(category))
         .toList();
-    response = await dio().get("/prashna-sets",
-        options: buildCacheOptions(const Duration(days: 1),
-            forceRefresh: _refresh, maxStale: const Duration(days: 2)));
-    List<Set> sets =
-        response.data.map<Set>((set) => Set.fromJson(set)).toList();
 
     setState(() {
       _filteredCourses = courses;
       _categories = categories;
-      _sets = sets;
       _allCourses = courses;
       _filteredCategories = categories;
-      _filteredSets = sets;
       _loading = false;
       _refresh = false;
     });
@@ -115,7 +105,6 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                     setState(() {
                       _filteredCourses = _allCourses;
                       _filteredCategories = _categories;
-                      _filteredSets = _sets;
                     });
                   },
                   icon: const Icon(Icons.clear)),
@@ -141,7 +130,6 @@ class _DiscoverScreenState extends State<DiscoverScreen>
           setState(() {
             _filteredCourses = _allCourses;
             _filteredCategories = _categories;
-            _filteredSets = _sets;
             _loading = false;
           });
         } else {
@@ -151,18 +139,12 @@ class _DiscoverScreenState extends State<DiscoverScreen>
           response = await dio()
               .get("/prashna/set/categories/q=${text.trim().toLowerCase()}");
           final subjects = response.data;
-          response =
-              await dio().get("/prashna/sets/q=${text.trim().toLowerCase()}");
-          final sets = response.data;
-
           setState(() {
             _filteredCourses =
                 courses.map<Course>((data) => Course.fromJson(data)).toList();
             _filteredCategories = subjects
                 .map<SetCategory>((data) => SetCategory.fromJson(data))
                 .toList();
-            _filteredSets =
-                sets.map<Set>((data) => Set.fromJson(data)).toList();
             _loading = false;
           });
         }
@@ -174,9 +156,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
           ? _filteredCourses
           : type == SUBJECTS
               ? _filteredCategories
-              : type == SETS
-                  ? _filteredSets
-                  : [];
+              : [];
 
       return dataList.isEmpty
           ? Container(

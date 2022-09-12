@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 class Carousel extends StatefulWidget {
   final String title;
   final int categoryId;
+  final int courseId;
   final List<Set?> sets;
   final List<SetCategory> setCategories;
   final List<Course?> courses;
@@ -28,6 +29,7 @@ class Carousel extends StatefulWidget {
       required this.title,
       this.sets = const [],
       this.categoryId = 0,
+      this.courseId = 0,
       this.setCategories = const [],
       this.courses = const [],
       this.isSet = false,
@@ -46,11 +48,11 @@ class _CarouselState extends State<Carousel> {
   void initState() {
     super.initState();
     setState(() {
-      _datas = widget.recommended
+      _datas = widget.recommended || widget.isCourse
           ? widget.setCategories
-          : widget.isCourse
-              ? widget.courses
-              : widget.sets;
+          // : widget.isCourse
+          //     ? widget.courses
+          : widget.sets;
     });
   }
 
@@ -58,6 +60,7 @@ class _CarouselState extends State<Carousel> {
   Widget build(BuildContext context) {
     const TextStyle style = TextStyle(
         fontSize: 16.0, fontWeight: FontWeight.w500, fontFamily: 'Montserrat');
+    final currTheme = Provider.of<Auth>(context, listen: false);
 
     return SizedBox(
       height: 200,
@@ -77,21 +80,27 @@ class _CarouselState extends State<Carousel> {
                   widget.title,
                   overflow: TextOverflow.ellipsis,
                   style: style.copyWith(
-                      fontSize: 16,
-                      color: PRIMARY_BLUE,
+                      fontSize: 14,
+                      color: currTheme.darkTheme ? LIGHT_GREY : PRIMARY_GREY,
                       fontWeight: FontWeight.bold),
                 )),
-                !widget.recommended && !widget.isCourse
+                !widget.recommended
                     ? TextButton(
                         onPressed: () {
                           Navigator.push(
                               context,
                               PageTransition(
-                                  child: SubjectsScreen(
-                                      id: widget.categoryId,
-                                      title: widget.title,
-                                      sets: widget.sets,
-                                      isFollowedSets: widget.isSet),
+                                  child: widget.isCourse
+                                      ? CoursesScreen(
+                                          id: widget.courseId,
+                                          title: widget.title,
+                                          subjects: widget.setCategories,
+                                        )
+                                      : SubjectsScreen(
+                                          id: widget.categoryId,
+                                          title: widget.title,
+                                          sets: widget.sets,
+                                          isFollowedSets: widget.isSet),
                                   type: PageTransitionType.leftToRight));
                         },
                         style: TextButton.styleFrom(
@@ -103,7 +112,7 @@ class _CarouselState extends State<Carousel> {
               ],
             ),
           ),
-          widget.recommended || widget.isCourse
+          widget.recommended
               ? const SizedBox(
                   height: 10,
                 )
@@ -114,46 +123,45 @@ class _CarouselState extends State<Carousel> {
               child: Stack(
                 children: [
                   Positioned(
-                    left: widget.sets.length == 1 || widget.courses.length == 1
+                    left: widget.sets.length == 1
                         ? 0
                         : MediaQuery.of(context).orientation ==
                                 Orientation.portrait
                             ? -40
                             : -80,
-                    right: widget.sets.length == 1 || widget.courses.length == 1
-                        ? 20
-                        : 10,
+                    right: widget.sets.length == 1 ? 20 : 10,
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: CarouselSlider(
                           options: CarouselOptions(
                             height: 150,
                             enableInfiniteScroll: false,
-                            viewportFraction: widget.sets.length == 1 ||
-                                    widget.courses.length == 1
-                                ? 1
-                                : 0.8,
+                            viewportFraction: widget.sets.length == 1 ? 1 : 0.8,
                           ),
                           items: _datas.asMap().entries.map((data) {
                             return GestureDetector(
-                              onTap: () => widget.isCourse
-                                  ? Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          settings: const RouteSettings(
-                                              name: "Course"),
-                                          builder: (context) =>
-                                              CoursesScreen(id: data.value.id)))
-                                  : Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          settings:
-                                              const RouteSettings(name: "Set"),
-                                          builder: (context) => widget
-                                                  .recommended
-                                              ? SubjectsScreen(
-                                                  id: data.value.id)
-                                              : SetScreen(id: data.value.id))),
+                              // onTap: () => widget.isCourse
+                              //     ? Navigator.push(
+                              //         context,
+                              //         MaterialPageRoute(
+                              //             settings: const RouteSettings(
+                              //                 name: "Course"),
+                              //             builder: (context) =>
+                              //                 CoursesScreen(id: data.value.id)))
+                              //     :
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      settings: RouteSettings(
+                                          name: widget.recommended ||
+                                                  widget.isCourse
+                                              ? "Subject"
+                                              : "Set"),
+                                      builder: (context) => widget
+                                                  .recommended ||
+                                              widget.isCourse
+                                          ? SubjectsScreen(id: data.value.id)
+                                          : SetScreen(id: data.value.id))),
                               child: Card(
                                 elevation: 5,
                                 color: Provider.of<Auth>(context, listen: false)
@@ -204,8 +212,7 @@ class _CarouselState extends State<Carousel> {
                                                   ),
                                                 ),
                                               ),
-                                              widget.recommended ||
-                                                      widget.isCourse
+                                              widget.recommended
                                                   ? Container(
                                                       padding: const EdgeInsets
                                                               .symmetric(
@@ -232,8 +239,7 @@ class _CarouselState extends State<Carousel> {
                                                       ))
                                                   : Container(),
                                               SizedBox(
-                                                height: widget.recommended ||
-                                                        widget.isCourse
+                                                height: widget.recommended
                                                     ? 30
                                                     : 60,
                                               ),
@@ -312,7 +318,7 @@ class _CarouselState extends State<Carousel> {
                                           ),
                                         ],
                                       ),
-                                      widget.recommended || widget.isCourse
+                                      widget.recommended
                                           ? Positioned(
                                               top: 0,
                                               right: 0,

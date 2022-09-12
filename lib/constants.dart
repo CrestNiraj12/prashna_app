@@ -11,3 +11,6 @@ const GREENISH_GREY = Color(0xFF393939);
 const COURSES = 'COURSES';
 const SUBJECTS = 'SUBJECTS';
 const SETS = 'SETS';
+
+const quizzes = 'QUIZZES';
+const oigs = 'OLD IS GOLD';

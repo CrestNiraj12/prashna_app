@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
         body: Center(
             child: Container(
       width: MediaQuery.of(context).size.width,
-      color: currTheme.darkTheme ? PRIMARY_DARK : Colors.white,
+      color: PRIMARY_DARK,
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,10 +71,10 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               "Prashna",
               style: TextStyle(
-                  color: currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
+                  color: Colors.white,
                   fontSize: 25,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w700),
