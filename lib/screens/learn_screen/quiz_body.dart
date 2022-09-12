@@ -23,6 +23,7 @@ class QuizBody extends StatefulWidget {
   final int index;
   final bool richText;
   final String? hint;
+  final Function onIncorrect;
   final String? hintImage;
 
   const QuizBody(
@@ -35,6 +36,7 @@ class QuizBody extends StatefulWidget {
       required this.goToNextPage,
       required this.increaseCorrectAnswers,
       required this.richText,
+      required this.onIncorrect,
       this.hint,
       this.hintImage,
       this.setSelected,
@@ -214,6 +216,17 @@ class _QuizBodyState extends State<QuizBody> {
           },
         ).then((value) => widget.goToNextPage());
       } else {
+        widget.onIncorrect({
+          "id": widget.questionId,
+          "question": question,
+          "questionImage": widget.image,
+          "options": widget.options,
+          "hint": hint,
+          "hintImage": hintImage,
+          "answer": correctAnswer,
+          "richText": richText
+        });
+
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -468,7 +481,7 @@ class _QuizBodyState extends State<QuizBody> {
                                         margin-top:10px;
                                          padding: 5px;
                                       }</style>
-                                      <div style='display: flex'>${(widget.index + 1).toString()}. <span style='margin-left: 2px'>${widget.question}</span></div>"""),
+                                      <div style='display: flex'>Q. <span style='margin-left: 2px'>${widget.question}</span></div>"""),
                                     widget.image != null
                                         ? TeXViewContainer(
                                             child: TeXViewImage.network(
@@ -557,7 +570,7 @@ class _QuizBodyState extends State<QuizBody> {
                                             )));
                                   })
                               : Text(
-                                  "${widget.index + 1}. ${widget.question}",
+                                  "Q. ${widget.question}",
                                   style: style,
                                 ),
                           !widget.richText && widget.image != null

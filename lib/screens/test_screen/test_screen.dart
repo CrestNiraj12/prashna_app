@@ -32,12 +32,13 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  final pageController = PreloadPageController();
+  final pageController = PageController();
   int _pageNumber = 0;
-  // int _correctAnswers = 0;
+  int _correctAnswers = 0;
   List _questions = [];
   List<Map<String, dynamic>> _selectedByPage = [];
   bool _loading = true;
+  List _extraQuestions = [];
 
   List getList(List source, String filter) => source
       .map((option) =>
@@ -70,7 +71,7 @@ class _TestScreenState extends State<TestScreen> {
         "hint": question.hint,
         "hintImage": question.hintImage,
         "answer": question.correctOption,
-        "marks": question.marksPerQuestion,
+        // "marks": question.marksPerQuestion,
         "richText": question.richText
       });
     }
@@ -91,9 +92,9 @@ class _TestScreenState extends State<TestScreen> {
   }
 
   void goToNextPage() {
-    if (_pageNumber == (_questions.length - 1)) {
-      return;
-    }
+    // if (_pageNumber == (_questions.length - 1)) {
+    //   return;
+    // }
 
     pageController.nextPage(
       duration: const Duration(
@@ -101,11 +102,28 @@ class _TestScreenState extends State<TestScreen> {
       ),
       curve: Curves.easeIn,
     );
+
+    if (_correctAnswers >= _questions.length) {
+      Navigator.pushReplacement(
+          context,
+          PageTransition(
+              child: FinalLearnScreen(
+                setId: widget.setId,
+                questions: _questions,
+              ),
+              type: PageTransitionType.rightToLeft));
+    }
   }
 
   void increaseCorrectAnswers() {
     setState(() {
-      // _correctAnswers++;
+      _correctAnswers++;
+    });
+  }
+
+  void onIncorrect(Map question) {
+    setState(() {
+      _extraQuestions.add(question);
     });
   }
 
@@ -153,7 +171,7 @@ class _TestScreenState extends State<TestScreen> {
                   OutlinedButton(
                     child: Text('Cancel', style: style.copyWith(fontSize: 12)),
                     onPressed: () {
-                      Navigator.popUntil(context, ModalRoute.withName("Set"));
+                      Navigator.pop(context);
                     },
                   ),
                   ElevatedButton(
@@ -163,8 +181,7 @@ class _TestScreenState extends State<TestScreen> {
                       style: style.copyWith(color: Colors.white, fontSize: 12),
                     ),
                     onPressed: () {
-                      Navigator.popUntil(
-                          context, (route) => route.settings.name == "Set");
+                      Navigator.popUntil(context, ModalRoute.withName("Set"));
                     },
                   ),
                 ],
@@ -183,13 +200,13 @@ class _TestScreenState extends State<TestScreen> {
             backgroundColor:
                 currTheme.darkTheme ? SECONDARY_DARK : Colors.white,
             title: Text(
-              'Submit Quiz',
+              'Skip Quiz',
               style: style.copyWith(color: PRIMARY_BLUE),
             ),
             content: SingleChildScrollView(
               child: ListBody(
                 children: const <Widget>[
-                  Text('Would you like to submit the quiz?'),
+                  Text('Would you like to skip the quiz?'),
                 ],
               ),
             ),
@@ -292,49 +309,77 @@ class _TestScreenState extends State<TestScreen> {
                                       style: style.copyWith(
                                           fontSize: 12,
                                           color: Colors.red[800]))),
+                              Text(
+                                "Correct: $_correctAnswers",
+                                style: style.copyWith(color: Colors.green),
+                              ),
                               ElevatedButton(
                                   onPressed: _showSubmitDialog,
                                   style: ElevatedButton.styleFrom(
                                       elevation: 0, primary: PRIMARY_BLUE),
-                                  child: Text("Submit",
+                                  child: Text("Skip",
                                       style: style.copyWith(
                                           fontSize: 12, color: Colors.white)))
                             ],
                           ),
                         ),
                         Expanded(
-                          child: PreloadPageView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              controller: pageController,
-                              preloadPagesCount: _questions.length,
-                              itemCount: _questions.length,
-                              onPageChanged: (page) {
-                                setState(() {
-                                  _pageNumber = page;
-                                  _selectedByPage[page]['seen'] = true;
-                                });
-                              },
-                              itemBuilder: (BuildContext context,
-                                      int position) =>
-                                  QuizBody(
-                                    questionId: _questions[position]["id"],
-                                    index: _pageNumber,
-                                    question: _questions[position]["question"],
-                                    options: _questions[position]["options"],
-                                    image: _questions[position]
-                                        ["questionImage"],
-                                    goToNextPage: goToNextPage,
-                                    increaseCorrectAnswers:
-                                        increaseCorrectAnswers,
-                                    selected: _selectedByPage[_pageNumber]
-                                        ['option'],
-                                    setSelected: setSelected,
-                                    richText: _questions[position]["richText"],
-                                    hint: _questions[position]['hint'],
-                                    hintImage: _questions[position]
-                                        ['hintImage'],
-                                  )),
-                        ),
+                            child: PageView(
+                                physics: const NeverScrollableScrollPhysics(),
+                                controller: pageController,
+                                children: [..._questions, ..._extraQuestions]
+                                    .asMap()
+                                    .entries
+                                    .map((q) => QuizBody(
+                                        questionId: q.value["id"],
+                                        index: _pageNumber,
+                                        question: q.value["question"],
+                                        options: q.value["options"],
+                                        image: q.value["questionImage"],
+                                        goToNextPage: goToNextPage,
+                                        increaseCorrectAnswers:
+                                            increaseCorrectAnswers,
+                                        selected: _selectedByPage[_pageNumber]
+                                            ['option'],
+                                        setSelected: setSelected,
+                                        richText: q.value["richText"],
+                                        hint: q.value['hint'],
+                                        onIncorrect: onIncorrect,
+                                        hintImage: q.value['hintImage']))
+                                    .toList())
+
+                            // PreloadPageView.builder(
+                            //     physics: const NeverScrollableScrollPhysics(),
+                            //     controller: pageController,
+                            //     preloadPagesCount: _questions.length,
+                            //     itemCount: _questions.length,
+                            //     onPageChanged: (page) {
+                            //       setState(() {
+                            //         _pageNumber = page;
+                            //         _selectedByPage[page]['seen'] = true;
+                            //       });
+                            //     },
+                            //     itemBuilder: (BuildContext context,
+                            //             int position) =>
+                            //         QuizBody(
+                            //           questionId: _questions[position]["id"],
+                            //           index: _pageNumber,
+                            //           question: _questions[position]["question"],
+                            //           options: _questions[position]["options"],
+                            //           image: _questions[position]
+                            //               ["questionImage"],
+                            //           goToNextPage: goToNextPage,
+                            //           increaseCorrectAnswers:
+                            //               increaseCorrectAnswers,
+                            //           selected: _selectedByPage[_pageNumber]
+                            //               ['option'],
+                            //           setSelected: setSelected,
+                            //           richText: _questions[position]["richText"],
+                            //           hint: _questions[position]['hint'],
+                            //           hintImage: _questions[position]
+                            //               ['hintImage'],
+                            //         )),
+                            ),
                         // Container(
                         //   height: 80,
                         //   padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
