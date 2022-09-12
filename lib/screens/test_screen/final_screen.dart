@@ -173,7 +173,9 @@ class _FinalLearnScreenState extends State<FinalLearnScreen> {
                                             Text(
                                               widget.questions[index]['answer'],
                                               style: style.copyWith(
-                                                  color: Colors.greenAccent,
+                                                  color: Provider.of<Auth>(context, listen: false).darkTheme
+            ?  Colors.greenAccent 
+            : Colors.green,
                                                   fontWeight: FontWeight.bold,
                                                   letterSpacing: 0.5,
                                                   fontFamily: 'Roboto'),
