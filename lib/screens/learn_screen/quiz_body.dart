@@ -459,8 +459,8 @@ class _QuizBodyState extends State<QuizBody> {
                               : Container(),
                           widget.richText
                               ? TeXView(
-                                  renderingEngine:
-                                      const TeXViewRenderingEngine.mathjax(),
+                                  renderingEngine: const TeXViewRenderingEngine
+                                      .katex(), //mathjax
                                   child: TeXViewColumn(children: [
                                     _teXViewWidget("""<style>table, th, td {
                                         border: 1px solid black;

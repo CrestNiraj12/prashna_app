@@ -101,7 +101,7 @@ class _OldIsGoldScreenState extends State<OldIsGoldScreen>
               TeXViewFont(
                   fontFamily: 'roboto_italic', src: 'fonts/Roboto-Italic.ttf'),
             ],
-            renderingEngine: const TeXViewRenderingEngine.mathjax(),
+            renderingEngine: const TeXViewRenderingEngine.katex(),
             child: TeXViewColumn(
                 children: datas
                     .map((data) => TeXViewColumn(children: [

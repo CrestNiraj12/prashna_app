@@ -3,8 +3,9 @@ import 'package:prashna_app/constants.dart';
 import 'package:prashna_app/models/quiz.dart';
 import 'package:prashna_app/models/quiz_question.dart';
 import 'package:prashna_app/screens/learn_screen/quiz_body.dart';
-import 'package:prashna_app/screens/test_screen/bottom_sheet.dart';
-import 'package:prashna_app/screens/test_screen/result_screen.dart';
+// import 'package:prashna_app/screens/test_screen/bottom_sheet.dart';
+import 'package:prashna_app/screens/test_screen/final_screen.dart';
+// import 'package:prashna_app/screens/test_screen/result_screen.dart';
 import 'package:prashna_app/screens/test_screen/test_start_screen.dart';
 import 'package:prashna_app/utilities/auth.dart';
 import 'package:page_transition/page_transition.dart';
@@ -33,7 +34,7 @@ class TestScreen extends StatefulWidget {
 class _TestScreenState extends State<TestScreen> {
   final pageController = PreloadPageController();
   int _pageNumber = 0;
-  int _correctAnswers = 0;
+  // int _correctAnswers = 0;
   List _questions = [];
   List<Map<String, dynamic>> _selectedByPage = [];
   bool _loading = true;
@@ -104,7 +105,7 @@ class _TestScreenState extends State<TestScreen> {
 
   void increaseCorrectAnswers() {
     setState(() {
-      _correctAnswers++;
+      // _correctAnswers++;
     });
   }
 
@@ -118,16 +119,16 @@ class _TestScreenState extends State<TestScreen> {
             : PRIMARY_DARK,
         fontFamily: 'Montserrat');
 
-    void _showBottomSheet() {
-      showModalBottomSheet(
-          context: context,
-          builder: (_) => TestBottomSheet(
-                currentPage: _pageNumber,
-                selectedByPage: _selectedByPage,
-                // goToPage: goToPage,
-                questionCount: widget.questionCount,
-              ));
-    }
+    // void _showBottomSheet() {
+    //   showModalBottomSheet(
+    //       context: context,
+    //       builder: (_) => TestBottomSheet(
+    //             currentPage: _pageNumber,
+    //             selectedByPage: _selectedByPage,
+    //             // goToPage: goToPage,
+    //             questionCount: widget.questionCount,
+    //           ));
+    // }
 
     Future<bool> _showCancelDialog() async {
       return await showDialog(
@@ -209,11 +210,11 @@ class _TestScreenState extends State<TestScreen> {
                   Navigator.push(
                       context,
                       PageTransition(
-                          child: ResultScreen(
+                          child: FinalLearnScreen(
                               setId: widget.setId,
-                              selected: _selectedByPage,
-                              correctAnswers: _correctAnswers,
-                              quiz: widget.quiz,
+                              // selected: _selectedByPage,
+                              // correctAnswers: _correctAnswers,
+                              // quiz: widget.quiz,
                               questions: _questions),
                           type: PageTransitionType.fade));
                 },
@@ -334,20 +335,20 @@ class _TestScreenState extends State<TestScreen> {
                                         ['hintImage'],
                                   )),
                         ),
-                        Container(
-                          height: 80,
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-                          width: MediaQuery.of(context).size.width,
-                          child: ElevatedButton(
-                              onPressed: _showBottomSheet,
-                              style: ElevatedButton.styleFrom(
-                                  primary: PRIMARY_BLUE),
-                              child: Text(
-                                "Question Navigation",
-                                style: style.copyWith(
-                                    fontSize: 13, color: Colors.white),
-                              )),
-                        )
+                        // Container(
+                        //   height: 80,
+                        //   padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                        //   width: MediaQuery.of(context).size.width,
+                        //   child: ElevatedButton(
+                        //       onPressed: _showBottomSheet,
+                        //       style: ElevatedButton.styleFrom(
+                        //           primary: PRIMARY_BLUE),
+                        //       child: Text(
+                        //         "Question Navigation",
+                        //         style: style.copyWith(
+                        //             fontSize: 13, color: Colors.white),
+                        //       )),
+                        // )
                       ],
                     ),
                   ],

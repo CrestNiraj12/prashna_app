@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currTheme = Provider.of<Auth>(context, listen: false);
+    // final currTheme = Provider.of<Auth>(context, listen: false);
 
     return Scaffold(
         body: Center(
