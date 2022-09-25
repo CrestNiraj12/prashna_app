@@ -10,7 +10,6 @@ import 'package:prashna_app/screens/test_screen/test_start_screen.dart';
 import 'package:prashna_app/utilities/auth.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:preload_page_view/preload_page_view.dart';
 
 class TestScreen extends StatefulWidget {
   final Quiz quiz;
@@ -33,12 +32,12 @@ class TestScreen extends StatefulWidget {
 
 class _TestScreenState extends State<TestScreen> {
   final pageController = PageController();
-  int _pageNumber = 0;
+  final int _pageNumber = 0;
   int _correctAnswers = 0;
   List _questions = [];
   List<Map<String, dynamic>> _selectedByPage = [];
   bool _loading = true;
-  List _extraQuestions = [];
+  final List _extraQuestions = [];
 
   List getList(List source, String filter) => source
       .map((option) =>
@@ -108,9 +107,10 @@ class _TestScreenState extends State<TestScreen> {
           context,
           PageTransition(
               child: FinalLearnScreen(
-                setId: widget.setId,
-                questions: _questions,
-              ),
+                  quizId: widget.quiz.id,
+                  setId: widget.setId,
+                  questions: _questions,
+                  correctAnswers: _correctAnswers),
               type: PageTransitionType.rightToLeft));
     }
   }
@@ -228,11 +228,14 @@ class _TestScreenState extends State<TestScreen> {
                       context,
                       PageTransition(
                           child: FinalLearnScreen(
-                              setId: widget.setId,
-                              // selected: _selectedByPage,
-                              // correctAnswers: _correctAnswers,
-                              // quiz: widget.quiz,
-                              questions: _questions),
+                            quizId: widget.quiz.id,
+                            setId: widget.setId,
+                            // selected: _selectedByPage,
+                            // correctAnswers: _correctAnswers,
+                            // quiz: widget.quiz,
+                            questions: _questions,
+                            correctAnswers: _correctAnswers,
+                          ),
                           type: PageTransitionType.fade));
                 },
               ),

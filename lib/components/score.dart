@@ -19,7 +19,7 @@ class _ScoreState extends State<Score> {
   final NumberFormat formatter = NumberFormat("##.0#", "en_US");
   static final Future<SharedPreferences> _storage =
       SharedPreferences.getInstance();
-  late int _totalScore, _dailyScore, _totalTime, _dailyTime;
+  late int _totalScore, _dailyScore, _totalCorrectAnswers, _dailyCorrectAnswers;
   bool _loading = true;
 
   @override
@@ -32,13 +32,13 @@ class _ScoreState extends State<Score> {
     final SharedPreferences storage = await _storage;
     final String? token = storage.getString('token');
     if (token != null) {
-      Response response = await dio().get("/test/total-score",
+      Response response = await dio().get("/test/prashna/total-score",
           options: Options(headers: {'Authorization': 'Bearer $token'}));
       setState(() {
         _totalScore = response.data["totalScore"];
-        _totalTime = response.data["totalTime"];
+        _totalCorrectAnswers = response.data["totalCorrectAnswers"];
         _dailyScore = response.data["dailyScore"];
-        _dailyTime = response.data["dailyTime"];
+        _dailyCorrectAnswers = response.data["dailyCorrectAnswers"];
         _loading = false;
       });
     }
@@ -154,8 +154,8 @@ class _ScoreState extends State<Score> {
                                   getInfo("$_totalScore learned", Icons.school),
                                   SizedBox(
                                     width: 90,
-                                    child: getInfo(
-                                        "$_totalTime min", Icons.timelapse),
+                                    child: getInfo("$_totalCorrectAnswers min",
+                                        Icons.timelapse),
                                   ),
                                 ],
                               ),
@@ -172,7 +172,8 @@ class _ScoreState extends State<Score> {
                                   SizedBox(
                                       width: 90,
                                       child: getInfo(
-                                          "$_dailyTime min", Icons.alarm)),
+                                          "$_dailyCorrectAnswers min",
+                                          Icons.alarm)),
                                 ],
                               )
                             ],

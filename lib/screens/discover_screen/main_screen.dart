@@ -26,7 +26,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    _checkInternetConnection();
     super.initState();
   }
 
@@ -34,20 +33,6 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       _selectedIndex = index;
     });
-  }
-
-  void _checkInternetConnection() async {
-    try {
-      await InternetAddress.lookup('studypill.org');
-    } catch (_) {
-      ScaffoldMessenger.of(context).removeCurrentSnackBar();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text("No internet connection!"),
-        backgroundColor: Colors.red[400],
-        duration: const Duration(seconds: 2),
-      ));
-      Navigator.pushReplacementNamed(context, "/login");
-    }
   }
 
   @override

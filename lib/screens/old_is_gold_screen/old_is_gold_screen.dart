@@ -59,11 +59,11 @@ class _OldIsGoldScreenState extends State<OldIsGoldScreen>
         fontWeight: FontWeight.bold,
         fontFamily: 'Montserrat');
 
-    TextStyle quesStyle = TextStyle(
-        fontSize: 15,
-        color: currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
-        fontWeight: FontWeight.bold,
-        fontFamily: 'Roboto');
+    // TextStyle quesStyle = TextStyle(
+    //     fontSize: 15,
+    //     color: currTheme.darkTheme ? Colors.white : PRIMARY_DARK,
+    //     fontWeight: FontWeight.bold,
+    //     fontFamily: 'Roboto');
 
     TeXViewWidget _teXViewWidget(String body) {
       return TeXViewColumn(children: [
@@ -94,48 +94,55 @@ class _OldIsGoldScreenState extends State<OldIsGoldScreen>
         );
       }
       datas.sort((a, b) => a.index.compareTo(b.index));
-      return Padding(
+      return Container(
         padding: const EdgeInsets.all(20.0),
-        child: TeXView(
-            fonts: const [
-              TeXViewFont(
-                  fontFamily: 'roboto_italic', src: 'fonts/Roboto-Italic.ttf'),
-            ],
-            renderingEngine: const TeXViewRenderingEngine.katex(),
-            child: TeXViewColumn(
-                children: datas
-                    .map((data) => TeXViewColumn(children: [
-                          _teXViewWidget("""<style>table, th, td {
-                                            border: 1px solid black;
-                                            border-collapse: collapse;
-                                            margin-top:10px;
-                                             padding: 5px;
-                                          }</style>
-                                          <div style='display: flex; align-items:baseline'>
-                                          ${(data.index + 1).toString()}. <div style='margin-left: 2px;flex: 1;'>
-                                          ${data.question}</div></div>"""),
-                          TeXViewDocument(
-                              " [${data.year != null ? data.year! : ""}${data.questionNumber != null ? ("${data.year != null ? ", " : ""}Q.${data.questionNumber!}") : ""}${data.marks != null ? ((data.questionNumber != null ? ", " : "") + data.marks!.toString()) : ""}]",
-                              style: TeXViewStyle(
-                                textAlign: TeXViewTextAlign.right,
-                                margin: const TeXViewMargin.only(bottom: 15),
-                                contentColor: currTheme.darkTheme
-                                    ? PRIMARY_BLUE.shade100
-                                    : PRIMARY_BLUE,
-                                fontStyle: TeXViewFontStyle(
-                                    fontFamily: 'roboto_italic', fontSize: 10),
-                              ))
-                        ]))
-                    .toList()),
-            loadingWidgetBuilder: (BuildContext context) {
-              return const Center(
-                  child: SizedBox(
-                      height: 12,
-                      width: 12,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                      )));
-            }),
+        child: SingleChildScrollView(
+          child: TeXView(
+              fonts: const [
+                TeXViewFont(
+                    fontFamily: 'roboto_italic',
+                    src: 'fonts/Roboto-Italic.ttf'),
+              ],
+              renderingEngine: const TeXViewRenderingEngine.katex(),
+              child: TeXViewColumn(
+                  children: datas
+                      .map((data) => TeXViewColumn(
+                              style: const TeXViewStyle(
+                                margin: TeXViewMargin.only(bottom: 15),
+                              ),
+                              children: [
+                                _teXViewWidget("""<style>table, th, td {
+                                              border: 1px solid black;
+                                              border-collapse: collapse;
+                                              margin-top:10px;
+                                               padding: 5px;
+                                            }</style>
+                                            <div style='display: flex; align-items:baseline'>
+                                            ${(data.index + 1).toString()}. <div style='margin-left: 2px;flex: 1;'>
+                                            ${data.question}</div></div>"""),
+                                TeXViewDocument(
+                                    " [${data.year != null ? data.year! : ""}${data.questionNumber != null ? ("${data.year != null ? ", " : ""}Q.${data.questionNumber!}") : ""}${data.marks != null ? ((data.questionNumber != null ? ", " : "") + data.marks!.toString()) : ""}]",
+                                    style: TeXViewStyle(
+                                      textAlign: TeXViewTextAlign.right,
+                                      contentColor: currTheme.darkTheme
+                                          ? PRIMARY_BLUE.shade100
+                                          : PRIMARY_BLUE,
+                                      fontStyle: TeXViewFontStyle(
+                                          fontFamily: 'roboto_italic',
+                                          fontSize: 10),
+                                    ))
+                              ]))
+                      .toList()),
+              loadingWidgetBuilder: (BuildContext context) {
+                return const Center(
+                    child: SizedBox(
+                        height: 12,
+                        width: 12,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        )));
+              }),
+        ),
       );
     }
 

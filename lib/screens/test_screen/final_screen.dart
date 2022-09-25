@@ -1,27 +1,52 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:prashna_app/components/imageView.dart';
 import 'package:prashna_app/constants.dart';
+import 'package:prashna_app/utilities/api.dart';
 import 'package:prashna_app/utilities/auth.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FinalLearnScreen extends StatefulWidget {
   final List questions;
   final int setId;
+  final int quizId;
+  final int correctAnswers;
 
-  const FinalLearnScreen({
-    Key? key,
-    required this.setId,
-    required this.questions,
-  }) : super(key: key);
+  const FinalLearnScreen(
+      {Key? key,
+      required this.setId,
+      required this.quizId,
+      required this.questions,
+      required this.correctAnswers})
+      : super(key: key);
 
   @override
   State<FinalLearnScreen> createState() => _FinalLearnScreenState();
 }
 
 class _FinalLearnScreenState extends State<FinalLearnScreen> {
+  static final Future<SharedPreferences> _storage =
+      SharedPreferences.getInstance();
+
   @override
   void initState() {
     super.initState();
+    _pushCorrectAnswers();
+  }
+
+  void _pushCorrectAnswers() async {
+    final SharedPreferences storage = await _storage;
+    final String? token = storage.getString('token');
+
+    if (token != null) {
+      await dio().post("/prashna/submit/quiz/",
+          data: {
+            "quiz_id": widget.quizId,
+            "correctAnswers": widget.correctAnswers,
+          },
+          options: Options(headers: {'Authorization': 'Bearer $token'}));
+    }
   }
 
   @override
@@ -95,6 +120,14 @@ class _FinalLearnScreenState extends State<FinalLearnScreen> {
                           style: style.copyWith(
                             fontSize: 14,
                           ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Correct answers: ${widget.correctAnswers}",
+                          style:
+                              style.copyWith(fontSize: 14, color: Colors.green),
                         ),
                       ],
                     ),
@@ -173,9 +206,12 @@ class _FinalLearnScreenState extends State<FinalLearnScreen> {
                                             Text(
                                               widget.questions[index]['answer'],
                                               style: style.copyWith(
-                                                  color: Provider.of<Auth>(context, listen: false).darkTheme
-            ?  Colors.greenAccent 
-            : Colors.green,
+                                                  color: Provider.of<Auth>(
+                                                              context,
+                                                              listen: false)
+                                                          .darkTheme
+                                                      ? Colors.greenAccent
+                                                      : Colors.green,
                                                   fontWeight: FontWeight.bold,
                                                   letterSpacing: 0.5,
                                                   fontFamily: 'Roboto'),
