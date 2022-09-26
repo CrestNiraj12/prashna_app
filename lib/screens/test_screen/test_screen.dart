@@ -257,16 +257,7 @@ class _TestScreenState extends State<TestScreen> {
                 children: [
                   IconButton(
                       icon: const Icon(Icons.close),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            PageTransition(
-                                child: StartScreen(
-                                  quizId: widget.quiz.id,
-                                  setId: widget.setId,
-                                ),
-                                type: PageTransitionType.bottomToTop));
-                      }),
+                      onPressed: _showCancelDialog),
                   Center(
                       heightFactor: 2,
                       child: SizedBox(
