@@ -14,6 +14,7 @@ import '../../utilities/auth.dart';
 import 'get_card.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:prashna_app/components/loginHint.dart';
 
 class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({Key? key}) : super(key: key);
@@ -381,20 +382,22 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _scoreLoading
-                        ? const SizedBox(
-                            height: 130,
-                            child: Center(
-                                child: CircularProgressIndicator(
-                              color: PRIMARY_BLUE,
-                            )),
-                          )
-                        : Score(
-                            totalScore: _totalScore,
-                            dailyScore: _dailyScore,
-                            dailyCorrectAnswers: _dailyCorrectAnswers,
-                            totalCorrectAnswers: _totalCorrectAnswers,
-                          ),
+                    user == null
+                        ? const LoginHint()
+                        : _scoreLoading
+                            ? const SizedBox(
+                                height: 100,
+                                child: Center(
+                                    child: CircularProgressIndicator(
+                                  color: PRIMARY_BLUE,
+                                )),
+                              )
+                            : Score(
+                                totalScore: _totalScore,
+                                dailyScore: _dailyScore,
+                                dailyCorrectAnswers: _dailyCorrectAnswers,
+                                totalCorrectAnswers: _totalCorrectAnswers,
+                              ),
                     const SizedBox(
                       height: 10,
                     ),

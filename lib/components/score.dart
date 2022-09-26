@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import 'package:intl/intl.dart';
-import 'package:prashna_app/components/loginHint.dart';
 import '../constants.dart';
 import '../utilities/auth.dart';
 import 'package:provider/provider.dart';
@@ -85,9 +84,7 @@ class _ScoreState extends State<Score> {
       );
     }
 
-    return currTheme.user == null
-        ? const LoginHint()
-        : Card(
+    return Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
