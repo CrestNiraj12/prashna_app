@@ -7,6 +7,7 @@ import 'package:prashna_app/models/set_category.dart';
 import 'package:prashna_app/screens/discover_screen/search_tab.dart';
 import 'package:prashna_app/screens/login_screen/login_screen.dart';
 import 'package:prashna_app/screens/profile_screen/profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants.dart';
 import '../../utilities/api.dart';
 import '../../utilities/auth.dart';
@@ -28,14 +29,18 @@ class _DiscoverScreenState extends State<DiscoverScreen>
   late List<Course> _filteredCourses;
   late List<SetCategory> _filteredCategories;
   static List<String> tabs = [COURSES, SUBJECTS];
-  bool _loading = false;
+  bool _loading = false, _scoreLoading = false;
   late TabController _tabController;
   bool _refresh = false;
+  static final Future<SharedPreferences> _storage =
+      SharedPreferences.getInstance();
+  late int _totalScore, _dailyScore, _totalCorrectAnswers, _dailyCorrectAnswers;
 
   @override
   void initState() {
     _tabController = TabController(length: tabs.length, vsync: this);
     loadCourses();
+    _getScore();
     super.initState();
   }
 
@@ -44,6 +49,25 @@ class _DiscoverScreenState extends State<DiscoverScreen>
     // Clean up the controller when the widget is disposed.
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _getScore() async {
+    setState(() {
+      _scoreLoading = true;
+    });
+    final SharedPreferences storage = await _storage;
+    final String? token = storage.getString('token');
+    if (token != null) {
+      Response response = await dio().get("/test/prashna/total-score",
+          options: Options(headers: {'Authorization': 'Bearer $token'}));
+      setState(() {
+        _totalScore = response.data["totalScore"];
+        _totalCorrectAnswers = int.parse(response.data["totalCorrectAnswers"]);
+        _dailyScore = response.data["dailyScore"];
+        _dailyCorrectAnswers = int.parse(response.data["dailyCorrectAnswers"]);
+        _scoreLoading = false;
+      });
+    }
   }
 
   void loadCourses() async {
@@ -343,6 +367,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
               setState(() {
                 _refresh = true;
               });
+              _getScore();
               loadCourses();
             },
             child: SingleChildScrollView(
@@ -356,7 +381,20 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Score(),
+                    _scoreLoading
+                        ? const SizedBox(
+                            height: 130,
+                            child: Center(
+                                child: CircularProgressIndicator(
+                              color: PRIMARY_BLUE,
+                            )),
+                          )
+                        : Score(
+                            totalScore: _totalScore,
+                            dailyScore: _dailyScore,
+                            dailyCorrectAnswers: _dailyCorrectAnswers,
+                            totalCorrectAnswers: _totalCorrectAnswers,
+                          ),
                     const SizedBox(
                       height: 10,
                     ),

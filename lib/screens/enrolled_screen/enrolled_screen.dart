@@ -22,9 +22,10 @@ class _EnrolledScreenState extends State<EnrolledScreen> {
     final currTheme = Provider.of<Auth>(context, listen: true);
     final user = currTheme.user;
     List<SetCategory?> setCategories =
-        user != null ? user.followedSetCategories : [];
-    List<Set?> sets = user != null ? user.followedSets : [];
-    List<Course?> courses = user != null ? user.followedCourses : [];
+        user != null ? user.followedSetCategories.reversed.toList() : [];
+    List<Set?> sets = user != null ? user.followedSets.reversed.toList() : [];
+    List<Course?> courses =
+        user != null ? user.followedCourses.reversed.toList() : [];
 
     TextStyle textStyle = TextStyle(
         fontSize: 13,
@@ -210,9 +211,9 @@ class _EnrolledScreenState extends State<EnrolledScreen> {
                                             child: Text(
                                               "Enrolled courses",
                                               style: textStyle.copyWith(
-                                                  fontSize: 16,
+                                                  fontSize: 13,
                                                   color: PRIMARY_BLUE,
-                                                  letterSpacing: 0.5,
+                                                  letterSpacing: 0.3,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ),
@@ -247,9 +248,9 @@ class _EnrolledScreenState extends State<EnrolledScreen> {
                                             child: Text(
                                               "Enrolled subjects",
                                               style: textStyle.copyWith(
-                                                  fontSize: 16,
+                                                  fontSize: 13,
                                                   color: PRIMARY_BLUE,
-                                                  letterSpacing: 0.5,
+                                                  letterSpacing: 0.3,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ),
