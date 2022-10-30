@@ -240,180 +240,181 @@ class _QuizBodyState extends State<QuizBody> {
                     '😕 Incorrect',
                     style: style.copyWith(color: Colors.white, fontSize: 18),
                   )),
-              contentPadding: EdgeInsets.zero,
-              content: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // richTe6xt
-                        // ? TeXView(
-                        //     renderingEngine:
-                        //         const TeXViewRenderingEngine.mathjax(),
-                        //     child: TeXViewColumn(children: [
-                        //       TeXViewDocument("""<style>table, th, td {
-                        //             border: 1px solid black;
-                        //             border-collapse: collapse;
-                        //             margin-top:10px;
-                        //              padding: 5px;
-                        //           }</style>
-                        //           <div style='display: flex'>${(widget.index + 1).toString()}. <span style='margin-left: 2px'>${widget.question}</span></div>""",
-                        //           style: TeXViewStyle(
-                        //               padding: const TeXViewPadding.only(
-                        //                   bottom: 20),
-                        //               contentColor: Provider.of<Auth>(
-                        //                           context,
-                        //                           listen: false)
-                        //                       .darkTheme
-                        //                   ? Colors.white
-                        //                   : PRIMARY_DARK,
-                        //               fontStyle:
-                        //                   TeXViewFontStyle(fontSize: 16))),
-                        //       TeXViewDocument("CORRECT ANSWER: ",
-                        //           style: TeXViewStyle(
-                        //               contentColor: Colors.green,
-                        //               fontStyle:
-                        //                   TeXViewFontStyle(fontSize: 10))),
-                        //       TeXViewDocument(
-                        //           '${"""<style>table, th, td {
-                        //               border: 1px solid black;
-                        //               border-collapse: collapse;
-                        //               margin-top:10px;
-                        //                padding: 5px;
-                        //             }</style>$correctAnswer"""}</span></div>',
-                        //           style: TeXViewStyle(
-                        //               contentColor: Provider.of<Auth>(
-                        //                           context,
-                        //                           listen: false)
-                        //                       .darkTheme
-                        //                   ? Colors.white
-                        //                   : PRIMARY_DARK,
-                        //               fontStyle:
-                        //                   TeXViewFontStyle(fontSize: 14))),
-                        //       TeXViewDocument("YOU ANSWERED: ",
-                        //           style: TeXViewStyle(
-                        //               contentColor: Colors.red,
-                        //               fontStyle:
-                        //                   TeXViewFontStyle(fontSize: 10))),
-                        //       TeXViewDocument(
-                        //           '${"""<style>table, th, td {
-                        //               border: 1px solid black;
-                        //               border-collapse: collapse;
-                        //               margin-top:10px;
-                        //                padding: 5px;
-                        //             }</style>${selected['option']}"""}</span></div>',
-                        //           style: TeXViewStyle(
-                        //               contentColor: Provider.of<Auth>(
-                        //                           context,
-                        //                           listen: false)
-                        //                       .darkTheme
-                        //                   ? Colors.white
-                        //                   : PRIMARY_DARK,
-                        //               fontStyle:
-                        //                   TeXViewFontStyle(fontSize: 14))),
-                        //     ])):
-                        Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("${widget.index + 1}. $question",
-                                  style: style.copyWith(fontSize: 16)),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                "Correct Answer:".toUpperCase(),
-                                style: style.copyWith(
-                                    letterSpacing: 1,
-                                    fontSize: 10,
-                                    color: Colors.green),
-                              ),
-                              Text(correctAnswer,
-                                  style: style.copyWith(fontSize: 14)),
-                              const Divider(),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "You Answered:".toUpperCase(),
-                                style: style.copyWith(
-                                    letterSpacing: 1,
-                                    fontSize: 10,
-                                    color: Colors.red),
-                              ),
-                              Text(selected['option'],
-                                  style: style.copyWith(fontSize: 14)),
-                              (hint != null || hintImage != null)
-                                  ? Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        RichText(
-                                          text: TextSpan(
-                                            children: const [
-                                              WidgetSpan(
-                                                alignment:
-                                                    PlaceholderAlignment.middle,
-                                                child: Icon(
-                                                  Icons.lightbulb,
-                                                  size: 13,
-                                                  color: Colors.yellow,
-                                                ),
-                                              ),
-                                              TextSpan(
-                                                text: " Hint",
-                                              ),
-                                            ],
-                                            style: style.copyWith(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold,
-                                                color: PRIMARY_BLUE),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        hint != null
-                                            ? Text(
-                                                hint,
-                                                style: style.copyWith(
-                                                  fontSize: 15,
-                                                ),
-                                              )
-                                            : Container(),
-                                        hintImage != null
-                                            ? const SizedBox(
-                                                height: 5,
-                                              )
-                                            : Container(),
-                                        hintImage != null
-                                            ? ImageViewComponent(
-                                                image: hintImage,
-                                                height: 100,
-                                              )
-                                            : Container(),
-                                      ],
-                                    )
-                                  : Container()
-                            ]),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Center(
-                            child: OutlinedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(true);
-                                  widget.goToNextPage();
-                                },
-                                child: const Text("Continue")))
-                      ])),
+              // contentPadding: EdgeInsets.zero,
+              // content:
+              // Container(
+              //     padding:
+              //         const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              //     child: Column(
+              //         mainAxisSize: MainAxisSize.min,
+              //         mainAxisAlignment: MainAxisAlignment.start,
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           // richText
+              //           // ? TeXView(
+              //           //     renderingEngine:
+              //           //         const TeXViewRenderingEngine.mathjax(),
+              //           //     child: TeXViewColumn(children: [
+              //           //       TeXViewDocument("""<style>table, th, td {
+              //           //             border: 1px solid black;
+              //           //             border-collapse: collapse;
+              //           //             margin-top:10px;
+              //           //              padding: 5px;
+              //           //           }</style>
+              //           //           <div style='display: flex'>${(widget.index + 1).toString()}. <span style='margin-left: 2px'>${widget.question}</span></div>""",
+              //           //           style: TeXViewStyle(
+              //           //               padding: const TeXViewPadding.only(
+              //           //                   bottom: 20),
+              //           //               contentColor: Provider.of<Auth>(
+              //           //                           context,
+              //           //                           listen: false)
+              //           //                       .darkTheme
+              //           //                   ? Colors.white
+              //           //                   : PRIMARY_DARK,
+              //           //               fontStyle:
+              //           //                   TeXViewFontStyle(fontSize: 16))),
+              //           //       TeXViewDocument("CORRECT ANSWER: ",
+              //           //           style: TeXViewStyle(
+              //           //               contentColor: Colors.green,
+              //           //               fontStyle:
+              //           //                   TeXViewFontStyle(fontSize: 10))),
+              //           //       TeXViewDocument(
+              //           //           '${"""<style>table, th, td {
+              //           //               border: 1px solid black;
+              //           //               border-collapse: collapse;
+              //           //               margin-top:10px;
+              //           //                padding: 5px;
+              //           //             }</style>$correctAnswer"""}</span></div>',
+              //           //           style: TeXViewStyle(
+              //           //               contentColor: Provider.of<Auth>(
+              //           //                           context,
+              //           //                           listen: false)
+              //           //                       .darkTheme
+              //           //                   ? Colors.white
+              //           //                   : PRIMARY_DARK,
+              //           //               fontStyle:
+              //           //                   TeXViewFontStyle(fontSize: 14))),
+              //           //       TeXViewDocument("YOU ANSWERED: ",
+              //           //           style: TeXViewStyle(
+              //           //               contentColor: Colors.red,
+              //           //               fontStyle:
+              //           //                   TeXViewFontStyle(fontSize: 10))),
+              //           //       TeXViewDocument(
+              //           //           '${"""<style>table, th, td {
+              //           //               border: 1px solid black;
+              //           //               border-collapse: collapse;
+              //           //               margin-top:10px;
+              //           //                padding: 5px;
+              //           //             }</style>${selected['option']}"""}</span></div>',
+              //           //           style: TeXViewStyle(
+              //           //               contentColor: Provider.of<Auth>(
+              //           //                           context,
+              //           //                           listen: false)
+              //           //                       .darkTheme
+              //           //                   ? Colors.white
+              //           //                   : PRIMARY_DARK,
+              //           //               fontStyle:
+              //           //                   TeXViewFontStyle(fontSize: 14))),
+              //           //     ])):
+              //           Column(
+              //               mainAxisSize: MainAxisSize.min,
+              //               mainAxisAlignment: MainAxisAlignment.start,
+              //               crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 Text("${widget.index + 1}. $question",
+              //                     style: style.copyWith(fontSize: 16)),
+              //                 const SizedBox(
+              //                   height: 20,
+              //                 ),
+              //                 Text(
+              //                   "Correct Answer:".toUpperCase(),
+              //                   style: style.copyWith(
+              //                       letterSpacing: 1,
+              //                       fontSize: 10,
+              //                       color: Colors.green),
+              //                 ),
+              //                 Text(correctAnswer,
+              //                     style: style.copyWith(fontSize: 14)),
+              //                 const Divider(),
+              //                 const SizedBox(
+              //                   height: 5,
+              //                 ),
+              //                 Text(
+              //                   "You Answered:".toUpperCase(),
+              //                   style: style.copyWith(
+              //                       letterSpacing: 1,
+              //                       fontSize: 10,
+              //                       color: Colors.red),
+              //                 ),
+              //                 Text(selected['option'],
+              //                     style: style.copyWith(fontSize: 14)),
+              //                 (hint != null || hintImage != null)
+              //                     ? Column(
+              //                         mainAxisSize: MainAxisSize.min,
+              //                         mainAxisAlignment:
+              //                             MainAxisAlignment.start,
+              //                         crossAxisAlignment:
+              //                             CrossAxisAlignment.start,
+              //                         children: [
+              //                           RichText(
+              //                             text: TextSpan(
+              //                               children: const [
+              //                                 WidgetSpan(
+              //                                   alignment:
+              //                                       PlaceholderAlignment.middle,
+              //                                   child: Icon(
+              //                                     Icons.lightbulb,
+              //                                     size: 13,
+              //                                     color: Colors.yellow,
+              //                                   ),
+              //                                 ),
+              //                                 TextSpan(
+              //                                   text: " Hint",
+              //                                 ),
+              //                               ],
+              //                               style: style.copyWith(
+              //                                   fontSize: 13,
+              //                                   fontWeight: FontWeight.bold,
+              //                                   color: PRIMARY_BLUE),
+              //                             ),
+              //                           ),
+              //                           const SizedBox(
+              //                             height: 5,
+              //                           ),
+              //                           hint != null
+              //                               ? Text(
+              //                                   hint,
+              //                                   style: style.copyWith(
+              //                                     fontSize: 15,
+              //                                   ),
+              //                                 )
+              //                               : Container(),
+              //                           hintImage != null
+              //                               ? const SizedBox(
+              //                                   height: 5,
+              //                                 )
+              //                               : Container(),
+              //                           hintImage != null
+              //                               ? ImageViewComponent(
+              //                                   image: hintImage,
+              //                                   height: 100,
+              //                                 )
+              //                               : Container(),
+              //                         ],
+              //                       )
+              //                     : Container()
+              //               ]),
+              //           const SizedBox(
+              //             height: 10,
+              //           ),
+              //           Center(
+              //               child: OutlinedButton(
+              //                   onPressed: () {
+              //                     Navigator.of(context).pop(true);
+              //                     widget.goToNextPage();
+              //                   },
+              //                   child: const Text("Continue")))
+              //         ])),
             );
           },
         ).then((value) => widget.goToNextPage());

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tex/flutter_tex.dart';
 import 'package:prashna_app/components/imageView.dart';
 import 'package:prashna_app/constants.dart';
 import 'package:prashna_app/utilities/api.dart';
@@ -188,65 +189,174 @@ class _FinalLearnScreenState extends State<FinalLearnScreen> {
                                             elevation: 5,
                                             child: Container(
                                               padding: const EdgeInsets.all(15),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "${index + 1}. ${widget.questions[index]['question']}",
-                                                    style: style.copyWith(
-                                                        letterSpacing: 0.35,
-                                                        fontSize: 14,
-                                                        fontFamily: 'Roboto'),
-                                                  ),
-                                                  widget.questions[index][
-                                                              'questionImage'] !=
-                                                          null
-                                                      ? Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical:
-                                                                      10.0),
-                                                          child:
-                                                              ImageViewComponent(
-                                                            image: widget
-                                                                        .questions[
-                                                                    index][
-                                                                'questionImage'],
-                                                            height: 150,
-                                                          ),
-                                                        )
-                                                      : Container(),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Text(
-                                                    "Answer: ",
-                                                    style: style.copyWith(
-                                                        fontSize: 10),
-                                                  ),
-                                                  Text(
-                                                    widget.questions[index]
-                                                        ['answer'],
-                                                    style: style.copyWith(
-                                                        color: Provider.of<
-                                                                        Auth>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .darkTheme
-                                                            ? Colors.greenAccent
-                                                            : Colors.green,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        letterSpacing: 0.5,
-                                                        fontFamily: 'Roboto'),
-                                                  ),
-                                                ],
-                                              ),
+                                              child: widget.questions[index]
+                                                      ['richText']
+                                                  ? TeXView(
+                                                      renderingEngine:
+                                                          const TeXViewRenderingEngine
+                                                              .mathjax(),
+                                                      child: TeXViewColumn(
+                                                          children: [
+                                                            TeXViewDocument(
+                                                                """<style>table, th, td {
+                                    border: 1px solid black;
+                                    border-collapse: collapse;
+                                    margin-top:10px;
+                                     padding: 5px;
+                                  }</style>
+                                  <div style='display: flex'>${(index + 1).toString()}. <span style='margin-left: 2px'>${widget.questions[index]['question']}</span></div>""",
+                                                                style: TeXViewStyle(
+                                                                    padding: const TeXViewPadding
+                                                                            .only(
+                                                                        bottom:
+                                                                            20),
+                                                                    contentColor: Provider.of<Auth>(context, listen: false)
+                                                                            .darkTheme
+                                                                        ? Colors
+                                                                            .white
+                                                                        : PRIMARY_DARK,
+                                                                    fontStyle: TeXViewFontStyle(
+                                                                        fontSize:
+                                                                            16))),
+                                                            TeXViewDocument(
+                                                                '</span></div>',
+                                                                style: TeXViewStyle(
+                                                                    contentColor: Provider.of<Auth>(context, listen: false)
+                                                                            .darkTheme
+                                                                        ? Colors
+                                                                            .white
+                                                                        : PRIMARY_DARK,
+                                                                    fontStyle: TeXViewFontStyle(
+                                                                        fontSize:
+                                                                            14))),
+                                                            widget.questions[
+                                                                            index]
+                                                                        [
+                                                                        'questionImage'] !=
+                                                                    null
+                                                                ? TeXViewContainer(
+                                                                    child: TeXViewImage.network(
+                                                                        widget.questions[index]
+                                                                            [
+                                                                            'questionImage']!),
+                                                                    style: const TeXViewStyle(
+                                                                        margin: TeXViewMargin.only(
+                                                                            top:
+                                                                                10,
+                                                                            bottom:
+                                                                                10),
+                                                                        textAlign:
+                                                                            TeXViewTextAlign
+                                                                                .center,
+                                                                        height:
+                                                                            200),
+                                                                  )
+                                                                : const TeXViewDocument(
+                                                                    ""),
+                                                            TeXViewDocument(
+                                                                "Answer: ",
+                                                                style: TeXViewStyle(
+                                                                    contentColor:
+                                                                        Colors
+                                                                            .green,
+                                                                    fontStyle: TeXViewFontStyle(
+                                                                        fontSize:
+                                                                            15))),
+                                                            TeXViewDocument(
+                                                                '${"""<style>table, th, td {
+                                      border: 1px solid black;
+                                      border-collapse: collapse;
+                                      margin-top:10px;
+                                       padding: 5px;
+                                    }</style>${widget.questions[index]['answer']}"""}</span></div>',
+                                                                style: TeXViewStyle(
+                                                                    contentColor: Provider.of<Auth>(context, listen: false)
+                                                                            .darkTheme
+                                                                        ? Colors
+                                                                            .white
+                                                                        : PRIMARY_DARK,
+                                                                    fontStyle: TeXViewFontStyle(
+                                                                        fontSize:
+                                                                            14))),
+                                                          ]),
+                                                      loadingWidgetBuilder:
+                                                          (BuildContext
+                                                              context) {
+                                                        return const Center(
+                                                            child: SizedBox(
+                                                                height: 12,
+                                                                width: 12,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  strokeWidth:
+                                                                      2,
+                                                                )));
+                                                      })
+                                                  : Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "${index + 1}. ${widget.questions[index]['question']}",
+                                                          style: style.copyWith(
+                                                              letterSpacing:
+                                                                  0.35,
+                                                              fontSize: 14,
+                                                              fontFamily:
+                                                                  'Roboto'),
+                                                        ),
+                                                        widget.questions[index][
+                                                                    'questionImage'] !=
+                                                                null
+                                                            ? Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        10.0),
+                                                                child:
+                                                                    ImageViewComponent(
+                                                                  image: widget
+                                                                              .questions[
+                                                                          index]
+                                                                      [
+                                                                      'questionImage'],
+                                                                  height: 150,
+                                                                ),
+                                                              )
+                                                            : Container(),
+                                                        const SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                        Text(
+                                                          "Answer: ",
+                                                          style: style.copyWith(
+                                                              fontSize: 15,
+                                                              color:
+                                                                  Colors.green,
+                                                              fontFamily:
+                                                                  'Roboto'),
+                                                        ),
+                                                        Text(
+                                                          widget.questions[
+                                                              index]['answer'],
+                                                          style: style.copyWith(
+                                                              color: Provider.of<
+                                                                              Auth>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .darkTheme
+                                                                  ? Colors.white
+                                                                  : PRIMARY_DARK,
+                                                              fontFamily:
+                                                                  'Roboto'),
+                                                        ),
+                                                      ],
+                                                    ),
                                             )),
                                       );
                                     })
